@@ -1,0 +1,42 @@
+﻿@model SistemaVeterinaria.Models.Surgery
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Surgery</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Pet.PetName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pet.PetName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SurgeryType.SurgeryTypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SurgeryType.SurgeryTypeName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SurgeryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SurgeryDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.SurgeryId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

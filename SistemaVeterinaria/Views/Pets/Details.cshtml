@@ -1,0 +1,183 @@
+﻿@model SistemaVeterinaria.Models.Pet
+
+@{
+    ViewBag.Title = "Detalle de Paciente";
+}
+
+<head>
+    <style>
+        th h5{
+            font-weight: bold;
+        }
+
+        td h5{
+            margin-left: 40px;
+        }
+
+        /*section {
+            overflow: auto;
+        }*/
+    </style>
+</head>
+
+<h2 class="text-center">Detalle de Paciente</h2>
+<hr style="color: grey; border-color: grey; margin-top: 0" />
+
+<div id="example-tabs">
+    <h3>General</h3>
+    <section>
+        <div style="width:100%;display:inline-flex">
+            <div style="width:40%">
+                <h4>Detalle de Paciente</h4>
+                <hr style="color: grey; border-color: grey; margin-top: 0" />
+                
+                <div style="border:outset;border-radius:10px;background-color:lightsteelblue">
+                    <table style="margin-left:4%">
+                        <tr>
+                            <th><h5>Nro Paciente:</h5></th>
+                            <td><h5>@Model.PetId</h5></td>
+                        </tr>
+                        <tr>
+                            <th><h5>Nombre:</h5></th>
+                            <td><h5>@Model.PetName</h5></td>
+                        </tr>
+                        <tr>
+                            <th><h5>Especie:</h5></th>
+                            <td>@if (Model.PetSpecie == SistemaVeterinaria.Models.Species.Perro) {<h5>Perro</h5>} else {<h5>Gato</h5>}</td>
+                        </tr>
+                        <tr>
+                            <th><h5>Raza:</h5></th>
+                            <td><h5>@Model.PetBreed</h5></td>
+                        </tr>
+                        <tr>
+                            <th><h5>Sexo:</h5></th>
+                            <td>@if (Model.PetSex) { <h5>Macho</h5> } else { <h5>Hembra</h5> }</td>
+                        </tr>
+                    </table> 
+                </div>               
+            </div>
+            <div style="width:40%;margin-left:10%">
+                <h4>Detalle de Dueño</h4>
+                <hr style="color: grey; border-color: grey; margin-top: 0" />
+
+                <div style="border:outset;border-radius:10px;background-color:lightsteelblue">
+                    <table style="margin-left:4%">
+                        <tr>
+                            <th><h5>Nro Dueño:</h5></th>
+                            <td><h5>@Model.OwnerId</h5></td>
+                        </tr>
+                        <tr>
+                            <th><h5>Nombre:</h5></th>
+                            <td><h5>@Model.Owner.OwnerName</h5></td>
+                        </tr>
+                        <tr>
+                            <th><h5>Apellido:</h5></th>
+                            <td><h5>@Model.Owner.OwnerLastName</h5></td>
+                        </tr>
+                        <tr>
+                            <th><h5>Domicilio:</h5></th>
+                            <td><h5>@Model.Owner.OwnerAddress</h5></td>
+                        </tr>
+                        <tr>
+                            <th><h5>Teléfono:</h5></th>
+                            <td><h5>@Model.Owner.OwnerPhone</h5></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <h3>Vacunas</h3>
+    <section>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nro Vacuna</th>
+                    <th>Paciente</th>
+                    <th class="text-center">Ordinal</th>
+                    <th class="text-center">Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Vaccinations.Where(v => v.VaccineDate <= DateTime.Today))
+                {
+                    <tr>
+                        <td>@item.VaccineId</td>
+                        <td>@item.Pet.PetName</td>
+                        <td class="text-center">@item.VaccineNumber° Vacuna</td>
+                        <td class="text-center">@item.VaccineDate.ToShortDateString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+    <h3>Cirugías</h3>
+    <section>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nro Cirugía</th>
+                    <th>Paciente</th>
+                    <th class="text-center">Tipo</th>
+                    <th class="text-center">Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Surgeries)
+                {
+                    <tr>
+                        <td>@item.SurgeryId</td>
+                        <td>@item.Pet.PetName</td>
+                        <td class="text-center">@item.SurgeryType.SurgeryTypeName</td>
+                        <td class="text-center">@item.SurgeryDate.ToShortDateString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+    <h3>Baños</h3>
+    <section>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nro Baño</th>
+                    <th>Paciente</th>                    
+                    <th class="text-center">Fecha</th>
+                    <th class="text-center">Turno</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Showers)
+                {
+                    <tr>
+                        <td>@item.ShowerId</td>
+                        <td>@item.Pet.PetName</td>
+                        <td class="text-center">@item.ShowerDate.ToShortDateString()</td>
+                        <td class="text-center">@if (item.ShowerTurn) {<p>Mañana</p>} else {<p>Tarde</p>}</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+</div>
+
+@section Scripts{
+    <script>
+        $("#example-tabs").steps({
+            headerTag: "h3",
+            bodyTag: "section",
+            transitionEffect: "slideLeft",
+            enableFinishButton: false,
+            enablePagination: false,
+            enableAllSteps: true,
+            titleTemplate: "#title#",
+            cssClass: "tabcontrol"
+        });
+
+        $(".table").DataTable({
+            "language": {
+                "url": "/Scripts/DataTables/spanish.json"
+            }
+        });
+    </script>    
+}

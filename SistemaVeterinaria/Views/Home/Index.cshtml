@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1 class="text-center">Veterinaria San Francisco de Asís</h1>
+    <p class="lead text-center">Bienvenido al sistema de notificaciones de Veterinaria San Francisco de Asís</p>
+    @*<p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>*@
+</div>
+
+@*<input list="browsers" name="myBrowser" placeholder="selecciona puto" />
+
+<datalist id="browsers">
+    <option value="Chrome">
+    <option value="Firefox">
+    <option value="Internet Explorer">
+    <option value="Opera">
+    <option value="Safari">
+    <option value="Microsoft Edge">
+</datalist>*@
+
+<div class="row">
+    <div class="col-md-4">
+        @*<h2>Getting started</h2>
+    <p>
+        ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
+        enables a clean separation of concerns and gives you full control over markup
+        for enjoyable, agile development.
+    </p>
+    <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>*@
+    </div>
+    <div class="col-md-4">
+        @*<h2>Get more libraries</h2>
+        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>*@
+    </div>
+    <div class="col-md-4">
+        @*<h2>Web Hosting</h2>
+        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>*@
+    </div>
+</div>
+
+<div id="myModal" class="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="closenotifications" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title">Notificación Diaria</h5>
+            </div>
+            <div class="modal-body">
+                @if (ViewBag.Vaccines > 0)
+                {
+                    <p>Existen @ViewBag.Vaccines Vacunas programadas para el día de hoy.</p>
+                }
+                @if (ViewBag.Surgeries > 0)
+                {
+                    <p>Existen @ViewBag.Surgeries Cirugías programadas para el día de hoy.</p>
+                }
+                @if (ViewBag.Showers > 0)
+                {
+                    <p>Existen @ViewBag.Showers Baños programados para el día de hoy.</p>
+                }
+            </div>
+            <div class="modal-footer">
+                @if (ViewBag.Vaccines > 0)
+                {
+                    <a href="@Url.Action("DailyNotification","Vaccines")" class="btn btn-success">Ver Vacunas</a>
+                }
+                @if (ViewBag.Surgeries > 0)
+                {
+                    <a href="@Url.Action("DailyNotification","Surgeries")" class="btn btn-primary">Ver Cirugías</a>
+                }
+                @if (ViewBag.Showers > 0)
+                {
+                    <a href="@Url.Action("DailyNotification","Showers")" class="btn btn-info">Ver Baños</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            if (@ViewBag.Vaccines > 0 | @ViewBag.Surgeries > 0 | @ViewBag.Showers > 0) {
+                $('#myModal').show('slow');
+            }
+        });
+
+        $('#closenotifications').click(function () {
+            $('#myModal').hide('slow');
+        })
+    </script>
+}

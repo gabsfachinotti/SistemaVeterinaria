@@ -1,0 +1,544 @@
+﻿@model IEnumerable<SistemaVeterinaria.Models.Pet>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<head>
+    <style>
+        /*td input {
+            border-color: transparent;
+            background-color: transparent
+        }*/
+
+        tr td:first-child {
+            width: 6%;
+        }
+    </style>
+</head>
+
+<div style="width: 100%;display: inline-flex">
+    <div style="width: 25%"><a id="createPet" class="btn btn-success" style="margin-top: 6%">Agregar Paciente</a></div>
+    <div style="width: 50%">
+        <h2 class="text-center">Lista de Pacientes</h2>
+    </div>
+    <div style="width: 25%"></div>
+</div>
+<hr style="color: grey; border-color: grey; margin-top: 0" />
+
+
+<table id="table" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                Nro
+            </th>
+            <th>
+                Nombre
+            </th>
+            <th>
+                Dueño
+            </th>            
+            <th>
+                Especie
+            </th>
+            <th>
+                Raza
+            </th>
+            <th>
+                Sexo
+            </th>
+            <th class="text-center">Opciones</th>
+        </tr>
+    </thead>
+
+    <tbody id="Pets">
+        @foreach (var item in Model)
+        {
+            <tr id="@("Pet" + item.PetId)">
+                <td>
+                    @item.PetId
+                </td>
+                <td  id="@("PetName" + item.PetId)">
+                    @item.PetName
+                </td>
+                <td  id="@("Owner" + item.PetId)">
+                    @item.Owner.OwnerLastName, @item.Owner.OwnerName
+                </td>
+                <td  id="@("PetSpecie" + item.PetId)">
+                    @if (item.PetSpecie == SistemaVeterinaria.Models.Species.Perro)
+                    {
+                        <text>Perro</text>
+                    }
+                    else
+                    {
+                        <text>Gato</text>
+                    }
+                </td>
+                <td  id="@("PetBreed" + item.PetId)">
+                    @item.PetBreed
+                </td>
+                <td  id="@("PetSex" + item.PetId)">
+                    @if (item.PetSex)
+                    {
+                        <text>Macho</text>
+                    }
+                    else
+                    {
+                        <text>Hembra</text>
+                    }
+                </td>
+                <td class="text-center">
+                    <button id="@("editbutton" + item.PetId)" class="btn btn-primary btn-sm" title="Editar" onclick="editpet(@item.PetId,@item.OwnerId)"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                    <a href="@Url.Action("Details","Pets", new { id = item.PetId})" class="btn btn-primary btn-sm" title="Detalle"><span class="glyphicon glyphicon-list" aria-hidden="true"></span></a>
+                    <button id="@("deletebutton" + item.PetId)" class="btn btn-danger btn-sm" title="Eliminar" onclick="deletepet(@item.PetId)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+
+<div id="modalPet" class="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePet">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title">Agregar Paciente</h5>
+            </div>
+            <div class="modal-body">
+                <div class="modalinput">
+                    <label class="modallabel">Nombre:</label>
+                    <input id="PetName" style="width:52%" type="text" value="" />
+                </div>
+                <span id="SpanPetName" style="color:red;display:none;margin-left:30%"></span>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Dueño:</label>
+                    <select id="Owner" class="js-example-basic-single" style="width:52%">
+                        <option value="0">Seleccione un dueño...</option>
+                        @foreach (var owner in ViewBag.Owners)
+                        {
+                            <option value="@owner.OwnerId">@owner.OwnerLastName, @owner.OwnerName</option>
+                        }
+                    </select>
+                </div>
+                <span id="SpanOwner" style="color:red;display:none;margin-left:30%"></span>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Especie:</label>
+                    <label style="width:18%">
+                        <input id="DogSpecie" name="PetSpecieRadio" type="radio" checked="checked" />
+                        Perro
+                    </label>
+                    <label>
+                        <input id="CatSpecie" name="PetSpecieRadio" type="radio" />
+                        Gato
+                    </label>
+                </div>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Raza:</label>
+                    <input id="PetBreed" style="width:40%" type="text" placeholder="(opcional)" />
+                </div>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Sexo:</label>
+                    <label style="width:18%">
+                        <input id="FemaleSex" name="PetSexRadio" type="radio" checked="checked" />
+                        Hembra
+                    </label>
+                    <label>
+                        <input id="MaleSex" name="PetSexRadio" type="radio" />
+                        Macho
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="Save" type="button" class="btn btn-primary">Guardar</button>
+                <button id="Cancel" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editPet" class="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeEditPet">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title">Editar Paciente</h5>
+            </div>
+            <div class="modal-body">
+                <div class="modalinput">
+                    <label class="modallabel">Nro Paciente:</label>
+                    <input id="EditPetId" type="number" disabled="disabled" style="border-color:transparent;background-color:transparent" />
+                </div>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Nombre:</label>
+                    <input id="EditPetName" style="width:52%" type="text" value="" />
+                </div>
+                <span id="SpanEditPetName" style="color:red;display:none;margin-left:30%"></span>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Dueño:</label>
+                    <select id="EditOwner" class="js-example-basic-single" style="width:52%">
+                        <option value="0">Seleccione un dueño...</option>
+                        @foreach (var owner in ViewBag.Owners)
+                        {
+                            <option value="@owner.OwnerId">@owner.OwnerLastName, @owner.OwnerName</option>
+                        }
+                    </select>
+                </div>
+                <span id="SpanEditOwner" style="color:red;display:none;margin-left:30%"></span>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Especie:</label>
+                    <label style="width:18%">
+                        <input id="EditDogSpecie" name="EditPetSpecieRadio" type="radio" checked="checked" />
+                        Perro
+                    </label>
+                    <label>
+                        <input id="EditCatSpecie" name="EditPetSpecieRadio" type="radio" />
+                        Gato
+                    </label>
+                </div>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Raza:</label>
+                    <input id="EditPetBreed" style="width:40%" type="text" placeholder="(opcional)" />
+                </div>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Sexo:</label>
+                    <label style="width:18%">
+                        <input id="EditFemaleSex" name="PetSexRadio" type="radio" checked="checked" />
+                        Hembra
+                    </label>
+                    <label>
+                        <input id="EditMaleSex" name="PetSexRadio" type="radio" />
+                        Macho
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="EditSave" type="button" class="btn btn-primary">Guardar</button>
+                <button id="EditCancel" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="deletePet" class="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeDeletePet">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title">Eliminar Paciente</h5>
+            </div>
+            <div class="modal-body">
+                <input id="PetId" type="number" style="display:none" />
+                <p id="deletemessage" class="text-center" style="font-size:20px"></p>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Paciente:</label>
+                    <p id="DeletePetName"></p>
+                </div>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Especie:</label>
+                    <p id="DeletePetSpecie"></p>
+                </div>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Dueño:</label>
+                    <p id="DeleteOwner"></p>
+                </div>
+                <div  style="margin-top:7%">
+                    <text style="color:red;font-weight:bold">IMPORTANTE: </text><text>Al eliminar un Paciente automáticamente se eliminarán TODAS sus notificaciónes asociadas.</text>
+                </div>                
+            </div>
+            <div class="modal-footer">
+                <button id="deleteCancel" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button id="Delete" type="button" class="btn btn-danger">Eliminar</button>                
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $('#table').DataTable({
+            "language": {
+                "url": "/Scripts/DataTables/spanish.json"
+            }
+        });
+        $('.js-example-basic-single').select2();
+
+        $('#createPet').click(function () {
+            $('#PetName').val('');
+            $('#SpanPetName').hide();
+            $('#Owner').val(0).trigger('change');
+            $('#SpanOwner').hide();
+            $('#DogSpecie').prop('checked', true);
+            $('#PetBreed').val('');
+            $('#FemaleSex').prop('checked', true);
+            $('#modalPet').show('slow');
+        });
+
+        $('#closePet').click(function () {
+            $('#modalPet').hide('slow');
+        });
+
+        $('#Cancel').click(function () {
+            $('#modalPet').hide('slow');
+        });
+
+
+        $('#Save').click(function () {
+            var validation = true;
+            if ($('#PetName').val().trim() == '') {
+                validation = false;
+                $('#SpanPetName').text('Debe ingresar el nombre del paciente').show();
+            }
+
+            if ($('#Owner').val() == 0) {
+                validation = false;
+                $('#SpanOwner').text('Debe seleccionar el dueño del paciente').show();
+            }
+
+            var specie;
+            if ($('#DogSpecie').is(':checked')) {
+                specie = 1;
+            } else {
+                specie = 2;
+            }
+
+            var sex;
+            if ($('#FemaleSex').is(':checked')) {
+                sex = 0;
+            } else {
+                sex = 1;
+            }
+
+            if (validation) {
+
+                var options = {};
+                options.url = '@Url.Action("ValidatePet", "Pets")';
+                options.type = "GET";
+                options.data = { "petName": $('#PetName').val().trim(), "ownerId": $('#Owner').val(), "petSpecie": specie, "petSex": sex };
+                options.dataType = "json";
+                options.success = function (data) {
+                    if (data) {
+                        $('#SpanOwner').text('El Dueño seleccionado ya está asociado a ese Paciente.').show();
+                    } else {
+                        $('#modalPet').hide('slow');
+
+                        var pet = {
+                            PetId: null,
+                            PetName: $('#PetName').val().trim(),
+                            PetSpecie: specie,
+                            PetBreed: $('#PetBreed').val().trim(),
+                            PetSex: sex,
+                            OwnerId: $('#Owner').val(),
+                            Owner: null,
+                            Vaccinations: null,
+                            Surgeries: null,
+                            Showers: null
+                        }
+
+                        if (specie == 1) {
+                            specie = 'Perro';
+                        } else {
+                            specie = 'Gato';
+                        }
+
+                        if (sex == 0) {
+                            sex = 'Hembra';
+                        } else {
+                            sex = 'Macho';
+                        }
+
+                        $.ajax({
+                            url: '@Url.Action("CreatePet","Pets")',
+                            type: "POST",
+                            data: JSON.stringify(pet),
+                            dataType: "JSON",
+                            contentType: "application/json",
+                            success: function (d) {
+                                var row = '<tr style="background-color: #5cb85c26">'
+                                row += '<td>' + d.PetId + '</td>'
+                                row += '<td id="PetName' + d.PetId + '">' + $('#PetName').val().trim() + '</td>'
+                                row += '<td id="Owner' + d.PetId + '">' + d.OwnerName + '</td>'
+                                row += '<td id="PetSpecie' + d.PetId + '">' + specie + '</td>'
+                                row += '<td id="PetBreed' + d.PetId + '">' + $('#PetBreed').val().trim() + '</td>'
+                                row += '<td id="PetSex' + d.PetId + '">' + sex + '</td>'
+                                row += '<td class="text-center"><button id="editbutton' + d.PetId + '" class="btn btn-primary btn-sm" title="Editar" onclick="editpet(\'' + d.PetId + '\',\'' + $('#Owner').val() + '\')" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<a href="/Pets/Details/' + d.PetId + '" class="btn btn-primary btn-sm" title="Detalle"><span class="glyphicon glyphicon-list" aria-hidden="true"></span></a>&nbsp;<button id="deletebutton' + d.PetId + '" class="btn btn-danger btn-sm" title="Eliminar" onclick="deletepet(' + d.PetId + ')" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>'
+                                row += '</tr>'
+
+                                $('#Pets').prepend(row);
+
+                                toastr.success('Se ha agregado un nuevo paciente.');
+                            }
+                        });
+                    }
+                };
+                $.ajax(options);
+            }
+        });
+
+        function editpet(petId,petOwner) {
+            $('#EditPetId').val(petId);
+            $('#EditPetName').val($('#PetName' + petId).html().trim());
+            $('#EditOwner').val(petOwner).trigger('change');
+            if ($('#PetSpecie' + petId).html().trim() == 'Perro') {
+                $('#EditDogSpecie').prop('checked', true);
+            } else {
+                $('#EditCatSpecie').prop('checked', true);
+            }
+            $('#EditPetBreed').val($('#PetBreed' + petId).html().trim());
+            if ($('#PetSex' + petId).html().trim() == 'Hembra') {
+                $('#EditFemaleSex').prop('checked', true);
+            } else {
+                $('#EditMaleSex').prop('checked', true);
+            }
+
+            $('#editPet').show('slow');
+        }
+
+        $('#EditCancel').click(function () {
+            $('#editPet').hide('slow');
+        });
+
+        $('#closeEditPet').click(function () {
+            $('#editPet').hide('slow');
+        });
+
+        $('#EditSave').click(function () {
+            var validation = true;
+            if ($('#EditPetName').val() == '') {
+                validation = false;
+                $('#SpanEditPetName').text('Debe completar el nombre del paciente').show();
+            }
+
+            if ($('#EditOwner').val() == 0) {
+                validation = false;
+                $('#SpanEditOwner').text('Debe seleccionar el dueño del paciente').show();
+            }
+
+            var specie;
+            if ($('#EditDogSpecie').is(':checked')) {
+                specie = 1;
+            } else {
+                specie = 2;
+            }
+
+            var sex;
+            if ($('#EditFemaleSex').is(':checked')) {
+                sex = 0;
+            } else {
+                sex = 1;
+            }
+
+            if (validation) {
+
+                var options = {};
+                options.url = '@Url.Action("ValidatePet", "Pets")';
+                options.type = "GET";
+                options.data = { "petName": $('#EditPetName').val().trim(), "ownerId": $('#EditOwner').val(), "petSpecie": specie, "petSex": sex };
+                options.dataType = "json";
+                options.success = function (data) {
+                    if (data) {
+                        $('#SpanEditOwner').text('Error: Dueño y Paciente repetidos.').show();
+                    } else {
+                        $('#editPet').hide('slow');
+
+                        var pet = {
+                            PetId: $('#EditPetId').val(),
+                            PetName: $('#EditPetName').val().trim(),
+                            PetSpecie: specie,
+                            PetBreed: $('#EditPetBreed').val().trim(),
+                            PetSex: sex,
+                            OwnerId: $('#EditOwner').val(),
+                            Owner: null,
+                            Vaccinations: null,
+                            Surgeries: null,
+                            Showers: null
+                        }
+
+                        if (specie == 1) {
+                            specie = 'Perro';
+                        } else {
+                            specie = 'Gato';
+                        }
+
+                        if (sex == 0) {
+                            sex = 'Hembra';
+                        } else {
+                            sex = 'Macho';
+                        }
+
+                        $.ajax({
+                            url: '@Url.Action("EditPet","Pets")',
+                            type: "POST",
+                            data: JSON.stringify(pet),
+                            dataType: "JSON",
+                            contentType: "application/json",
+                            success: function (d) {
+
+                                $('#PetName' + $('#EditPetId').val()).text($('#EditPetName').val().trim());
+                                $('#Owner' + $('#EditPetId').val()).text(d.OwnerName);
+                                $('#PetSpecie' + $('#EditPetId').val()).text(specie);
+                                $('#PetBreed' + $('#EditPetId').val()).text($('#EditPetBreed').val().trim());
+                                $('#PetSex' + $('#EditPetId').val()).text(sex);
+                                $('#Pet' + $('#EditPetId').val()).css("background-color","#5cb85c26");
+
+
+                                toastr.success('Se ha modificado el paciente nro ' + String($('#EditPetId').val()));
+                            }
+                        });
+                    }
+                };
+                $.ajax(options);
+
+
+
+
+            }
+
+        });
+
+        function deletepet(petId) {
+            $('#PetId').val(petId);
+            $('#deletemessage').text('¿Está seguro de eliminar al paciente Nro ' + String(petId) + '?');
+            $('#DeletePetName').text($('#PetName' + petId).html().trim());
+            $('#DeletePetSpecie').text($('#PetSpecie' + petId).html().trim());
+            $('#DeleteOwner').text($('#Owner' + petId).html().trim());
+
+            $('#deletePet').show('slow');
+        }
+
+        $('#Delete').click(function () {
+            $('#deletePet').hide('slow');
+
+            var options = {};
+            options.url = '@Url.Action("DeletePet", "Pets")';
+            options.type = "POST";
+            options.data = { "petId": $('#PetId').val() };
+            options.dataType = "json";
+            options.success = function (data) {
+                if (data.status) {
+                    toastr.success("Paciente eliminado");
+                    $('#deletebutton' + $('#PetId').val()).closest('tr').remove();
+                } else {
+                    toastr.warning('Ha ocurrido un error. Es posible que el paciente ya haya sido eliminado con anterioridad.')
+                }
+
+            };
+            $.ajax(options);
+        });
+
+        $('#deleteCancel').click(function () {
+            $('#deletePet').hide('slow');
+        });
+
+        $('#closeDeletePet').click(function () {
+            $('#deletePet').hide('slow');
+        });
+    </script>    
+}

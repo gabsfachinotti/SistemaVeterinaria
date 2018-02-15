@@ -1,0 +1,450 @@
+﻿@model IEnumerable<SistemaVeterinaria.Models.Shower>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<head>
+    <style>
+        td text:first-child {
+            display: none;
+        }
+    </style>
+</head>
+<div style="width: 100%;display: inline-flex">
+    <div style="width: 25%"><a id="createShower" class="btn btn-success" style="margin-top: 6%">Agregar Baño</a></div>
+    <div style="width: 50%">
+        <h2 class="text-center">Notificaciones de Baños</h2>
+    </div>
+    <div style="width: 25%"></div>
+</div>
+<hr style="color: grey; border-color: grey; margin-top: 0" />
+
+<table id="table" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                Nro
+            </th>
+            <th>
+                Paciente
+            </th>
+            <th>
+                Especie
+            </th>
+            <th>
+                Dueño
+            </th>
+            <th class="text-center">
+                Fecha
+            </th>
+            <th class="text-center">
+                Turno
+            </th>
+            <th class="text-center">Opciones</th>
+        </tr>
+    </thead>
+
+    <tbody id="showers">
+        @foreach (var item in Model)
+        {
+            <tr id="@("shower" + item.ShowerId)">
+                <td id="@("ShowerId" + item.ShowerId)">
+                    @item.ShowerId
+                </td>
+                <td id="@("PetName" + item.ShowerId)">
+                    @Html.DisplayFor(modelItem => item.Pet.PetName)
+                </td>
+                <td id="@("PetSpecie" + item.ShowerId)">
+                    @if (item.Pet.PetSpecie == SistemaVeterinaria.Models.Species.Perro) {<p>Perro</p>}else{<p>Gato</p>}</td>
+                <td id="@("Owner" + item.ShowerId)">
+                    @item.Pet.Owner.OwnerLastName, @item.Pet.Owner.OwnerName
+                </td>
+                <td id="@("ShowerDate" + item.ShowerId)" class="text-center">
+                    <text>@item.ShowerDate.ToString("yyyy/MM/dd")</text>
+                    @*<text>@item.ShowerDate.ToString("yyyy/MM/dd").Split('/')[0]@item.ShowerDate.ToString("yyyy/MM/dd").Split('/')[1]@item.ShowerDate.ToString("yyyy/MM/dd").Split('/')[2]</text>*@
+                    <text>@item.ShowerDate.ToShortDateString()</text>
+                </td>
+                <td class="text-center">
+                    @if (item.ShowerTurn) {<p id="@("ShowerTurn" + item.ShowerId)">Tarde</p>}else{<p id="@("ShowerTurn" + item.ShowerId)">Mañana</p>}</td>
+                <td class="text-center">
+                    <button class="btn btn-primary btn-sm" title="Editar" onclick="editshower(@item.ShowerId,@item.PetId,@item.ShowerDate.Day,@item.ShowerDate.Month,@item.ShowerDate.Year)"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                    <button id="@("deletebutton" + item.ShowerId)" class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteshower(@item.ShowerId)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<div id="modalShower" class="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeShower">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title">Agregar notificación de Baño</h5>
+            </div>
+            <div class="modal-body">
+                <div class="modalinput">
+                    <label class="modallabel">Fecha:</label>
+                    <input id="ShowerDate" style="width:30%" type="date" />
+                </div>
+                <span id="ShowerDateSpan" style="color:red;display:none;margin-left:30%"></span>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Paciente:</label>
+                    <select id="ShowerPet" class="js-example-basic-single" style="width:60%">
+                        <option value="0">Seleccione un paciente...</option>
+                        @foreach (var pet in ViewBag.Pets)
+                        {
+                            <option value="@pet.PetId">@pet.PetName (@pet.PetSpecie) - @pet.Owner.OwnerLastName, @pet.Owner.OwnerName</option>
+                        }
+                    </select>
+                </div>
+                <span id="ShowerPetSpan" style="color:red;display:none;margin-left:30%"></span>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Turno:</label>
+                    <label style="width:18%">
+                        <input id="morningShift" name="ShowerTurnRadio" type="radio" checked="checked" />
+                        Mañana
+                    </label>
+                    <label>
+                        <input id="afternoonShift" name="ShowerTurnRadio" type="radio" />
+                        Tarde
+                    </label>
+                </div>
+                <span id="ShowerTurnSpan" style="color:red;display:none;margin-left:30%"></span>
+            </div>
+            <div class="modal-footer">
+                <button id="Save" type="button" class="btn btn-primary">Guardar</button>
+                <button id="Cancel" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editShower" class="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeEditShower">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title">Editar notificación de Baño</h5>
+            </div>
+            <div class="modal-body">
+                <div class="modalinput">
+                    <label class="modallabel">Baño Nro:</label>
+                    <input id="ShowerId" style="width:30%;border:none;background-color:transparent" type="number" disabled="disabled" />
+                </div>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Fecha:</label>
+                    <input id="EditShowerDate" style="width:30%" type="date" />
+                </div>
+                <span id="EditShowerDateSpan" style="color:red;display:none;margin-left:30%"></span>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Paciente:</label>
+                    <select id="EditShowerPet" class="js-example-basic-single" style="width:60%">
+                        <option value="0">Seleccione un paciente...</option>
+                        @foreach (var pet in ViewBag.Pets)
+                        {
+                            <option value="@pet.PetId">@pet.PetName (@pet.PetSpecie) - @pet.Owner.OwnerLastName, @pet.Owner.OwnerName</option>
+                        }
+                    </select>
+                </div>
+                <span id="EditShowerPetSpan" style="color:red;display:none;margin-left:30%"></span>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Turno:</label>
+                    <label style="width:18%">
+                        <input id="editMorningShift" name="EditShowerTurnRadio" type="radio" checked="checked" />
+                        Mañana
+                    </label>
+                    <label>
+                        <input id="editAfternoonShift" name="EditShowerTurnRadio" type="radio" />
+                        Tarde
+                    </label>
+                </div>
+                <span id="EditShowerTurnSpan" style="color:red;display:none;margin-left:30%"></span>
+            </div>
+            <div class="modal-footer">
+                <button id="EditSave" type="button" class="btn btn-primary">Guardar</button>
+                <button id="EditCancel" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $('#table').DataTable({
+            order: [[4, "asc"]],
+            "language": {
+                "url": "/Scripts/DataTables/spanish.json"
+            }
+        });
+        $('.js-example-basic-single').select2();
+
+        $('#createShower').click(function () {
+            var now = new Date();
+            var day = now.getDate();
+            if (day < 10) {
+                day = '0' + day;
+            }
+            var month = now.getMonth() + 1;
+            if (month + 1 < 10) {
+                month = '0' + month;
+            }
+            var today = now.getFullYear() + '-' + month + '-' + day;
+            $('#ShowerDate').val(today);
+            $('#ShowerDateSpan').hide();
+            $("#ShowerPet").val(0).trigger('change');
+            $('#ShowerPetSpan').hide();
+            $('#ShowerTurnSpan').hide();
+
+            $('#modalShower').show('slow');
+        });
+
+        $('#closeShower').click(function () {
+            $('#modalShower').hide('slow');
+        });
+
+        $('#Cancel').click(function () {
+            $('#modalShower').hide('slow');
+        });
+
+        $('#Save').click(function () {
+            $('#ShowerDateSpan').hide();
+            $('#ShowerPetSpan').hide();
+            $('#ShowerTurnSpan').hide();
+
+            var validation = true;
+            if ($('#ShowerDate').val() == '') {
+                validation = false;
+                $('#ShowerDateSpan').text('Debe seleccionar una fecha.').show();
+            }
+
+            if ($('#ShowerPet').val() == 0) {
+                validation = false;
+                $('#ShowerPetSpan').text('Debe seleccionar un Paciente.').show();
+            }
+
+            var turn;
+            if ($('#morningShift').is(':checked')) {
+                turn = false;
+            } else {
+                turn = true;
+            }
+
+            if (validation) {
+                var options = {};
+                options.url = '@Url.Action("ValidateShower", "Showers")';
+                options.type = "GET";
+                options.data = { "showerDate": $('#ShowerDate').val(), "petId": $('#ShowerPet').val(), "showerTurn": turn, "edit": false };
+                options.dataType = "json";
+                options.success = function (data) {
+                    switch (data) {
+                        case 0:
+                            $('#modalShower').hide('slow');
+
+                            var shower = {
+                                ShowerId: null,
+                                ShowerDate: $('#ShowerDate').val(),
+                                ShowerTurn: turn,
+                                PetId: $('#ShowerPet').val(),
+                                Pet: null
+                            }
+
+                            $.ajax({
+                                url: '@Url.Action("CreateShower","Showers")',
+                                type: "POST",
+                                data: JSON.stringify(shower),
+                                dataType: "JSON",
+                                contentType: "application/json",
+                                success: function (d) {
+                                    if (d.status) {
+                                        if (turn) {
+                                            turn = 'Tarde';
+                                        } else {
+                                            turn = 'Mañana';
+                                        }
+
+                                        $('#showers').prepend('<tr style="background-color: #5cb85c26"><td id="ShowerId' + d.showerId + '">' + String(d.showerId) + '</td><td id="PetName' + d.showerId + '">' + d.petname + '</td><td id="PetSpecie' + d.showerId + '">' + d.specie + '</td><td id="Owner' + d.showerId + '">' + d.owner + '</td><td id="ShowerDate' + d.showerId + '" class="text-center"><div><text>' + d.date + '</text></div></td><td id="ShowerTurn' + d.showerId + '" class="text-center">' + turn + '</td><td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editshower(\'' + d.showerId + '\',\'' + d.petId + '\',\'' + d.date.split('/')[0] + '\',\'' + d.date.split('/')[1] + '\',\'' + d.date.split('/')[2] + '\' )"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteshower(' + d.showerId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
+
+                                        toastr.success('Se ha agregado una nueva notificación de Baño.');
+                                    } else {
+                                        toastr.success('ERROR.');
+                                    }
+                                }
+                            });
+                            break;
+                        case 1:
+                            $('#ShowerDateSpan').text('No existe disponibilidad para la fecha.').show();
+                            break;
+                        case 2:
+                            $('#ShowerTurnSpan').text('No existe disponibilidad para el turno.').show();
+                            break;
+                        case 3:
+                            $('#ShowerPetSpan').text('El paciente ya tiene baño para la fecha.').show();
+                            break;
+                    }
+                };
+                $.ajax(options);
+            }
+        });
+
+        function editshower(showerId,petId,showerDay,showerMonth,showerYear) {
+            $('#ShowerId').val(showerId);
+
+            if (showerDay < 10) {
+                showerDay = '0' + showerDay;
+            }
+
+            if (showerMonth < 10) {
+                showerMonth = '0' + showerMonth;
+            }
+
+            var showerDate = showerYear + '-' + showerMonth + '-' + showerDay;
+            $('#EditShowerDate').val(showerDate);
+            $('#EditShowerPet').val(petId).trigger('change');
+            if ($('#ShowerTurn' + showerId).text() == 'Tarde') {
+                $('#editAfternoonShift').prop('checked', true);
+            } else {
+                $('#editMorningShift').prop('checked', true);
+            }
+
+            $('#EditShowerDateSpan').hide();
+            $('#EditShowerPetSpan').hide();
+            $('#EditShowerTurnSpan').hide();
+
+            $('#editShower').show('slow');
+        }
+
+        $('#closeEditShower').click(function () {
+            $('#editShower').hide('slow');
+        });
+
+        $('#EditCancel').click(function () {
+            $('#editShower').hide('slow');
+        });
+
+        $('#EditSave').click(function () {
+            $('#EditShowerDateSpan').hide();
+            $('#EditShowerPetSpan').hide();
+            $('#EditShowerTurnSpan').hide();
+
+            var validation = true;
+            if ($('#EditShowerDate').val() == '') {
+                validation = false;
+                $('#EditShowerDateSpan').text('Debe seleccionar una fecha').show();
+            }
+
+            if ($('#EditShowerPet').val() == '') {
+                validation = false;
+                $('#EditShowerPetSpan').text('Debe seleccionar una Paciente').show();
+            }
+
+            var turn;
+            if ($('#editMorningShift').is(':checked')) {
+                turn = false;
+            } else {
+                turn = true;
+            }
+
+            if (validation) {
+                var options = {};
+                options.url = '@Url.Action("ValidateShower", "Showers")';
+                options.type = "GET";
+                options.data = { "showerDate": $('#EditShowerDate').val(), "petId": $('#EditShowerPet').val(), "showerTurn": turn, "edit": true };
+                options.dataType = "json";
+                options.success = function (data) {
+                    switch (data) {
+                        case 0:
+                            $('#editShower').hide('slow');
+
+                            var shower = {
+                                ShowerId: $('#ShowerId').val(),
+                                ShowerDate: $('#EditShowerDate').val(),
+                                ShowerTurn: turn,
+                                PetId: $('#EditShowerPet').val(),
+                                Pet: null
+                            }
+
+                            $.ajax({
+                                url: '@Url.Action("EditShower","Showers")',
+                                type: "POST",
+                                data: JSON.stringify(shower),
+                                dataType: "JSON",
+                                contentType: "application/json",
+                                success: function (d) {
+                                    if (d.status) {
+                                        if (turn) {
+                                            turn = 'Tarde';
+                                        } else {
+                                            turn = 'Mañana';
+                                        }
+
+                                        $('#ShowerId' + shower.ShowerId).html(String(shower.ShowerId));
+                                        $('#PetName' + shower.ShowerId).html(String(d.petName));
+                                        $('PetSpecie' + shower.ShowerId).html(String(d.specie));
+                                        $('#Owner' + shower.ShowerId).html(String(d.owner));
+                                        $('#ShowerDate' + shower.ShowerId).html(String(d.date));
+                                        $('#ShowerTurn' + shower.ShowerId).text(turn);
+                                        $('#shower' + shower.ShowerId).css("background-color", "#5cb85c26");
+
+                                        toastr.success('Se ha modificado la notificación de Baño nro ' + String(shower.ShowerId) + '.');
+                                    } else {
+                                        toastr.success('ERROR.');
+                                    }
+                                }
+                            });
+                            break;
+                        case 1:
+                            $('#EditShowerDateSpan').text('No existe disponibilidad para la fecha.').show();
+                            break;
+                        case 2:
+                            $('#EditShowerTurnSpan').text('No existe disponibilidad para el turno.').show();
+                            break;
+                        case 3:
+                            $('#EditShowerPetSpan').text('El paciente ya tiene baño para la fecha.').show();
+                            break;
+                    }
+                };
+                $.ajax(options);
+            }
+        });
+
+        function deleteshower(showerId) {
+            bootbox.confirm({
+                title: "Eliminar Baño",
+                message: "¿Está seguro de eliminar la notificación de Baño Nro " + String(showerId) + "?",
+                buttons: {
+                    confirm: {
+                        label: "Eliminar",
+                        className: "btn-danger"
+                    },
+                    cancel: {
+                        label: "Cancelar",
+                        className: "btn-primary"
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        var options = {};
+                        options.url = '@Url.Action("DeleteShower", "Showers")';
+                        options.type = "POST";
+                        options.data = { "showerId": showerId };
+                        options.dataType = "json";
+                        options.success = function (data) {
+                            if (data) {
+                                toastr.success("Notificación eliminada");
+                                $('#deletebutton' + showerId).closest('tr').remove();
+                            }
+                        };
+                        $.ajax(options);
+                    }
+                }
+            });
+        }
+    </script>    
+}

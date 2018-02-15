@@ -1,0 +1,63 @@
+﻿@model IEnumerable<SistemaVeterinaria.Models.Surgery>
+@{
+    ViewBag.Title = "DailyNotification";
+}
+
+<h2 class="text-center">Cirugías programadas para el día de la fecha</h2>
+<hr style="color: grey; border-color: grey; margin-top: 0" />
+<table id="table" class="table table-bordered">
+    <thead>
+        <tr style="background: lightsteelblue">
+            <th>
+                Nro
+            </th>
+            <th>
+                Paciente
+            </th>
+            <th>
+                Especie
+            </th>
+            <th class="text-center">
+                Fecha
+            </th>
+            <th class="text-center">
+                Cirugia
+            </th>
+            <th class="text-center">
+                Dueño
+            </th>
+            <th class="text-center">
+                Teléfono
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Pet.PetName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Pet.PetSpecie)
+                </td>
+                <td class="text-center">
+                    @item.SurgeryDate.ToShortDateString()
+                </td>
+                <td class="text-center">
+                    @item.SurgeryType.SurgeryTypeName
+                </td>
+                <td class="text-center">
+                    @item.Pet.Owner.OwnerLastName, @item.Pet.Owner.OwnerName
+                </td>
+                <td class="text-center">
+                    @item.Pet.Owner.OwnerPhone
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

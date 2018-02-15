@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<style>
+    thead tr {
+        background: lightsteelblue;
+    }
+
+    .modalinput{
+        width:100%;
+        display:inline-flex;
+    }
+
+    .modallabel{
+        width: 20%;
+        margin-left: 10%
+    }
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Sistema Veterinaria</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body background="~/Content/Images/BACKGROUND-TOP.jpg">
+<div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Inicio", "Index", "Home" , new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Dueños", "Index", "Owners")</li>
+                    <li>@Html.ActionLink("Pacientes", "Index", "Pets")</li>
+                    @*<li>@Html.ActionLink("Vacunas", "Index", "Vaccines")</li>*@
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Vacunas<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>@Html.ActionLink("Notificaciones de Vacunas", "Index", "Vaccines")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Notificación Diaria", "DailyNotification", "Vaccines")</li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Cirugías<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>@Html.ActionLink("Notificaciones de Cirugías", "Index", "Surgeries")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Notificación Diaria", "DailyNotification", "Surgeries")</li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Baños<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>@Html.ActionLink("Notificaciones de Baños", "Index", "Showers")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Notificación Diaria", "DailyNotification", "Showers")</li>
+                        </ul>
+                    </li>
+
+                    @*<li>@Html.ActionLink("Cirugías", "Index", "Surgeries")</li>
+                    <li>@Html.ActionLink("Baños", "Index", "Showers")</li>*@
+                </ul>
+                @*@Html.Partial("_LoginPartial")*@
+            </div>
+        </div>
+    </div>
+<div class="container body-content">
+    @RenderBody()
+    <hr/>
+    <footer>
+        <p>&copy; GoDesa Solutions @DateTime.Now.Year - Veterinaria San Francisco de Asís</p>
+    </footer>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", required: false)
+</body>
+</html>
+
+<script>
+    $('.dropdown-toggle').dropdown();
+</script>

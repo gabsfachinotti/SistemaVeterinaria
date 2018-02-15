@@ -1,0 +1,137 @@
+﻿@model IEnumerable<SistemaVeterinaria.Models.Vaccine>
+@{
+    ViewBag.Title = "DailyNotification";
+}
+
+<h2 class="text-center">Vacunas programadas para Hoy</h2>
+<hr style="color: grey; border-color: grey; margin-top: 0" />
+<table id="table" class="table table-bordered">
+    <thead>
+        <tr style="background: lightsteelblue">
+            <th>
+                Nro
+            </th>
+            <th>
+                Paciente
+            </th>
+            <th>
+                Especie
+            </th>            
+            <th class="text-center">
+                Ordinal
+            </th>
+            <th class="text-center">
+                Fecha
+            </th>
+            <th class="text-center">
+                Dueño
+            </th>
+            <th class="text-center">
+                Teléfono
+            </th>
+            <th class="text-center">
+                Opciones
+            </th>
+        </tr>
+    </thead>
+    <tbody id="Vaccines">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td id="@("VaccineId" + item.VaccineId)">
+                    @item.VaccineId
+                </td>
+                <td id="@("PetName" + item.VaccineId)">
+                    @Html.DisplayFor(modelItem => item.Pet.PetName)
+                </td>
+                <td id="@("PetSpecie" + item.VaccineId)">
+                    @Html.DisplayFor(modelItem => item.Pet.PetSpecie)
+                </td>                
+                <td id="@("VaccineNumber" + item.VaccineId)" class="text-center">
+                    @item.VaccineNumber° Vacuna
+                </td>
+                <td id="@("VaccineDate" + item.VaccineId)" class="text-center">
+                    @item.VaccineDate.ToShortDateString()
+                </td>
+                <td id="@("Owner" + item.VaccineId)" class="text-center">
+                    @item.Pet.Owner.OwnerLastName, @item.Pet.Owner.OwnerName
+                </td>
+                <td class="text-center">
+                    @item.Pet.Owner.OwnerPhone
+                </td>
+                <td class="text-center">
+                    <button class="btn btn-success btn-sm" title="Posponer" onclick="postpone(@item.VaccineId)"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="modalPostpone" class="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width:110%;margin-left:-10%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePostpone">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title">Posponer</h5>
+            </div>
+            <div class="modal-body">                
+                @*<p id="message">¿Está seguro de posponer la notificación Nro # para el día @DateTime.Today.AddDays(1).ToString("D")?</p>*@                
+                <div class="modalinput">
+                    <label class="modallabel">Nro Vacuna:</label>
+                    <p id="EditVaccineId"></p>
+                </div>
+                <div class="modalinput">
+                    <label class="modallabel">Ordinal:</label>
+                    <p id="EditVaccineNumber"></p>
+                </div>
+                <div class="modalinput">
+                    <label class="modallabel">Fecha:</label>
+                    <input id="EditVaccineDate"  style="width:30%" type="date" />
+                </div>
+                <span id="EditVaccineDateSpan" style="color:red;display:none;margin-left:30%"></span>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Paciente:</label>
+                    <p id="EditVaccinePet"></p>
+                </div>
+                <div style="margin-left:10%;margin-top:7%">
+                    <text style="color:red;font-weight:bold">IMPORTANTE:</text>
+                    <span>Si modifica la fecha de la notificación, se modificarán las fechas de las notificaciones posteriores.</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="Postpone" type="button" class="btn btn-primary">Posponer</button>
+                <button id="Cancel" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        function postpone(vaccineId) {
+            $('#EditVaccineId').text($('#VaccineId' + vaccineId).html().trim());
+            $('#EditVaccineNumber').text($('#VaccineNumber' + vaccineId).html().trim());
+            var date = $('#VaccineDate' + vaccineId).html().trim();
+            var day = date.split('/')[0];
+            var month = date.split('/')[1];
+            var year = date.split('/')[2]
+
+            if (day < 10) {
+                day = '0' + day;
+            }
+
+            if (month < 10) {
+                month = '0' + month;
+            }
+
+            $('#EditVaccineDate').val(year + '-' + month + '-' + day);
+            $('#EditVaccineDateSpan').hide();
+            var pet = $('#PetName' + vaccineId).html().trim() + ' (' + $('#PetSpecie' + vaccineId).html().trim() + ')' + ' - ' + $('#Owner' + vaccineId).html().trim();
+            $('#EditVaccinePet').text(pet);
+
+            $('#modalPostpone').show('slow');
+        }
+    </script>
+}
