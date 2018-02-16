@@ -19,6 +19,15 @@ namespace SistemaVeterinaria.Controllers
         public ActionResult Index()
         {
             var surgeries = db.Surgeries.Include(s => s.Pet).Include(s => s.SurgeryType);
+            ViewBag.SurgeryTypes = db.SurgeryTypes.ToList();
+            if (db.SurgeryTypes.Any())
+            {
+                ViewBag.LastSurgeryTypeId = db.SurgeryTypes.ToList().Last().SurgeryTypeId;
+            }
+            else
+            {
+                ViewBag.LastSurgeryTypeId = 0;
+            }
             return View(surgeries.ToList());
         }
 
