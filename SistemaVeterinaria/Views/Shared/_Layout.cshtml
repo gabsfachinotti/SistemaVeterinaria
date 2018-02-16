@@ -39,12 +39,13 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Dueños", "Index", "Owners")</li>
                     <li>@Html.ActionLink("Pacientes", "Index", "Pets")</li>
-                    @*<li>@Html.ActionLink("Vacunas", "Index", "Vaccines")</li>*@
 
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Vacunas<span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li>@Html.ActionLink("Notificaciones de Vacunas", "Index", "Vaccines")</li>
+                            <li>@Html.ActionLink("Notificaciones Futuras", "Index", "Vaccines")</li>                            
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Notificaciones Pasadas", "Vaccinated", "Vaccines")</li>
                             <li class="divider"></li>
                             <li>@Html.ActionLink("Notificación Diaria", "DailyNotification", "Vaccines")</li>
                         </ul>

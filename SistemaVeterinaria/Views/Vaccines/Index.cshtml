@@ -1,8 +1,8 @@
 ﻿@model IEnumerable<SistemaVeterinaria.Models.Vaccine>
 
-@{
+@*@{
     ViewBag.Title = "Lista de Vacunas";
-}
+}*@
 
 <head>
     <style>
@@ -23,7 +23,7 @@
 <div style="width: 100%;display: inline-flex">
     <div style="width: 25%"><a id="createVaccine" class="btn btn-success" style="margin-top: 6%">Agregar Vacuna</a></div>
     <div style="width: 50%">
-        <h2 class="text-center">Notificaciones de Vacunas</h2>
+        <h2 class="text-center">@ViewBag.Title</h2>
     </div>
     <div style="width: 25%"></div>
 </div>

@@ -19,10 +19,20 @@ namespace SistemaVeterinaria.Controllers
         public ActionResult Index()
         {
             var vaccines = db.Vaccines.ToList().FindAll(v => v.VaccineDate >= DateTime.Today & v.VaccineDate < DateTime.Today.AddYears(2) & v.VaccineNumber > 1);
+            ViewBag.Title = "Notificaciones Futuras de Vacunas";
             ViewBag.Pets = db.Pets.ToList();
             return View(vaccines);
         }
-                
+
+        public ActionResult Vaccinated()
+        {
+            var vaccines = db.Vaccines.ToList().FindAll(v => v.VaccineDate < DateTime.Today);
+            ViewBag.Title = "Notificaciones Pasadas de Vacunas";
+            ViewBag.Pets = db.Pets.ToList();
+            return View("Index", vaccines);
+        }
+
+
         public ActionResult DailyNotification()
         {
             return View(db.Vaccines.ToList().FindAll(v => v.VaccineDate == DateTime.Today & v.VaccineNumber != 1));
