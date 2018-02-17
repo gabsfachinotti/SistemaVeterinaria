@@ -4,14 +4,6 @@
     ViewBag.Title = "Index";
 }
 
-<head>
-    <style>
-        .modal-header {
-            width: 100%;
-            display: inline-flex;
-        }
-    </style>
-</head>
 <div style="width: 100%;display: inline-flex">
     <div style="width: 25%"><a id="createOwner" class="btn btn-success" style="margin-top: 6%">Agregar Dueño</a></div>
     <div style="width: 50%">
@@ -210,7 +202,7 @@
                     contentType: "application/json",
                     success: function (d) {
                         if (d.status) {
-                            var row = '<tr id="Owner' + d.ownerId + '" style="background-color: #5cb85c26">'
+                            var row = '<tr id="Owner' + d.ownerId + '" style="background-color: #dee1ea">'
                             row += '<td id="Name' + d.ownerId + '">' + $('#ownerName').val().trim() + '</td>'
                             row += '<td id="LastName' + d.ownerId + '">' + $('#ownerLastName').val().trim() + '</td>'
                             row += '<td id="Address' + d.ownerId + '">' + $('#ownerAddress').val().trim() + '</td>'
@@ -285,7 +277,7 @@
                             $('#LastName' + owner.OwnerId).html(owner.OwnerLastName);
                             $('#Address' + owner.OwnerId).html(owner.OwnerAddress);
                             $('#Phone' + owner.OwnerId).html(owner.OwnerPhone);
-                            $('#Owner' + owner.OwnerId).css('background-color', '#5cb85c26');
+                            $('#Owner' + owner.OwnerId).css('background-color', '#dee1ea');
 
                             toastr.success('Se ha modificado el Dueño ' + owner.OwnerLastName + ', ' + owner.OwnerName + '.');
                         } else {

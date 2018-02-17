@@ -71,10 +71,12 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content" style="width:110%;margin-left:-10%">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePostpone">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h5 class="modal-title">Aplazar Notificación</h5>
+                <h5 style="width:50%" class="modal-title">Aplazar Notificación</h5>
+                <div style="width:50%" class="text-right">
+                    <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal" aria-label="Close" id="closePostpone">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </div>
             </div>
             <div class="modal-body">                
                 @*<p id="message">¿Está seguro de posponer la notificación Nro # para el día @DateTime.Today.AddDays(1).ToString("D")?</p>*@                
@@ -181,7 +183,7 @@
                             //$('#VaccineDate' + d.vaccineId).html(d.vaccineDates[0]);
 
                             $('#Options' + d.vaccineId).html('Aplazado al ' + d.vaccineDates[0]).css('color', 'red');
-                            $('#Vaccine' + d.vaccineId).css("background-color", "#5cb85c26");
+                            $('#Vaccine' + d.vaccineId).css("background-color", "#dee1ea");
                             toastr.info('AL actualizar la página no se visualizarán la notificaciones aplazadas.');
                         }
                     })

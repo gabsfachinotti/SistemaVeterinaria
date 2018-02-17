@@ -6,11 +6,6 @@
 
 <head>
     <style>
-        .modal-header {
-            width: 100%;
-            display: inline-flex;
-        }
-
         tr td:first-child {
             width: 6%;
         }
@@ -365,7 +360,7 @@
                             dataType: "JSON",
                             contentType: "application/json",
                             success: function (d) {
-                                var row = '<tr style="background-color: #5cb85c26">'
+                                var row = '<tr style="background-color: #dee1ea">'
                                 row += '<td>' + d.PetId + '</td>'
                                 row += '<td id="PetName' + d.PetId + '">' + $('#PetName').val().trim() + '</td>'
                                 row += '<td id="Owner' + d.PetId + '">' + d.OwnerName + '</td>'
@@ -490,7 +485,7 @@
                                 $('#PetSpecie' + $('#EditPetId').val()).text(specie);
                                 $('#PetBreed' + $('#EditPetId').val()).text($('#EditPetBreed').val().trim());
                                 $('#PetSex' + $('#EditPetId').val()).text(sex);
-                                $('#Pet' + $('#EditPetId').val()).css("background-color","#5cb85c26");
+                                $('#Pet' + $('#EditPetId').val()).css("background-color","#dee1ea");
 
 
                                 toastr.success('Se ha modificado el paciente nro ' + String($('#EditPetId').val()));

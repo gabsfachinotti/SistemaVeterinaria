@@ -45,10 +45,12 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button id="closenotifications" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h5 class="modal-title">Notificación Diaria</h5>
+                <h5 style="width:50%" class="modal-title">Notificación Diaria</h5>
+                <div style="width:50%" class="text-right">
+                    <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal" aria-label="Close" id="closenotifications">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </div>
             </div>
             <div class="modal-body">
                 @if (ViewBag.Vaccines > 0)

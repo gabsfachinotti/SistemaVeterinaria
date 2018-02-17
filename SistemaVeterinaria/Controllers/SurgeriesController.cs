@@ -54,7 +54,33 @@ namespace SistemaVeterinaria.Controllers
             }
 
             return Json(status, JsonRequestBehavior.AllowGet );
-            //return new JsonResult { Data = new { status = status} };
+        }
+
+        [HttpPost]
+        public JsonResult EditSurgeryType(int surgerytypeId, string surgerytypename)
+        {
+            var status = true;
+            var exist = db.SurgeryTypes.ToList().Exists(st => st.SurgeryTypeName == surgerytypename & st.SurgeryTypeId != surgerytypeId);
+            if (exist)
+            {
+                status = false;
+            }
+            else
+            {
+                SurgeryType surgeryType = db.SurgeryTypes.Find(surgerytypeId);
+                if (surgeryType == null)
+                {
+                    status = false;
+                }
+                else
+                {
+                    surgeryType.SurgeryTypeName = surgerytypename;
+                    db.Entry(surgeryType).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+
+            return Json(status, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Surgeries/Details/5
