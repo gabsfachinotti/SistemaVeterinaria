@@ -6,10 +6,10 @@
 
 <head>
     <style>
-        /*td input {
-            border-color: transparent;
-            background-color: transparent
-        }*/
+        .modal-header {
+            width: 100%;
+            display: inline-flex;
+        }
 
         tr td:first-child {
             width: 6%;
@@ -103,10 +103,12 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePet">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h5 class="modal-title">Agregar Paciente</h5>
+                <h5 style="width:50%" class="modal-title">Agregar Paciente</h5>
+                <div style="width:50%" class="text-right">
+                    <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal" aria-label="Close" id="closePet">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </div>
             </div>
             <div class="modal-body">
                 <div class="modalinput">
@@ -153,8 +155,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="Save" type="button" class="btn btn-primary">Guardar</button>
-                <button id="Cancel" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button id="Save" type="button" class="btn btn-success">Guardar</button>
+                <button id="Cancel" type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -164,10 +166,12 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeEditPet">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h5 class="modal-title">Editar Paciente</h5>
+                <h5 style="width:50%" class="modal-title">Editar Paciente</h5>
+                <div style="width:50%" class="text-right">
+                    <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal" aria-label="Close" id="closeEditPet">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </div>
             </div>
             <div class="modal-body">
                 <div class="modalinput">
@@ -218,8 +222,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="EditSave" type="button" class="btn btn-primary">Guardar</button>
-                <button id="EditCancel" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button id="EditSave" type="button" class="btn btn-success">Guardar</button>
+                <button id="EditCancel" type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>

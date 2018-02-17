@@ -9,6 +9,11 @@
         td text:first-child {
             display: none;
         }
+
+        .modal-header {
+            width: 100%;
+            display: inline-flex;
+        }
     </style>
 </head>
 <div style="width: 100%;display: inline-flex">
@@ -81,10 +86,12 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeShower">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h5 class="modal-title">Agregar notificación de Baño</h5>
+                <h5 style="width:50%" class="modal-title">Agregar Notificación de Baño</h5>
+                <div style="width:50%" class="text-right">
+                    <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal" aria-label="Close" id="closeShower">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </div>
             </div>
             <div class="modal-body">
                 <div class="modalinput">
@@ -117,8 +124,8 @@
                 <span id="ShowerTurnSpan" style="color:red;display:none;margin-left:30%"></span>
             </div>
             <div class="modal-footer">
-                <button id="Save" type="button" class="btn btn-primary">Guardar</button>
-                <button id="Cancel" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button id="Save" type="button" class="btn btn-success">Guardar</button>
+                <button id="Cancel" type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -128,10 +135,12 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeEditShower">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h5 class="modal-title">Editar notificación de Baño</h5>
+                <h5 style="width:50%" class="modal-title">Editar Notificación de Baño</h5>
+                <div style="width:50%" class="text-right">
+                    <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal" aria-label="Close" id="closeEditShower">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </div>
             </div>
             <div class="modal-body">
                 <div class="modalinput">
@@ -168,8 +177,8 @@
                 <span id="EditShowerTurnSpan" style="color:red;display:none;margin-left:30%"></span>
             </div>
             <div class="modal-footer">
-                <button id="EditSave" type="button" class="btn btn-primary">Guardar</button>
-                <button id="EditCancel" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button id="EditSave" type="button" class="btn btn-success">Guardar</button>
+                <button id="EditCancel" type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>

@@ -18,10 +18,15 @@
         td text:first-child{
             display: none;
         }
+
+        .modal-header {
+            width: 100%;
+            display: inline-flex;
+        }
     </style>
 </head>    
 <div style="width: 100%;display: inline-flex">
-    <div style="width: 25%"><a id="createVaccine" class="btn btn-success" style="margin-top: 6%">Agregar Vacuna</a></div>
+    <div style="width: 25%"><a id="createVaccine" class="btn btn-success" style="margin-top: 6%">Agregar Notificación</a></div>
     <div style="width: 50%">
         <h2 class="text-center">@ViewBag.Title</h2>
     </div>
@@ -80,8 +85,7 @@
                     }
                 </td>
                 <td id="@("date" + item.VaccineId)" class="text-center">
-                    <text>@item.VaccineDate.ToString("yyyy/MM/dd")</text>
-                    @*<text>@item.VaccineDate.ToString("yyyy/MM/dd").Split('/')[0]@item.VaccineDate.ToString("yyyy/MM/dd").Split('/')[1]@item.VaccineDate.ToString("yyyy/MM/dd").Split('/')[2]</text>*@
+                    <text>@item.VaccineDate.ToString("yyyy/MM/dd")</text>                    
                     <text>@item.VaccineDate.ToShortDateString()</text>
                 </td>
                 <td class="text-center">
@@ -97,17 +101,19 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeVaccine">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h5 class="modal-title">Agregar notificación de Vacuna</h5>                
+                <h5 style="width:50%" class="modal-title">Agregar Notificación de Vacuna</h5>
+                <div style="width:50%" class="text-right">
+                    <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal" aria-label="Close" id="closeVaccine">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </div>
             </div>
             <div class="modal-body">
                 <div class="modalinput">
                     <label class="modallabel">Fecha:</label>
                     <input id="VaccineDate" style="width:30%" type="date" value="@DateTime.Today" />                    
                 </div>
-                <span id="VaccineDateSpan" style="color:red;display:none;margin-left:30%"></span>
+                <span id="VaccineDateSpan" style="color:red;margin-left:30%">Ingrese la fecha de la 1° Vacuna</span>
                 <div class="modalinput" style="margin-top:1%">
                     <label class="modallabel">Paciente:</label>
                     <select id="VaccinePet" class="js-example-basic-single" style="width:60%">
@@ -121,8 +127,8 @@
                 <span id="VaccinePetSpan" style="color:red;display:none;margin-left:30%"></span>
             </div>
             <div class="modal-footer">
-                <button id="Save" type="button" class="btn btn-primary">Guardar</button>
-                <button id="Cancel" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button id="Save" type="button" class="btn btn-success">Guardar</button>
+                <button id="Cancel" type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -132,10 +138,12 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="EditcloseVaccine">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h5 class="modal-title">Editar notificación de Vacuna</h5>
+                <h5 style="width:50%" class="modal-title">Editar Notificación de Vacuna</h5>
+                <div style="width:50%" class="text-right">
+                    <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal" aria-label="Close" id="closeEditVaccine">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </div>
             </div>
             <div class="modal-body">                
                 <div class="modalinput">
@@ -168,8 +176,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="EditSave" type="button" class="btn btn-primary">Guardar</button>
-                <button id="EditCancel" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button id="EditSave" type="button" class="btn btn-success">Guardar</button>
+                <button id="EditCancel" type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -189,7 +197,7 @@
         $('.js-example-basic-single').select2();
 
         $('#createVaccine').click(function () {
-            //$('#modalVaccine').show('slow')
+            //$('#modalVaccine').fadeIn('slow')
             //$('#modalVaccine').modal('toggle')
             //$('#modalVaccine').modal('show')
             //$('#modalVaccine').toggle('slow')
@@ -301,7 +309,7 @@
             $('#editVaccine').hide('slow');
         });
 
-        $('#EditcloseVaccine').click(function () {
+        $('#closeEditVaccine').click(function () {
             $('#editVaccine').hide('slow');
         });
 

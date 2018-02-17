@@ -14,9 +14,9 @@
             margin-left: 40px;
         }
 
-        /*section {
-            overflow: auto;
-        }*/
+        tr th:first-child{
+            width:50px;
+        }
     </style>
 </head>
 
@@ -92,20 +92,22 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Nro Vacuna</th>
+                    <th class="text-center">Nro</th>
                     <th>Paciente</th>
                     <th class="text-center">Ordinal</th>
                     <th class="text-center">Fecha</th>
+                    <th class="text-center">Opciones</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.Vaccinations.Where(v => v.VaccineDate <= DateTime.Today))
                 {
                     <tr>
-                        <td>@item.VaccineId</td>
+                        <td class="text-center">@item.VaccineId</td>
                         <td>@item.Pet.PetName</td>
                         <td class="text-center">@item.VaccineNumber° Vacuna</td>
                         <td class="text-center">@item.VaccineDate.ToShortDateString()</td>
+                        <td class="text-center"></td>
                     </tr>
                 }
             </tbody>
@@ -116,20 +118,22 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Nro Cirugía</th>
+                    <th class="text-center">Nro</th>
                     <th>Paciente</th>
                     <th class="text-center">Tipo</th>
                     <th class="text-center">Fecha</th>
+                    <th class="text-center">Opciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Surgeries)
+                @foreach (var item in Model.Surgeries.Where(s => s.SurgeryDate <= DateTime.Today))
                 {
                     <tr>
-                        <td>@item.SurgeryId</td>
+                        <td class="text-center">@item.SurgeryId</td>
                         <td>@item.Pet.PetName</td>
                         <td class="text-center">@item.SurgeryType.SurgeryTypeName</td>
                         <td class="text-center">@item.SurgeryDate.ToShortDateString()</td>
+                        <td class="text-center"></td>
                     </tr>
                 }
             </tbody>
@@ -140,20 +144,22 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Nro Baño</th>
+                    <th class="text-center">Nro</th>
                     <th>Paciente</th>                    
                     <th class="text-center">Fecha</th>
                     <th class="text-center">Turno</th>
+                    <th class="text-center">Opciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Showers)
+                @foreach (var item in Model.Showers.Where(s => s.ShowerDate <= DateTime.Today))
                 {
                     <tr>
-                        <td>@item.ShowerId</td>
+                        <td class="text-center">@item.ShowerId</td>
                         <td>@item.Pet.PetName</td>
                         <td class="text-center">@item.ShowerDate.ToShortDateString()</td>
                         <td class="text-center">@if (item.ShowerTurn) {<p>Mañana</p>} else {<p>Tarde</p>}</td>
+                        <td class="text-center"></td>
                     </tr>
                 }
             </tbody>
@@ -175,7 +181,9 @@
         });
 
         $(".table").DataTable({
-            "lengthMenu": [[6, 10, 20, 30], [6, 10, 20, 30]],
+            "bInfo": false,
+            "bLengthChange": false,
+            "lengthMenu": [[6], [6]],
             "language": {
                 "url": "/Scripts/DataTables/spanish.json"
             }
