@@ -36,6 +36,27 @@ namespace SistemaVeterinaria.Controllers
             return View(db.Surgeries.ToList().FindAll(s => s.SurgeryDate == DateTime.Today));
         }
 
+        [HttpPost]
+        public JsonResult CreateSurgeryType(string surgerytypename)
+        {
+            var status = true;
+            var exist = db.SurgeryTypes.ToList().Exists(st => st.SurgeryTypeName == surgerytypename);
+            if (exist)
+            {
+                status = false;
+            }
+            else
+            {
+                SurgeryType surgeryType = new SurgeryType();
+                surgeryType.SurgeryTypeName = surgerytypename;
+                db.SurgeryTypes.Add(surgeryType);
+                db.SaveChanges();
+            }
+
+            return Json(status, JsonRequestBehavior.AllowGet );
+            //return new JsonResult { Data = new { status = status} };
+        }
+
         // GET: Surgeries/Details/5
         public ActionResult Details(int? id)
         {
