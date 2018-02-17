@@ -112,7 +112,6 @@
                 <div class="modalinput" style="margin-top:1%">
                     <label class="modallabel">Paciente:</label>
                     <select id="VaccinePet" class="js-example-basic-single" style="width:60%">
-                        <option value="0">Seleccione un paciente...</option>
                         @foreach (var pet in ViewBag.Pets)
                         {
                             <option value="@pet.PetId">@pet.PetName (@pet.PetSpecie) - @pet.Owner.OwnerLastName, @pet.Owner.OwnerName</option>
@@ -157,7 +156,6 @@
                 <div class="modalinput" style="margin-top:1%">
                     <label class="modallabel">Paciente:</label>
                     <select id="EditVaccinePet" class="js-example-basic-single" style="width:60%">
-                        <option value="0">Seleccione un paciente...</option>
                         @foreach (var pet in ViewBag.Pets)
                         {
                             <option value="@pet.PetId">@pet.PetName (@pet.PetSpecie) - @pet.Owner.OwnerLastName, @pet.Owner.OwnerName</option>
@@ -189,7 +187,10 @@
             }
         });
 
-        $('.js-example-basic-single').select2();
+        $('.js-example-basic-single').select2({
+            placeholder: "Seleccione un Paciente...",
+            allowClear: true
+        });
 
         $('#createVaccine').click(function () {
             //$('#modalVaccine').fadeIn('slow')
@@ -233,7 +234,7 @@
                 $('#VaccineDateSpan').text('Debe especificar la fecha de vacunación.').show();
             }
 
-            if ($('#VaccinePet').val() == 0) {
+            if ($('#VaccinePet').val() == 0 | $('#VaccinePet').val() == null) {
                 Validation = false;
                 $('#VaccinePetSpan').text('Debe seleccionar un paciente.').show();
             }
@@ -315,7 +316,7 @@
                 $('#EditVaccineDateSpan').text('Debe especificar la fecha de vacunación.').show();
             }
 
-            if ($('#EditVaccinePet').val() == 0) {
+            if ($('#EditVaccinePet').val() == 0 | $('#EditVaccinePet').val() == null) {
                 validation = false;
                 $('#EditVaccinePetSpan').text('Debe seleccionar un paciente.').show();
             }

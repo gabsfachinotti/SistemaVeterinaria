@@ -64,7 +64,7 @@ namespace SistemaVeterinaria.Controllers
             return new JsonResult { Data = new { OwnerName = editPet.Owner.OwnerLastName + ", " + editPet.Owner.OwnerName } };
         }
 
-        public JsonResult ValidatePet(string petName, int ownerId, int petSpecie, int petSex)
+        public JsonResult ValidatePet(int petId, string petName, int ownerId, int petSpecie, int petSex)
         {
             var specie = Species.Perro;
             if (petSpecie == 2)
@@ -78,7 +78,7 @@ namespace SistemaVeterinaria.Controllers
                 sex = true;
             }
 
-            var exist = db.Pets.ToList().Exists(p => p.PetName == petName & p.OwnerId == ownerId & p.PetSpecie == specie & p.PetSex == sex);
+            var exist = db.Pets.ToList().Exists(p => p.PetName == petName & p.OwnerId == ownerId & p.PetSpecie == specie & p.PetSex == sex & p.PetId != petId);
 
             return Json(exist, JsonRequestBehavior.AllowGet);
         }

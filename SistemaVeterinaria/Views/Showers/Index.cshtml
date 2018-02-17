@@ -9,6 +9,11 @@
         td text:first-child {
             display: none;
         }
+
+        .mylabel {
+            margin-left: 8%;
+            width: 16%;
+        }
     </style>
 </head>
 <div style="width: 100%;display: inline-flex">
@@ -90,23 +95,22 @@
             </div>
             <div class="modal-body">
                 <div class="modalinput">
-                    <label class="modallabel">Fecha:</label>
+                    <label class="mylabel">Fecha:</label>
                     <input id="ShowerDate" style="width:30%" type="date" />
                 </div>
-                <span id="ShowerDateSpan" style="color:red;display:none;margin-left:30%"></span>
+                <span id="ShowerDateSpan" style="color:red;display:none;margin-left:25%"></span>
                 <div class="modalinput" style="margin-top:1%">
-                    <label class="modallabel">Paciente:</label>
-                    <select id="ShowerPet" class="js-example-basic-single" style="width:60%">
-                        <option value="0">Seleccione un paciente...</option>
+                    <label class="mylabel">Paciente:</label>
+                    <select id="ShowerPet" class="js-example-basic-single" style="width:57%">
                         @foreach (var pet in ViewBag.Pets)
                         {
                             <option value="@pet.PetId">@pet.PetName (@pet.PetSpecie) - @pet.Owner.OwnerLastName, @pet.Owner.OwnerName</option>
                         }
                     </select>
                 </div>
-                <span id="ShowerPetSpan" style="color:red;display:none;margin-left:30%"></span>
+                <span id="ShowerPetSpan" style="color:red;display:none;margin-left:25%"></span>
                 <div class="modalinput" style="margin-top:1%">
-                    <label class="modallabel">Turno:</label>
+                    <label class="mylabel">Turno:</label>
                     <label style="width:18%">
                         <input id="morningShift" name="ShowerTurnRadio" type="radio" checked="checked" />
                         Mañana
@@ -116,7 +120,7 @@
                         Tarde
                     </label>
                 </div>
-                <span id="ShowerTurnSpan" style="color:red;display:none;margin-left:30%"></span>
+                <span id="ShowerTurnSpan" style="color:red;display:none;margin-left:25%"></span>
             </div>
             <div class="modal-footer">
                 <button id="Save" type="button" class="btn btn-success">Guardar</button>
@@ -150,7 +154,6 @@
                 <div class="modalinput" style="margin-top:1%">
                     <label class="modallabel">Paciente:</label>
                     <select id="EditShowerPet" class="js-example-basic-single" style="width:60%">
-                        <option value="0">Seleccione un paciente...</option>
                         @foreach (var pet in ViewBag.Pets)
                         {
                             <option value="@pet.PetId">@pet.PetName (@pet.PetSpecie) - @pet.Owner.OwnerLastName, @pet.Owner.OwnerName</option>
@@ -187,7 +190,11 @@
                 "url": "/Scripts/DataTables/spanish.json"
             }
         });
-        $('.js-example-basic-single').select2();
+
+        $('.js-example-basic-single').select2({
+            placeholder: "Seleccione un Paciente",
+            allowClear: true
+        });
 
         $('#createShower').click(function () {
             var now = new Date();
@@ -227,8 +234,8 @@
                 validation = false;
                 $('#ShowerDateSpan').text('Debe seleccionar una fecha.').show();
             }
-
-            if ($('#ShowerPet').val() == 0) {
+            
+            if ($('#ShowerPet').val() == 0 | $('#ShowerPet').val() == null) {
                 validation = false;
                 $('#ShowerPetSpan').text('Debe seleccionar un Paciente.').show();
             }
@@ -342,8 +349,8 @@
                 validation = false;
                 $('#EditShowerDateSpan').text('Debe seleccionar una fecha').show();
             }
-
-            if ($('#EditShowerPet').val() == '') {
+ 
+            if ($('#EditShowerPet').val() == 0 | $('#EditShowerPet').val() == null) {
                 validation = false;
                 $('#EditShowerPetSpan').text('Debe seleccionar una Paciente').show();
             }

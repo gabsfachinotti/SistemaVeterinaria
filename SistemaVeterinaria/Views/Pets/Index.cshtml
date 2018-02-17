@@ -114,7 +114,6 @@
                 <div class="modalinput" style="margin-top:1%">
                     <label class="modallabel">Dueño:</label>
                     <select id="Owner" class="js-example-basic-single" style="width:52%">
-                        <option value="0">Seleccione un dueño...</option>
                         @foreach (var owner in ViewBag.Owners)
                         {
                             <option value="@owner.OwnerId">@owner.OwnerLastName, @owner.OwnerName</option>
@@ -181,7 +180,6 @@
                 <div class="modalinput" style="margin-top:1%">
                     <label class="modallabel">Dueño:</label>
                     <select id="EditOwner" class="js-example-basic-single" style="width:52%">
-                        <option value="0">Seleccione un dueño...</option>
                         @foreach (var owner in ViewBag.Owners)
                         {
                             <option value="@owner.OwnerId">@owner.OwnerLastName, @owner.OwnerName</option>
@@ -228,15 +226,19 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeDeletePet">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h5 class="modal-title">Eliminar Paciente</h5>
+                <div style="width:33%"></div>
+                <h4 style="width:34%" class="modal-title text-center">Eliminar Paciente</h4>
+                <div style="width:33%" class="text-right">
+                    <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal" aria-label="Close" id="closeDeletePet">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </div>
             </div>
             <div class="modal-body">
                 <input id="PetId" type="number" style="display:none" />
-                <p id="deletemessage" class="text-center" style="font-size:20px"></p>
-                <div class="modalinput" style="margin-top:1%">
+                <p id="deletemessage" class="text-center" style="font-size:20px;margin-bottom: 0"></p>
+                <hr style="color: grey;border-color: grey;margin-top: 0;width:72%" />
+                <div class="modalinput" style="margin-top:2%">
                     <label class="modallabel">Paciente:</label>
                     <p id="DeletePetName"></p>
                 </div>
@@ -248,12 +250,12 @@
                     <label class="modallabel">Dueño:</label>
                     <p id="DeleteOwner"></p>
                 </div>
-                <div  style="margin-top:7%">
+                <div style="margin-top:7%;margin-left:7%;margin-right:7%">
                     <text style="color:red;font-weight:bold">IMPORTANTE: </text><text>Al eliminar un Paciente automáticamente se eliminarán TODAS sus notificaciónes asociadas.</text>
                 </div>                
             </div>
             <div class="modal-footer">
-                <button id="deleteCancel" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button id="deleteCancel" type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
                 <button id="Delete" type="button" class="btn btn-danger">Eliminar</button>                
             </div>
         </div>
@@ -267,7 +269,11 @@
                 "url": "/Scripts/DataTables/spanish.json"
             }
         });
-        $('.js-example-basic-single').select2();
+
+        $('.js-example-basic-single').select2({
+            placeholder: "Seleccione un Dueño...",
+            allowClear: true
+        });
 
         $('#createPet').click(function () {
             $('#PetName').val('');
@@ -296,9 +302,9 @@
                 $('#SpanPetName').text('Debe ingresar el nombre del paciente').show();
             }
 
-            if ($('#Owner').val() == 0) {
+            if ($('#Owner').val() == 0 | $('#Owner').val() == null) {
                 validation = false;
-                $('#SpanOwner').text('Debe seleccionar el dueño del paciente').show();
+                $('#SpanOwner').text('Debe seleccionar al Dueño del Paciente').show();
             }
 
             var specie;
@@ -320,7 +326,7 @@
                 var options = {};
                 options.url = '@Url.Action("ValidatePet", "Pets")';
                 options.type = "GET";
-                options.data = { "petName": $('#PetName').val().trim(), "ownerId": $('#Owner').val(), "petSpecie": specie, "petSex": sex };
+                options.data = { "petId": 0, "petName": $('#PetName').val().trim(), "ownerId": $('#Owner').val(), "petSpecie": specie, "petSex": sex };
                 options.dataType = "json";
                 options.success = function (data) {
                     if (data) {
@@ -384,7 +390,9 @@
         function editpet(petId,petOwner) {
             $('#EditPetId').val(petId);
             $('#EditPetName').val($('#PetName' + petId).html().trim());
+            $('#SpanEditPetName').hide();
             $('#EditOwner').val(petOwner).trigger('change');
+            $('#SpanEditOwner').hide();
             if ($('#PetSpecie' + petId).html().trim() == 'Perro') {
                 $('#EditDogSpecie').prop('checked', true);
             } else {
@@ -415,9 +423,9 @@
                 $('#SpanEditPetName').text('Debe completar el nombre del paciente').show();
             }
 
-            if ($('#EditOwner').val() == 0) {
+            if ($('#EditOwner').val() == 0 | $('#EditOwner').val() == null) {
                 validation = false;
-                $('#SpanEditOwner').text('Debe seleccionar el dueño del paciente').show();
+                $('#SpanEditOwner').text('Debe seleccionar al Dueño del Paciente').show();
             }
 
             var specie;
@@ -439,7 +447,7 @@
                 var options = {};
                 options.url = '@Url.Action("ValidatePet", "Pets")';
                 options.type = "GET";
-                options.data = { "petName": $('#EditPetName').val().trim(), "ownerId": $('#EditOwner').val(), "petSpecie": specie, "petSex": sex };
+                options.data = { "petId": $('#EditPetId').val(), "petName": $('#EditPetName').val().trim(), "ownerId": $('#EditOwner').val(), "petSpecie": specie, "petSex": sex };
                 options.dataType = "json";
                 options.success = function (data) {
                     if (data) {
