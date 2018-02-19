@@ -83,19 +83,21 @@ namespace SistemaVeterinaria.Controllers
             return Json(status, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: Surgeries/Details/5
-        public ActionResult Details(int? id)
+        [HttpPost]
+        public JsonResult DeleteSurgeryType(int surgeryTypeId)
         {
-            if (id == null)
+            SurgeryType surgeryType = db.SurgeryTypes.Find(surgeryTypeId);
+            if (surgeryType != null | !surgeryType.Surgeries.Any())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                db.SurgeryTypes.Remove(surgeryType);
+                db.SaveChanges();
+
+                return Json(true, JsonRequestBehavior.AllowGet);
             }
-            Surgery surgery = db.Surgeries.Find(id);
-            if (surgery == null)
+            else
             {
-                return HttpNotFound();
+                return Json(false, JsonRequestBehavior.AllowGet);
             }
-            return View(surgery);
         }
 
         protected override void Dispose(bool disposing)

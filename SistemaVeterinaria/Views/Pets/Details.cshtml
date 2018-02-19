@@ -152,11 +152,11 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Showers.Where(s => s.ShowerDate <= DateTime.Today))
+                @foreach (var item in ViewBag.Showers)
                 {
                     <tr>
                         <td class="text-center">@item.ShowerId</td>
-                        <td>@item.Pet.PetName</td>
+                        <td>@item.PetName</td>
                         <td class="text-center">@item.ShowerDate.ToShortDateString()</td>
                         <td class="text-center">@if (item.ShowerTurn) {<p>Mañana</p>} else {<p>Tarde</p>}</td>
                         <td class="text-center"></td>

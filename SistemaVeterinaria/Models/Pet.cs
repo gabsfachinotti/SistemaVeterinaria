@@ -27,6 +27,6 @@ namespace SistemaVeterinaria.Models
 
         public virtual ICollection<Surgery> Surgeries { get; set; }
 
-        public virtual ICollection<Shower> Showers { get; set; }
+        //public virtual ICollection<Shower> Showers { get; set; }
     }
 }

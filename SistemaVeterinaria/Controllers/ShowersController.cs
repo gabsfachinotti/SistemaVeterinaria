@@ -44,23 +44,26 @@ namespace SistemaVeterinaria.Controllers
             return View(shower);
         }
 
-        public JsonResult ValidateShower(DateTime showerDate, int petId, bool showerTurn, bool edit)
+        public JsonResult ValidateShower(DateTime showerDate, int petId, bool showerTurn)
         {
-            int data = 0;
+            int data = 0; //Baño Validado
             if (db.Showers.ToList().Count(s => s.ShowerDate == showerDate) > 3)
             {
+                //Sin disponibilidad en el día
                 data = 1;
             }
             else
             {
-                if (db.Showers.ToList().Count(s => s.ShowerDate == showerDate & s.ShowerTurn == showerTurn) > 1)
+                if (db.Showers.ToList().Count(s => s.ShowerDate == showerDate & s.ShowerTurn == showerTurn & s.PetId != petId) > 1)
                 {
+                    //Sin disponibilidad en el turno
                     data = 2;
                 }
                 else
                 {
-                    if (db.Showers.ToList().Exists(s => s.ShowerDate == showerDate & s.PetId == petId & !edit))
+                    if (db.Showers.ToList().Exists(s => s.ShowerDate == showerDate & s.PetId == petId) & petId > 0)
                     {
+                        //Ya existe baño para ese paciente en el día especificado.
                         data = 3;
                     }
                 }
@@ -71,54 +74,85 @@ namespace SistemaVeterinaria.Controllers
 
         public JsonResult CreateShower(Shower shower)
         {
-            shower.Pet = db.Pets.Find(shower.PetId);
-            var status = false;
-            string specie = String.Empty;
-            if (shower.ShowerDate != null & shower.PetId != 0)
+            if (shower.ShowerDate != null)
             {
-                db.Showers.Add(shower);
-                db.SaveChanges();
-                status = true;
+                Pet pet = db.Pets.Find(shower.PetId);
 
-                if (shower.Pet.PetSpecie == Species.Perro)
+                if (pet == null)
                 {
-                    specie = "Perro";
+                    shower.PetId = 0;
+                    shower.PetName = String.Empty;
+                    shower.PetSpecie = String.Empty;
+                    shower.Owner = String.Empty;
+                    shower.OwnerPhone = String.Empty;
                 }
                 else
                 {
-                    specie = "Gato";
+                    shower.PetName = pet.PetName;
+                    shower.Owner = pet.Owner.OwnerLastName + ", " + pet.Owner.OwnerName;
+                    shower.OwnerPhone = pet.Owner.OwnerPhone;
+
+                    if (pet.PetSpecie == Species.Perro)
+                    {
+                        shower.PetSpecie = "Perro";
+                    }
+                    else
+                    {
+                        shower.PetSpecie = "Gato";
+                    }
                 }
+
+                db.Showers.Add(shower);
+                db.SaveChanges();                
+
+                return new JsonResult { Data = new { status = true, showerId = shower.ShowerId, petId = shower.PetId, petname = shower.PetName, owner = shower.Owner, specie = shower.PetSpecie, date = shower.ShowerDate.ToShortDateString() } };
             }
             else
             {
-                status = false;
+                return new JsonResult { Data = new { status = false } };
             }
-
-            return new JsonResult { Data = new { status = status, showerId = shower.ShowerId, petId = shower.PetId, petname = shower.Pet.PetName, owner = shower.Pet.Owner.OwnerLastName + ", " + shower.Pet.Owner.OwnerName, specie = specie, date = shower.ShowerDate.ToShortDateString() } };
         }
 
         public JsonResult EditShower(Shower shower)
         {
-            shower.Pet = db.Pets.Find(shower.PetId);
-            var status = false;
-            var specie = String.Empty;
-            if (shower.ShowerDate != null & shower.PetId != 0)
+            if (shower.ShowerDate != null)
             {
-                status = true;
-                db.Entry(shower).State = EntityState.Modified;
-                db.SaveChanges();
-
-                if (shower.Pet.PetSpecie == Species.Perro)
+                Pet pet = db.Pets.Find(shower.PetId);
+                if (pet == null)
                 {
-                    specie = "Perro";
+                    shower.PetId = 0;
+                    shower.PetName = String.Empty;
+                    shower.PetSpecie = String.Empty;
+                    shower.Owner = String.Empty;
+                    shower.OwnerPhone = String.Empty;
                 }
                 else
                 {
-                    specie = "Gato";
+                    shower.PetName = pet.PetName;
+                    shower.Owner = pet.Owner.OwnerLastName + ", " + pet.Owner.OwnerName;
+                    shower.OwnerPhone = pet.Owner.OwnerPhone;
+
+                    if (pet.PetSpecie == Species.Perro)
+                    {
+                        shower.PetSpecie = "Perro";
+                    }
+                    else
+                    {
+                        shower.PetSpecie = "Gato";
+                    }
                 }
+
+                db.Entry(shower).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return new JsonResult { Data = new { status = true, petId = shower.PetId, petName = shower.PetName, owner = shower.Owner, specie = shower.PetSpecie, date = shower.ShowerDate.ToShortDateString() } };
+            }
+            else
+            {
+                return new JsonResult { Data = new { status = false } };
             }
 
-            return new JsonResult { Data = new { status = status, petId = shower.PetId, petName = shower.Pet.PetName, owner = shower.Pet.Owner.OwnerLastName + ", " + shower.Pet.Owner.OwnerName, specie = specie, date = shower.ShowerDate.ToShortDateString() } };
+            
         }
 
         [HttpPost]

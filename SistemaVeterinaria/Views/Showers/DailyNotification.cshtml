@@ -36,10 +36,10 @@
                     @item.ShowerId
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Pet.PetName)
+                    @item.PetName
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Pet.PetSpecie)
+                    @item.PetSpecie
                 </td>
                 <td class="text-center">
                     @if (item.ShowerTurn)
@@ -51,10 +51,10 @@
                     }
                 </td>
                 <td class="text-center">
-                    @item.Pet.Owner.OwnerLastName, @item.Pet.Owner.OwnerName
+                    @item.Owner
                 </td>
                 <td class="text-center">
-                    @item.Pet.Owner.OwnerPhone
+                    @item.OwnerPhone
                 </td>
             </tr>
         }

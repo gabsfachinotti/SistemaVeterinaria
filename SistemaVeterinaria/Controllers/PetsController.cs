@@ -36,6 +36,7 @@ namespace SistemaVeterinaria.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.Showers = db.Showers.ToList().FindAll(s => s.PetId == pet.PetId);
             return View(pet);
         }
 

@@ -17,6 +17,12 @@ namespace SistemaVeterinaria.Models
 
         public int PetId { get; set; }
 
-        public virtual Pet Pet { get; set; }
+        public string PetName { get; set; }
+
+        public string PetSpecie { get; set; }
+
+        public string Owner { get; set; }
+
+        public string OwnerPhone { get; set; }
     }
 }
