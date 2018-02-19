@@ -122,12 +122,12 @@ namespace SistemaVeterinaria.Controllers
             {
                 specie = "Gato";
             }
-            var date = vaccine.VaccineDate.ToShortDateString();
-            var date2 = vaccine2.VaccineDate.ToShortDateString();
-            var date3 = vaccine3.VaccineDate.ToShortDateString();
-            var date4 = vaccine4.VaccineDate.ToShortDateString();
-            var date5 = vaccine5.VaccineDate.ToShortDateString();
-            var date6 = vaccine4.VaccineDate.AddYears(1).ToShortDateString();
+            var date = vaccine.VaccineDate.ToString("yyyy-MM-dd");
+            var date2 = vaccine2.VaccineDate.ToString("yyyy-MM-dd");
+            var date3 = vaccine3.VaccineDate.ToString("yyyy-MM-dd");
+            var date4 = vaccine4.VaccineDate.ToString("yyyy-MM-dd");
+            var date5 = vaccine5.VaccineDate.ToString("yyyy-MM-dd");
+            var date6 = vaccine4.VaccineDate.AddYears(1).ToString("yyyy-MM-dd");
 
             return new JsonResult { Data = new { vaccineId = vaccineId, owner = owner, pet = pet, specie = specie, date = date, date2 = date2, date3 = date3, date4 = date4, date5 = date5, date6 = date6 } };
         }
@@ -141,7 +141,7 @@ namespace SistemaVeterinaria.Controllers
             vaccine.Pet = db.Pets.Find(vaccine.PetId);
             db.Entry(vaccine).State = EntityState.Modified;
             db.SaveChanges();
-            vaccineDates.Add(vaccine.VaccineDate.ToShortDateString());
+            vaccineDates.Add(vaccine.VaccineDate.ToString("yyyy-MM-dd"));
 
             //Guardo el próximo numero de vacuna a actualizar para modificar las posteriores
             var vaccinenumber = vaccine.VaccineNumber + 1;
@@ -185,7 +185,7 @@ namespace SistemaVeterinaria.Controllers
                     db.Entry(nextvaccine).State = EntityState.Modified;
                     db.SaveChanges();
                     
-                    vaccineDates.Add(nextvaccine.VaccineDate.ToShortDateString());
+                    vaccineDates.Add(nextvaccine.VaccineDate.ToString("yyyy-MM-dd"));
 
                     vaccine = nextvaccine;
                 }

@@ -45,7 +45,7 @@
                     @Html.DisplayFor(modelItem => item.Pet.PetSpecie)
                 </td>
                 <td class="text-center">
-                    @item.SurgeryDate.ToShortDateString()
+                    @item.SurgeryDate.ToString("dd/MM/yyyy")
                 </td>
                 <td class="text-center">
                     @item.SurgeryType.SurgeryTypeName

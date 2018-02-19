@@ -106,7 +106,7 @@
                         <td class="text-center">@item.VaccineId</td>
                         <td>@item.Pet.PetName</td>
                         <td class="text-center">@item.VaccineNumber° Vacuna</td>
-                        <td class="text-center">@item.VaccineDate.ToShortDateString()</td>
+                        <td class="text-center">@item.VaccineDate.ToString("dd/MM/yyyy")</td>
                         <td class="text-center"></td>
                     </tr>
                 }
@@ -132,7 +132,7 @@
                         <td class="text-center">@item.SurgeryId</td>
                         <td>@item.Pet.PetName</td>
                         <td class="text-center">@item.SurgeryType.SurgeryTypeName</td>
-                        <td class="text-center">@item.SurgeryDate.ToShortDateString()</td>
+                        <td class="text-center">@item.SurgeryDate.ToString("dd/MM/yyyy")</td>
                         <td class="text-center"></td>
                     </tr>
                 }
@@ -157,7 +157,7 @@
                     <tr>
                         <td class="text-center">@item.ShowerId</td>
                         <td>@item.PetName</td>
-                        <td class="text-center">@item.ShowerDate.ToShortDateString()</td>
+                        <td class="text-center">@item.ShowerDate.ToString("dd/MM/yyyy")</td>
                         <td class="text-center">@if (item.ShowerTurn) {<p>Mañana</p>} else {<p>Tarde</p>}</td>
                         <td class="text-center"></td>
                     </tr>

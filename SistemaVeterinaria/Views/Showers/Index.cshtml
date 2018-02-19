@@ -17,7 +17,7 @@
     </style>
 </head>
 <div style="width: 100%;display: inline-flex">
-    <div style="width: 25%"><a id="createShower" class="btn btn-success" style="margin-top: 6%">Agregar Baño</a></div>
+    <div style="width: 25%"><a id="createShower" class="btn btn-success" style="margin-top: 6%">Agregar Notificación</a></div>
     <div style="width: 50%">
         <h2 class="text-center">Notificaciones de Baños</h2>
     </div>
@@ -68,12 +68,12 @@
                 </td>
                 <td id="@("ShowerDate" + item.ShowerId)" class="text-center">
                     <text>@item.ShowerDate.ToString("yyyy/MM/dd")</text>
-                    <text>@item.ShowerDate.ToShortDateString()</text>
+                    <text>@item.ShowerDate.ToString("dd/MM/yyyy")</text>
                 </td>
                 <td class="text-center">
                     @if (item.ShowerTurn) {<p id="@("ShowerTurn" + item.ShowerId)">Tarde</p>}else{<p id="@("ShowerTurn" + item.ShowerId)">Mañana</p>}</td>
                 <td id="@("Buttons" + item.ShowerId)" class="text-center">
-                    <button class="btn btn-primary btn-sm" title="Editar" onclick="editshower(@item.ShowerId,@item.PetId,@item.ShowerDate.Day,@item.ShowerDate.Month,@item.ShowerDate.Year)"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                    <button class="btn btn-primary btn-sm" title="Editar" onclick="editshower(@item.ShowerId,@item.PetId,'@item.ShowerDate.ToString("yyyy-MM-dd")')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
                     <button id="@("deletebutton" + item.ShowerId)" class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteshower(@item.ShowerId)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                 </td>
             </tr>
@@ -95,22 +95,22 @@
             </div>
             <div class="modal-body">
                 <div class="modalinput">
-                    <label class="mylabel">Fecha:</label>
+                    <label class="modallabel">Fecha:</label>
                     <input id="ShowerDate" style="width:30%" type="date" />
                 </div>
-                <span id="ShowerDateSpan" style="color:red;display:none;margin-left:25%"></span>
+                <span id="ShowerDateSpan" style="color:red;display:none;margin-left:30%"></span>
                 <div class="modalinput" style="margin-top:1%">
-                    <label class="mylabel">Paciente:</label>
-                    <select id="ShowerPet" class="js-example-basic-single" style="width:57%">
+                    <label class="modallabel">Paciente:</label>
+                    <select id="ShowerPet" class="js-example-basic-single" style="width:60%">
                         @foreach (var pet in ViewBag.Pets)
                         {
                             <option value="@pet.PetId">@pet.PetName (@pet.PetSpecie) - @pet.Owner.OwnerLastName, @pet.Owner.OwnerName</option>
                         }
                     </select>
                 </div>
-                <span id="ShowerPetSpan" style="color:red;display:none;margin-left:25%"></span>
+                <span id="ShowerPetSpan" style="color:red;display:none;margin-left:30%"></span>
                 <div class="modalinput" style="margin-top:1%">
-                    <label class="mylabel">Turno:</label>
+                    <label class="modallabel">Turno:</label>
                     <label style="width:18%">
                         <input id="morningShift" name="ShowerTurnRadio" type="radio" checked="checked" />
                         Mañana
@@ -120,7 +120,7 @@
                         Tarde
                     </label>
                 </div>
-                <span id="ShowerTurnSpan" style="color:red;display:none;margin-left:25%"></span>
+                <span id="ShowerTurnSpan" style="color:red;display:none;margin-left:30%"></span>
             </div>
             <div class="modal-footer">
                 <button id="Save" type="button" class="btn btn-success">Guardar</button>
@@ -200,17 +200,17 @@
         ///////////////////////// Create Shower ///////////////////////////
 
         $('#createShower').click(function () {
-            var now = new Date();
-            var day = now.getDate();
-            if (day < 10) {
-                day = '0' + day;
-            }
-            var month = now.getMonth() + 1;
-            if (month + 1 < 10) {
-                month = '0' + month;
-            }
-            var today = now.getFullYear() + '-' + month + '-' + day;
-            $('#ShowerDate').val(today);
+            //var now = new Date();
+            //var day = now.getDate();
+            //if (day < 10) {
+            //    day = '0' + day;
+            //}
+            //var month = now.getMonth() + 1;
+            //if (month + 1 < 10) {
+            //    month = '0' + month;
+            //}
+            //var today = now.getFullYear() + '-' + month + '-' + day;
+            //$('#ShowerDate').val(today);
             $('#ShowerDateSpan').hide();
             $("#ShowerPet").val(0).trigger('change');
             $('#ShowerPetSpan').hide();
@@ -290,9 +290,9 @@
                                         row += '<td id="PetName' + d.showerId + '">' + d.petname + '</td>';
                                         row += '<td id="PetSpecie' + d.showerId + '">' + d.specie + '</td>';
                                         row += '<td id="Owner' + d.showerId + '">' + d.owner + '</td>';
-                                        row += '<td id="ShowerDate' + d.showerId + '" class="text-center">' + d.date + '</td>';
+                                        row += '<td id="ShowerDate' + d.showerId + '" class="text-center">' + d.date.split('-')[2] + '/' + d.date.split('-')[1] + '/' + d.date.split('-')[0] + '</td>';
                                         row += '<td id="ShowerTurn' + d.showerId + '" class="text-center">' + turn + '</td>';
-                                        row += '<td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editshower(\'' + d.showerId + '\',\'' + d.petId + '\',\'' + d.date.split('/')[0] + '\',\'' + d.date.split('/')[1] + '\',\'' + d.date.split('/')[2] + '\' )"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;';
+                                        row += '<td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editshower(\'' + d.showerId + '\',\'' + d.petId + '\',\'' + d.date + '\' )"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;';
                                         row += '<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteshower(' + d.showerId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>';
 
                                         $('#showers').prepend(row);
@@ -321,19 +321,19 @@
 
         ////////////////////////////////// Edit Shower ///////////////////////////////////////////
 
-        function editshower(showerId,petId,showerDay,showerMonth,showerYear) {
+        function editshower(showerId,petId,showerDate) {
             $('#ShowerId').val(showerId);
             $('#prevPetId').val(petId);
 
-            if (showerDay < 10) {
-                showerDay = '0' + showerDay;
-            }
+            //if (showerDay < 10) {
+            //    showerDay = '0' + showerDay;
+            //}
 
-            if (showerMonth < 10) {
-                showerMonth = '0' + showerMonth;
-            }
+            //if (showerMonth < 10) {
+            //    showerMonth = '0' + showerMonth;
+            //}
 
-            var showerDate = showerYear + '-' + showerMonth + '-' + showerDay;
+            //var showerDate = showerYear + '-' + showerMonth + '-' + showerDay;
             $('#EditShowerDate').val(showerDate);
             $('#EditShowerPet').val(petId).trigger('change');
             if ($('#ShowerTurn' + showerId).text() == 'Tarde') {
@@ -419,10 +419,10 @@
                                         $('#PetName' + shower.ShowerId).html(String(d.petName));
                                         $('#PetSpecie' + shower.ShowerId).html(String(d.specie));
                                         $('#Owner' + shower.ShowerId).html(String(d.owner));
-                                        $('#ShowerDate' + shower.ShowerId).html(String(d.date));
+                                        $('#ShowerDate' + shower.ShowerId).html(d.date.split('-')[2] + '/' + d.date.split('-')[1] + '/' + d.date.split('-')[0]);
                                         $('#ShowerTurn' + shower.ShowerId).text(turn);
 
-                                        var editbutton = '<button class="btn btn-primary btn-sm" title="Editar" onclick="editshower(\'' + shower.ShowerId + '\',\'' + d.petId + '\',\'' + d.date.split('/')[0] + '\',\'' + d.date.split('/')[1] + '\',\'' + d.date.split('/')[2] + '\' )"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;'
+                                        var editbutton = '<button class="btn btn-primary btn-sm" title="Editar" onclick="editshower(\'' + shower.ShowerId + '\',\'' + d.petId + '\',\'' + d.date + '\' )"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;'
                                         var deletebutton = '<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteshower(' + shower.showerId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>';
 
                                         $('#Buttons' + shower.ShowerId).html(editbutton + deletebutton);
