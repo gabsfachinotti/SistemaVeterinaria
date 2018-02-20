@@ -14,8 +14,11 @@
             <th>
                 Paciente
             </th>
-            <th>
+            <th class="text-center">
                 Especie
+            </th>
+            <th class="text-center">
+                Sexo
             </th>
             <th class="text-center">
                 Fecha
@@ -36,13 +39,23 @@
         {
             <tr>
                 <td>
-                    @item
+                    @item.SurgeryId
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Pet.PetName)
                 </td>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.Pet.PetSpecie)
+                </td>
+                <td class="text-center">
+                    @if (@item.Pet.PetSex)
+                    {
+                        <text>Macho</text>
+                    }
+                    else
+                    {
+                        <text>Hembra</text>
+                    }
                 </td>
                 <td class="text-center">
                     @item.SurgeryDate.ToString("dd/MM/yyyy")

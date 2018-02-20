@@ -28,6 +28,8 @@ namespace SistemaVeterinaria.Controllers
             {
                 ViewBag.LastSurgeryTypeId = 0;
             }
+
+            ViewBag.Pets = db.Pets.ToList();
             return View(surgeries.ToList());
         }
 
@@ -98,6 +100,44 @@ namespace SistemaVeterinaria.Controllers
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        [HttpPost]
+        public JsonResult CreateSurgery(Surgery surgery)
+        {
+            surgery.Pet = db.Pets.Find(surgery.PetId);
+            if (surgery.Pet != null)
+            {
+                surgery.SurgeryType = db.SurgeryTypes.Find(surgery.SurgeryTypeId);
+                if (surgery.SurgeryType != null)
+                {
+                    db.Surgeries.Add(surgery);
+                    db.SaveChanges();
+
+                    string specie;
+                    if (surgery.Pet.PetSpecie == Species.Perro)
+                    {
+                        specie = "Perro";
+                    }
+                    else
+                    {
+                        specie = "Gato";
+                    }
+
+                    string sex;
+                    if (surgery.Pet.PetSex)
+                    {
+                        sex = "Macho";
+                    }
+                    else
+                    {
+                        sex = "Hembra";
+                    }
+
+                    return new JsonResult { Data = new { status = true, surgeryId = surgery.SurgeryId, surgeryType = surgery.SurgeryType.SurgeryTypeName, petName = surgery.Pet.PetName, petSpecie = specie, petSex = sex, owner = surgery.Pet.Owner.OwnerLastName + ", " + surgery.Pet.Owner.OwnerName, date = surgery.SurgeryDate.ToString("yyyy-MM-dd") } };
+                }
+            }
+            return new JsonResult { Data = new { status = false } };
         }
 
         protected override void Dispose(bool disposing)
