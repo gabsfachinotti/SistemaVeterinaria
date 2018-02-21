@@ -39,23 +39,20 @@ namespace SistemaVeterinaria.Controllers
         }
 
         [HttpPost]
-        public JsonResult CreateSurgeryType(string surgerytypename)
+        public JsonResult CreateSurgeryType(SurgeryType surgeryType)
         {
-            var status = true;
-            var exist = db.SurgeryTypes.ToList().Exists(st => st.SurgeryTypeName == surgerytypename);
+            var exist = db.SurgeryTypes.ToList().Exists(st => st.SurgeryTypeName == surgeryType.SurgeryTypeName);
             if (exist)
             {
-                status = false;
+                return new JsonResult { Data = new { status = false } };
             }
             else
             {
-                SurgeryType surgeryType = new SurgeryType();
-                surgeryType.SurgeryTypeName = surgerytypename;
                 db.SurgeryTypes.Add(surgeryType);
                 db.SaveChanges();
-            }
 
-            return Json(status, JsonRequestBehavior.AllowGet );
+                return new JsonResult { Data = new { status = true, surgeryTypeId = surgeryType.SurgeryTypeId} };
+            }
         }
 
         [HttpPost]
@@ -91,15 +88,6 @@ namespace SistemaVeterinaria.Controllers
             SurgeryType surgeryType = db.SurgeryTypes.Find(surgeryTypeId);
             if (surgeryType != null & !surgeryType.Surgeries.Any())
             {
-                if (surgeryTypeId == db.SurgeryTypes.ToList().Last().SurgeryTypeId)
-                {
-                    TempData["act"] = surgeryTypeId + 1;
-                }
-                else
-                {
-                    TempData["act"] = surgeryTypeId;
-                }
-
                 db.SurgeryTypes.Remove(surgeryType);
                 db.SaveChanges();
 
