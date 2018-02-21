@@ -93,7 +93,7 @@
                 }
             </td>
             <td id="@("SurgeryPetOwner" + item.SurgeryId)" class="text-center">
-                @item.Pet.Owner.OwnerLastName, @item.Pet.Owner.OwnerName
+                @item.Pet.Owner.OwnerFullName
             </td>
             <td id="@("SurgeryType" + item.SurgeryId)" class="text-center">
                 @Html.DisplayFor(modelItem => item.SurgeryType.SurgeryTypeName)

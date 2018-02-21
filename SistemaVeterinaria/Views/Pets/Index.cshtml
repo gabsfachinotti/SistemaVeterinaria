@@ -58,7 +58,7 @@
                     @item.PetName
                 </td>
                 <td  id="@("Owner" + item.PetId)">
-                    @item.Owner.OwnerLastName, @item.Owner.OwnerName
+                    @item.Owner.OwnerFullName
                 </td>
                 <td  id="@("PetSpecie" + item.PetId)">
                     @if (item.PetSpecie == SistemaVeterinaria.Models.Species.Perro)

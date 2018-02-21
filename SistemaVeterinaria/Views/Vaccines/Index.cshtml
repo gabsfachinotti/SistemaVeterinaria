@@ -68,7 +68,7 @@
                     @Html.DisplayFor(modelItem => item.Pet.PetSpecie)
                 </td>
                 <td id="@("owner" + item.VaccineId)">
-                    @item.Pet.Owner.OwnerLastName, @item.Pet.Owner.OwnerName
+                    @item.Pet.Owner.OwnerFullName
                 </td>
                 <td class="text-center">
                     @if (item.VaccineNumber > 5)
@@ -114,7 +114,7 @@
                     <select id="VaccinePet" class="js-example-basic-single" style="width:60%">
                         @foreach (var pet in ViewBag.Pets)
                         {
-                            <option value="@pet.PetId">@pet.PetName (@pet.PetSpecie) - @pet.Owner.OwnerLastName, @pet.Owner.OwnerName</option>
+                            <option value="@pet.PetId">@pet.PetName (@pet.PetSpecie) - @pet.Owner.OwnerFullName</option>
                         }
                     </select>
                 </div>
@@ -158,7 +158,7 @@
                     <select id="EditVaccinePet" class="js-example-basic-single" style="width:60%">
                         @foreach (var pet in ViewBag.Pets)
                         {
-                            <option value="@pet.PetId">@pet.PetName (@pet.PetSpecie) - @pet.Owner.OwnerLastName, @pet.Owner.OwnerName</option>
+                            <option value="@pet.PetId">@pet.PetName (@pet.PetSpecie) - @pet.Owner.OwnerFullName</option>
                         }
                     </select>
                 </div>

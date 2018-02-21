@@ -15,6 +15,8 @@ namespace SistemaVeterinaria.Models
 
         public string OwnerLastName { get; set; }
 
+        public string OwnerFullName { get { return OwnerLastName + ", " + OwnerName; } }
+
         public string OwnerAddress { get; set; }
 
         public string OwnerPhone { get; set; }

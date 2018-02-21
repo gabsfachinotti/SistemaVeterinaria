@@ -94,7 +94,7 @@ namespace SistemaVeterinaria.Controllers
                 else
                 {
                     shower.PetName = pet.PetName;
-                    shower.Owner = pet.Owner.OwnerLastName + ", " + pet.Owner.OwnerName;
+                    shower.Owner = pet.Owner.OwnerFullName;
                     shower.OwnerPhone = pet.Owner.OwnerPhone;
 
                     if (pet.PetSpecie == Species.Perro)
@@ -134,7 +134,7 @@ namespace SistemaVeterinaria.Controllers
                 else
                 {
                     shower.PetName = pet.PetName;
-                    shower.Owner = pet.Owner.OwnerLastName + ", " + pet.Owner.OwnerName;
+                    shower.Owner = pet.Owner.OwnerFullName;
                     shower.OwnerPhone = pet.Owner.OwnerPhone;
 
                     if (pet.PetSpecie == Species.Perro)

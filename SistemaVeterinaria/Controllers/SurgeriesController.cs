@@ -134,7 +134,7 @@ namespace SistemaVeterinaria.Controllers
                         sex = "Hembra";
                     }
 
-                    return new JsonResult { Data = new { status = true, surgeryId = surgery.SurgeryId, surgeryType = surgery.SurgeryType.SurgeryTypeName, petName = surgery.Pet.PetName, petSpecie = specie, petSex = sex, owner = surgery.Pet.Owner.OwnerLastName + ", " + surgery.Pet.Owner.OwnerName, date = surgery.SurgeryDate.ToString("yyyy-MM-dd") } };
+                    return new JsonResult { Data = new { status = true, surgeryId = surgery.SurgeryId, surgeryType = surgery.SurgeryType.SurgeryTypeName, petName = surgery.Pet.PetName, petSpecie = specie, petSex = sex, owner = surgery.Pet.Owner.OwnerFullName, date = surgery.SurgeryDate.ToString("yyyy-MM-dd") } };
                 }
             }
             return new JsonResult { Data = new { status = false } };

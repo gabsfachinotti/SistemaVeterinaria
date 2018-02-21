@@ -111,7 +111,6 @@ namespace SistemaVeterinaria.Controllers
             }
 
             var vaccineId = vaccine.VaccineId;
-            var owner = vaccine.Pet.Owner.OwnerLastName + ", " + vaccine.Pet.Owner.OwnerName;
             var pet = vaccine.Pet.PetName;
             var specie = String.Empty;
             if (vaccine.Pet.PetSpecie == Species.Perro)
@@ -129,7 +128,7 @@ namespace SistemaVeterinaria.Controllers
             var date5 = vaccine5.VaccineDate.ToString("yyyy-MM-dd");
             var date6 = vaccine4.VaccineDate.AddYears(1).ToString("yyyy-MM-dd");
 
-            return new JsonResult { Data = new { vaccineId = vaccineId, owner = owner, pet = pet, specie = specie, date = date, date2 = date2, date3 = date3, date4 = date4, date5 = date5, date6 = date6 } };
+            return new JsonResult { Data = new { vaccineId = vaccineId, owner = vaccine.Pet.Owner.OwnerFullName, pet = pet, specie = specie, date = date, date2 = date2, date3 = date3, date4 = date4, date5 = date5, date6 = date6 } };
         }
 
         [HttpPost]
@@ -194,8 +193,7 @@ namespace SistemaVeterinaria.Controllers
             }
 
             var lastnotification = nextvaccine.VaccineId;
-
-            var owner = vaccine.Pet.Owner.OwnerLastName + ", " + vaccine.Pet.Owner.OwnerName;
+            
             var petName = vaccine.Pet.PetName;
             var specie = String.Empty;
             if (vaccine.Pet.PetSpecie == Species.Perro)
@@ -207,7 +205,7 @@ namespace SistemaVeterinaria.Controllers
                 specie = "Gato";
             }
 
-            return new JsonResult { Data = new { owner = owner, pet = petName, specie = specie, vaccineId = vaccineId, vaccineDates = vaccineDates, lastId = lastnotification } };
+            return new JsonResult { Data = new { owner = vaccine.Pet.Owner.OwnerFullName, pet = petName, specie = specie, vaccineId = vaccineId, vaccineDates = vaccineDates, lastId = lastnotification } };
         }
 
         [HttpPost]

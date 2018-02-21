@@ -46,7 +46,7 @@ namespace SistemaVeterinaria.Controllers
             db.Pets.Add(pet);
             db.SaveChanges();
 
-            return new JsonResult { Data = new { PetId = pet.PetId, OwnerName = pet.Owner.OwnerLastName + ", " + pet.Owner.OwnerName } };
+            return new JsonResult { Data = new { PetId = pet.PetId, OwnerName = pet.Owner.OwnerFullName } };
         }
 
         public JsonResult EditPet(Pet pet)
@@ -62,7 +62,7 @@ namespace SistemaVeterinaria.Controllers
             db.Entry(editPet).State = EntityState.Modified;
             db.SaveChanges();
 
-            return new JsonResult { Data = new { OwnerName = editPet.Owner.OwnerLastName + ", " + editPet.Owner.OwnerName } };
+            return new JsonResult { Data = new { OwnerName = editPet.Owner.OwnerFullName } };
         }
 
         public JsonResult ValidatePet(int petId, string petName, int ownerId, int petSpecie, int petSex)
