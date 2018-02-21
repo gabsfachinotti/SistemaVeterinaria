@@ -567,10 +567,6 @@
     <Content Include="Views\Owners\Index.cshtml" />
     <Content Include="Views\Pets\Details.cshtml" />
     <Content Include="Views\Pets\Index.cshtml" />
-    <Content Include="Views\Surgeries\Create.cshtml" />
-    <Content Include="Views\Surgeries\Delete.cshtml" />
-    <Content Include="Views\Surgeries\Details.cshtml" />
-    <Content Include="Views\Surgeries\Edit.cshtml" />
     <Content Include="Views\Surgeries\Index.cshtml" />
     <Content Include="Views\Vaccines\Index.cshtml" />
     <Content Include="Views\Showers\Index.cshtml" />

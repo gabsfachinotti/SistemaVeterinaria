@@ -89,8 +89,17 @@ namespace SistemaVeterinaria.Controllers
         public JsonResult DeleteSurgeryType(int surgeryTypeId)
         {
             SurgeryType surgeryType = db.SurgeryTypes.Find(surgeryTypeId);
-            if (surgeryType != null | !surgeryType.Surgeries.Any())
+            if (surgeryType != null & !surgeryType.Surgeries.Any())
             {
+                if (surgeryTypeId == db.SurgeryTypes.ToList().Last().SurgeryTypeId)
+                {
+                    TempData["act"] = surgeryTypeId + 1;
+                }
+                else
+                {
+                    TempData["act"] = surgeryTypeId;
+                }
+
                 db.SurgeryTypes.Remove(surgeryType);
                 db.SaveChanges();
 

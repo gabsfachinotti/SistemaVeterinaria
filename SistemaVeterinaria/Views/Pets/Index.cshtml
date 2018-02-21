@@ -116,7 +116,7 @@
                     <select id="Owner" class="js-example-basic-single" style="width:52%">
                         @foreach (var owner in ViewBag.Owners)
                         {
-                            <option value="@owner.OwnerId">@owner.OwnerLastName, @owner.OwnerName</option>
+                            <option value="@owner.OwnerId">@owner.OwnerFullName</option>
                         }
                     </select>
                 </div>
@@ -182,7 +182,7 @@
                     <select id="EditOwner" class="js-example-basic-single" style="width:52%">
                         @foreach (var owner in ViewBag.Owners)
                         {
-                            <option value="@owner.OwnerId">@owner.OwnerLastName, @owner.OwnerName</option>
+                            <option value="@owner.OwnerId">@owner.OwnerFullName</option>
                         }
                     </select>
                 </div>
