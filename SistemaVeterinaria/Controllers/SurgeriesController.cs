@@ -137,6 +137,45 @@ namespace SistemaVeterinaria.Controllers
             return new JsonResult { Data = new { status = false } };
         }
 
+        public JsonResult EditSurgery(Surgery surgery)
+        {
+            if (db.Pets.Find(surgery.PetId) != null & surgery.SurgeryDate != null)
+            {
+                if (db.SurgeryTypes.Find(surgery.SurgeryTypeId) != null)
+                {
+                    surgery.Pet = db.Pets.Find(surgery.PetId);
+                    surgery.SurgeryType = db.SurgeryTypes.Find(surgery.SurgeryTypeId);
+
+                    db.Entry(surgery).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    var specie = String.Empty;
+                    if (surgery.Pet.PetSpecie == Species.Perro)
+                    {
+                        specie = "Perro";
+                    }
+                    else
+                    {
+                        specie = "Gato";
+                    }
+
+                    var sex = String.Empty;
+                    if (surgery.Pet.PetSex)
+                    {
+                        sex = "Macho";
+                    }
+                    else
+                    {
+                        sex = "Hembra";
+                    }
+
+                    return new JsonResult { Data = new { status = true, date = surgery.SurgeryDate.ToString("yyyy-MM-dd"), owner = surgery.Pet.Owner.OwnerFullName, pet = surgery.Pet.PetName, specie = specie, sex = sex, surgeryTypeId = surgery.SurgeryTypeId, surgeryType = surgery.SurgeryType.SurgeryTypeName} };
+                }
+            }
+
+            return new JsonResult { Data = new { status = false } };
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

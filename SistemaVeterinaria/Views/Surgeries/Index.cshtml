@@ -103,8 +103,8 @@
                 <text>@item.SurgeryDate.ToString("dd/MM/yyyy")</text>
             </td>
             <td id="@("SurgeryButtons" + item.SurgeryId)" class="text-center">
-                <button class="btn btn-primary btn-sm" onclick="editSurgery(@item.SurgeryId,@item.PetId,@item.SurgeryTypeId,'@item.SurgeryDate.ToString("yyyy-MM-dd")')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
-                <button class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                <button class="btn btn-primary btn-sm" title="Editar" onclick="editSurgery(@item.SurgeryId,@item.PetId,@item.SurgeryTypeId,'@item.SurgeryDate.ToString("yyyy-MM-dd")')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                <button class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteSurgery(@item.SurgeryId)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
             </td>
         </tr>
     }
@@ -325,7 +325,7 @@
                     SurgeryTypeName: $('#SurgeryName' + futureId).val().trim(),
                     Surgeries: null
                 }
-                                
+
                 var options = {};
                 options.url = '@Url.Action("CreateSurgeryType", "Surgeries")';
                 options.type = "POST";
@@ -415,7 +415,7 @@
                 options.url = '@Url.Action("DeleteSurgeryType", "Surgeries")';
                 options.type = "POST";
                 options.data = { "surgerytypeId": surgeryTypeId };
-                options.dataType = "json";                
+                options.dataType = "json";
                 options.success = function (data) {
                     if (data) {
                         $('#SurgeryTypeModal' + surgeryTypeId).remove();
@@ -554,13 +554,38 @@
                 $('#editSurgery').hide('slow');
 
                 var surgery = {
-                    SurgeryId: null,
+                    SurgeryId: parseInt($('#EditSurgeryId').text()),
                     SurgeryTypeId: $('#EditSurgeryTypeSelect').val(),
                     SurgeryType: null,
                     SurgeryDate: $('#EditSurgeryDate').val(),
                     PetId: $('#EditSurgeryPet').val(),
                     Pet: null
                 }
+
+                $.ajax({
+                    url: '@Url.Action("EditSurgery","Surgeries")',
+                    type: "POST",
+                    data: JSON.stringify(surgery),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        if (d.status) {
+                            var surgeryId = surgery.SurgeryId;
+
+                            $('#SurgeryPet' + surgeryId).html(d.pet);
+                            $('#SurgeryPetSpecie' + surgeryId).html(d.specie);
+                            $('#SurgeryPetSex' + surgeryId).html(d.sex);
+                            $('#SurgeryPetOwner' + surgeryId).html(d.owner);
+                            $('#SurgeryType' + surgeryId).html(d.surgeryType);
+                            $('#SurgeryDate' + surgeryId).html(d.date.split('-')[2] + '/' + d.date.split('-')[1] + '/' + d.date.split('-')[0]);
+
+                            $('#SurgeryButtons' + surgeryId).html('<button class="btn btn-primary btn-sm" onclick="editSurgery(\'' + surgeryId + '\',\'' + $('#EditSurgeryPet').val() + '\',\'' + d.surgeryTypeId + '\',\'' + d.date + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteSurgery(' + surgeryId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>');
+                            $('#Surgery' + surgeryId).css('background-color', '#dee1ea');
+                        } else {
+                            toastr.warning('Error: La modificación no ha podido realizarse, si el error persiste contacte al desarrollador')
+                        }
+                    }
+                });
             }
         });
     </script>

@@ -27,7 +27,7 @@ namespace SistemaVeterinaria.Controllers
         public ActionResult Vaccinated()
         {
             var vaccines = db.Vaccines.ToList().FindAll(v => v.VaccineDate < DateTime.Today);
-            ViewBag.Title = "Notificaciones Pasadas de Vacunas";
+            ViewBag.Title = "Vacunas Realizadas";
             ViewBag.Pets = db.Pets.ToList();
             return View("Index", vaccines);
         }
