@@ -142,7 +142,6 @@
                 </div>
             </div>
             <div class="modal-body">
-                <input id="prevPetId" type="number" style="display:none" />
                 <div class="modalinput">
                     <label class="modallabel">Baño Nro:</label>
                     <input id="ShowerId" style="width:30%;border:none;background-color:transparent" type="number" disabled="disabled" />
@@ -323,8 +322,6 @@
 
         function editshower(showerId,petId,showerDate) {
             $('#ShowerId').val(showerId);
-            $('#prevPetId').val(petId);
-
             //if (showerDay < 10) {
             //    showerDay = '0' + showerDay;
             //}
@@ -382,9 +379,10 @@
 
             if (validation) {
                 var options = {};
-                options.url = '@Url.Action("ValidateShower", "Showers")';
+                options.url = '@Url.Action("ValidateEditShower", "Showers")';
                 options.type = "GET";
-                options.data = { "showerDate": $('#EditShowerDate').val(), "petId": $('#prevPetId').val(), "showerTurn": turn };
+                options.data = {
+                    "showerDate": $('#EditShowerDate').val(), "showerTurn": turn, "petId": $('#EditShowerPet').val(), "showerId": $('#ShowerId').val() };
                 options.dataType = "json";
                 options.success = function (data) {
                     switch (data) {

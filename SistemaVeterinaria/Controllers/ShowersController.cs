@@ -54,23 +54,38 @@ namespace SistemaVeterinaria.Controllers
             }
             else
             {
-                if (db.Showers.ToList().Count(s => s.ShowerDate == showerDate & s.ShowerTurn == showerTurn & s.PetId != petId) > 1)
+                if (db.Showers.ToList().Count(s => s.ShowerDate == showerDate & s.ShowerTurn == showerTurn) > 1)
                 {
                     //Sin disponibilidad en el turno
                     data = 2;
                 }
                 else
                 {
-                    if (db.Showers.ToList().Exists(s => s.ShowerDate == showerDate & s.PetId == petId) & petId > 0)
+                    if (db.Showers.ToList().Exists(s => s.ShowerDate == showerDate & s.ShowerTurn == showerTurn & s.PetId == petId) & petId > 0)
                     {
-                        if (db.Showers.ToList().Find(sh => sh.PetId == petId ).ShowerTurn == showerTurn)
-                        {
-                            //Ya existe baño para ese paciente en el día especificado.
-                            data = 3;
-                        }
-                        
-                        //Intenta cambiar de turno
+                        //Ya existe baño para ese paciente en el día y turno especificado.
+                        data = 3;
                     }
+                }
+            }
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult ValidateEditShower(DateTime showerDate, bool showerTurn, int petId, int showerId)
+        {
+            var data = 0; //Validado
+            if (db.Showers.ToList().Count(sh => sh.ShowerDate == showerDate & sh.ShowerId != showerId) > 3)
+            {
+                //Sin disponibilidad para la fecha
+                data = 1;
+            }
+            else
+            {
+                if (db.Showers.ToList().Count(sh => sh.ShowerDate == showerDate & sh.ShowerTurn == showerTurn & sh.ShowerId != showerId) > 1)
+                {
+                    //Sin disponibilidad para el turno
+                    data = 2;
                 }
             }
 

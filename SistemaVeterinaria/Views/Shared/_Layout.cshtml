@@ -30,7 +30,7 @@
 
 </head>
 <body background="~/Content/Images/BACKGROUND-TOP.jpg">
-<div class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #034381">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -38,26 +38,27 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Inicio", "Index", "Home" , new { area = "" }, new { @class = "navbar-brand" })
+                <a href="@Url.Action("Index","Home")" class="navbar-brand" style="color:white"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a>
+                @*@Html.ActionLink("Inicio", "Index", "Home" , new { area = "" }, new { @class = "navbar-brand" })*@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Dueños", "Index", "Owners")</li>
-                    <li>@Html.ActionLink("Pacientes", "Index", "Pets")</li>
+                    <li><a href="@Url.Action("Index","Owners")" style="color:white;font-weight:bold">Dueños</a></li>
+                    <li><a href="@Url.Action("Index","Pets")" style="color:white;font-weight:bold">Pacientes</a></li>
 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Vacunas<span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="font-weight:bold;color:white">Vacunas<span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li>@Html.ActionLink("Notificaciones Futuras", "Index", "Vaccines")</li>                            
+                            <li><a href="@Url.Action("Index","Vaccines")">Notificaciones Futuras</a></li>                            
                             <li class="divider"></li>
-                            <li>@Html.ActionLink("Vacunas Realizadas", "Vaccinated", "Vaccines")</li>
+                            <li><a href="@Url.Action("Vaccinated","Pets")">Vacunas Realizadas</a></li>
                             <li class="divider"></li>
-                            <li>@Html.ActionLink("Notificación Diaria", "DailyNotification", "Vaccines")</li>
+                            <li><a href="@Url.Action("DailyNotification","Vaccines")">Notificación Diaria</a></li>
                         </ul>
                     </li>
 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Cirugías<span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="font-weight:bold;color:white">Cirugías<span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li>@Html.ActionLink("Notificaciones de Cirugías", "Index", "Surgeries")</li>
                             <li class="divider"></li>
@@ -66,7 +67,7 @@
                     </li>
 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Baños<span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="font-weight:bold;color:white">Baños<span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li>@Html.ActionLink("Notificaciones de Baños", "Index", "Showers")</li>
                             <li class="divider"></li>
@@ -74,13 +75,11 @@
                         </ul>
                     </li>
 
-                    @*<li>@Html.ActionLink("Cirugías", "Index", "Surgeries")</li>
-                    <li>@Html.ActionLink("Baños", "Index", "Showers")</li>*@
                 </ul>
                 @*@Html.Partial("_LoginPartial")*@
             </div>
         </div>
-    </div>
+    </nav>
 <div class="container body-content">
     @RenderBody()
     <hr/>
@@ -97,4 +96,5 @@
 
 <script>
     $('.dropdown-toggle').dropdown();
+    
 </script>

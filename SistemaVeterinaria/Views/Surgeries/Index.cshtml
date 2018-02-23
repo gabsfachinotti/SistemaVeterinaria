@@ -588,5 +588,38 @@
                 });
             }
         });
+
+        function deleteSurgery(surgeryId) {
+            bootbox.confirm({
+                title: "Eliminar Cirugía",
+                message: "¿Está seguro de eliminar la notificación de Cirugía Nro " + String(surgeryId) + "?",
+                buttons: {
+                    confirm: {
+                        label: "Eliminar",
+                        className: "btn-danger"
+                    },
+                    cancel: {
+                        label: "Cancelar",
+                        className: "btn-primary"
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        var options = {};
+                        options.url = '@Url.Action("DeleteSurgery", "Surgeries")';
+                        options.type = "POST";
+                        options.data = { "surgeryId": surgeryId };
+                        options.dataType = "json";
+                        options.success = function (data) {
+                            if (data) {
+                                toastr.success("Notificación eliminada");
+                                $('#Surgery' + surgeryId).closest('tr').remove();
+                            }
+                        };
+                        $.ajax(options);
+                    }
+                }
+            });
+        }
     </script>
 }

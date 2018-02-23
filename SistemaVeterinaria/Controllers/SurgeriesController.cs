@@ -176,6 +176,23 @@ namespace SistemaVeterinaria.Controllers
             return new JsonResult { Data = new { status = false } };
         }
 
+        [HttpPost]
+        public JsonResult DeleteSurgery(int surgeryId)
+        {
+            Surgery surgery = db.Surgeries.Find(surgeryId);
+            if (surgery != null)
+            {
+                db.Surgeries.Remove(surgery);
+                db.SaveChanges();
+
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
