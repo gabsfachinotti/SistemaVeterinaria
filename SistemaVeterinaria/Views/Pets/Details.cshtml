@@ -96,7 +96,6 @@
                     <th>Paciente</th>
                     <th class="text-center">Ordinal</th>
                     <th class="text-center">Fecha</th>
-                    <th class="text-center">Opciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -107,7 +106,6 @@
                         <td>@item.Pet.PetName</td>
                         <td class="text-center">@item.VaccineNumber° Vacuna</td>
                         <td class="text-center">@item.VaccineDate.ToString("dd/MM/yyyy")</td>
-                        <td class="text-center"></td>
                     </tr>
                 }
             </tbody>
@@ -120,9 +118,8 @@
                 <tr>
                     <th class="text-center">Nro</th>
                     <th>Paciente</th>
-                    <th class="text-center">Tipo</th>
+                    <th class="text-center">Cirugía</th>
                     <th class="text-center">Fecha</th>
-                    <th class="text-center">Opciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -133,7 +130,6 @@
                         <td>@item.Pet.PetName</td>
                         <td class="text-center">@item.SurgeryType.SurgeryTypeName</td>
                         <td class="text-center">@item.SurgeryDate.ToString("dd/MM/yyyy")</td>
-                        <td class="text-center"></td>
                     </tr>
                 }
             </tbody>
@@ -148,7 +144,6 @@
                     <th>Paciente</th>                    
                     <th class="text-center">Fecha</th>
                     <th class="text-center">Turno</th>
-                    <th class="text-center">Opciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -159,7 +154,6 @@
                         <td>@item.PetName</td>
                         <td class="text-center">@item.ShowerDate.ToString("dd/MM/yyyy")</td>
                         <td class="text-center">@if (item.ShowerTurn) {<p>Mañana</p>} else {<p>Tarde</p>}</td>
-                        <td class="text-center"></td>
                     </tr>
                 }
             </tbody>

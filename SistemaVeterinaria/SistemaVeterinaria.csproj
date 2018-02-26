@@ -365,6 +365,8 @@
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
     <Content Include="Content\Images\BACKGROUND-TOP.jpg" />
+    <Content Include="Content\Images\fondo-gato-perro.jpg" />
+    <Content Include="Content\Images\header_image1-1.jpg" />
     <Content Include="Content\jquery.steps.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
