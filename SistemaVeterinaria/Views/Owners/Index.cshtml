@@ -144,12 +144,14 @@
     </div>
 </div>
 
-@section scripts{
+@section Scripts{
     <script>
-        $('#table').DataTable({
-            "language": {
-                "url": "/Scripts/DataTables/spanish.json"
-            }
+        $(document).ready(function () {
+            $('#table').DataTable({
+                "language": {
+                    "url": "/Scripts/DataTables/spanish.json"
+                }
+            });
         });
 
         $('#createOwner').click(function () {

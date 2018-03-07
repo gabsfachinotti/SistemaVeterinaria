@@ -26,7 +26,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Sistema Veterinaria</title>
     @Styles.Render("~/Styles/css")
-    @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
@@ -51,7 +50,7 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="@Url.Action("Index","Vaccines")">Notificaciones Futuras</a></li>                            
                             <li class="divider"></li>
-                            <li><a href="@Url.Action("Vaccinated","Pets")">Vacunas Realizadas</a></li>
+                            <li><a href="@Url.Action("Vaccinated","Vaccines")">Vacunas Realizadas</a></li>
                             <li class="divider"></li>
                             <li><a href="@Url.Action("DailyNotification","Vaccines")">Notificación Diaria</a></li>
                         </ul>

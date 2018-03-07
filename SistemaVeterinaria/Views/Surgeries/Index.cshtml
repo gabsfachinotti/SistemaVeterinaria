@@ -251,22 +251,24 @@
     </div>
 </div>
 
-@section scripts{
+@section Scripts{
     <script>
-        $('#table').DataTable({
-            order: [[3, "asc"]],
-            "language": {
-                "url": "/Scripts/DataTables/spanish.json"
-            }
-        });
+        $(document).ready(function () {
+            $('#table').DataTable({
+                order: [[3, "asc"]],
+                "language": {
+                    "url": "/Scripts/DataTables/spanish.json"
+                }
+            });
 
-        $('#SurgeryTypesTable').DataTable({
-            "bInfo": false,
-            "bLengthChange": false,
-            "lengthMenu": [[5], [5]],
-            "language": {
-                "url": "/Scripts/DataTables/spanish.json"
-            }
+            $('#SurgeryTypesTable').DataTable({
+                "bInfo": false,
+                "bLengthChange": false,
+                "lengthMenu": [[5], [5]],
+                "language": {
+                    "url": "/Scripts/DataTables/spanish.json"
+                }
+            });
         });
 
         $('.SurgeryPetSelect').select2({

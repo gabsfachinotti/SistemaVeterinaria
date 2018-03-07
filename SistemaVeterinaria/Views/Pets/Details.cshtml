@@ -163,6 +163,17 @@
 
 @section Scripts{
     <script>
+        $(document).ready(function () {
+            $(".table").DataTable({
+                "bInfo": false,
+                "bLengthChange": false,
+                "lengthMenu": [[6], [6]],
+                "language": {
+                    "url": "/Scripts/DataTables/spanish.json"
+                }
+            });
+        });
+
         $("#example-tabs").steps({
             headerTag: "h3",
             bodyTag: "section",
@@ -172,15 +183,6 @@
             enableAllSteps: true,
             titleTemplate: "#title#",
             cssClass: "tabcontrol"
-        });
-
-        $(".table").DataTable({
-            "bInfo": false,
-            "bLengthChange": false,
-            "lengthMenu": [[6], [6]],
-            "language": {
-                "url": "/Scripts/DataTables/spanish.json"
-            }
-        });
+        });        
     </script>    
 }

@@ -178,13 +178,15 @@
 
 
 
-@section scripts{
+@section Scripts{
     <script>
-        $('#table').DataTable({
-            order: [[5, "asc"]],
-            "language": {
-                "url": "/Scripts/DataTables/spanish.json"
-            }
+        $(document).ready(function () {
+            $('#table').DataTable({
+                order: [[5, "asc"]],
+                "language": {
+                    "url": "/Scripts/DataTables/spanish.json"
+                }
+            });
         });
 
         $('.js-example-basic-single').select2({
