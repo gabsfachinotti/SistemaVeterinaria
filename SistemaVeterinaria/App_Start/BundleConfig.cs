@@ -17,10 +17,10 @@ namespace SistemaVeterinaria
                 "~/Scripts/bootstrap.js",
                 "~/Scripts/respond.js",
                 "~/Scripts/select2.js",
-                "~/Scripts/toastr.js",                
+                "~/Scripts/toastr.js",             
+                "~/Scripts/jquery.steps.min.js",
                 "~/Scripts/DataTables/jquery.dataTables.js",
-                "~/Scripts/DataTables/dataTables.bootstrap.js",
-                "~/Scripts/jquery.steps.min.js"
+                "~/Scripts/DataTables/dataTables.bootstrap.js"
         };
             scriptBundle.Include(scriptArray);
             scriptBundle.IncludeDirectory("~/Scripts/", "*.js");
@@ -39,10 +39,11 @@ namespace SistemaVeterinaria
             bundles.Add(new StyleBundle("~/Styles/css").Include(
                                        "~/Content/bootstrap.css",
                                        "~/Content/site.css",
+                                       "~/Content/jquery.steps.css",
                                        "~/Content/css/select2.css",
-                                       "~/Content/DataTables/css/dataTables.uikit.min.css",
-                                       "~/Content/toastr.css",
-                                       "~/Content/jquery.steps.css"
+                                       "~/Content/DataTables/css/dataTables.bootstrap.min.css",
+                                       "~/Content/toastr.css"
+                                     
                      ));
         }
     }

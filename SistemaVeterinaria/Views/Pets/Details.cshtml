@@ -23,142 +23,160 @@
 <h2 class="text-center">Detalle de Paciente</h2>
 <hr style="color: grey;border-color: grey;margin-top: 0"/>
 
-<div id="example-tabs">
-    <h3>General</h3>
-    <section>
-        <div style="width:100%;display:inline-flex">
-            <div style="width:40%">
-                <h4>Detalle de Paciente</h4>
-                <hr style="color: grey;border-color: grey;margin-top: 0">
-                
-                <div style="border:outset;border-radius:10px;background-color:lightsteelblue">
-                    <table style="margin-left:4%">
-                        <tr>
-                            <th><h5>Nro Paciente:</h5></th>
-                            <td><h5>@Model.PetId</h5></td>
-                        </tr>
-                        <tr>
-                            <th><h5>Nombre:</h5></th>
-                            <td><h5>@Model.PetName</h5></td>
-                        </tr>
-                        <tr>
-                            <th><h5>Especie:</h5></th>
-                            <td>@if (Model.PetSpecie == SistemaVeterinaria.Models.Species.Perro) {<h5>Perro</h5>} else {<h5>Gato</h5>}</td>
-                        </tr>
-                        <tr>
-                            <th><h5>Raza:</h5></th>
-                            <td><h5>@Model.PetBreed</h5></td>
-                        </tr>
-                        <tr>
-                            <th><h5>Sexo:</h5></th>
-                            <td>@if (Model.PetSex) { <h5>Macho</h5> } else { <h5>Hembra</h5> }</td>
-                        </tr>
-                    </table> 
-                </div>               
-            </div>
-            <div style="width:40%;margin-left:10%">
-                <h4>Detalle de Dueño</h4>
-                <hr style="color: grey;border-color: grey;margin-top: 0"/>
+<div class="container">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#General">General</a></li>
+        <li><a data-toggle="tab" href="#Vaccines">Vacunas</a></li>
+        <li><a data-toggle="tab" href="#Surgeries">Cirugías</a></li>
+        <li><a data-toggle="tab" href="#Showers">Baños</a></li>
+    </ul>
 
-                <div style="border:outset;border-radius:10px;background-color:lightsteelblue">
-                    <table style="margin-left:4%">
-                        <tr>
-                            <th><h5>Nro Dueño:</h5></th>
-                            <td><h5>@Model.OwnerId</h5></td>
-                        </tr>
-                        <tr>
-                            <th><h5>Nombre:</h5></th>
-                            <td><h5>@Model.Owner.OwnerName</h5></td>
-                        </tr>
-                        <tr>
-                            <th><h5>Apellido:</h5></th>
-                            <td><h5>@Model.Owner.OwnerLastName</h5></td>
-                        </tr>
-                        <tr>
-                            <th><h5>Domicilio:</h5></th>
-                            <td><h5>@Model.Owner.OwnerAddress</h5></td>
-                        </tr>
-                        <tr>
-                            <th><h5>Teléfono:</h5></th>
-                            <td><h5>@Model.Owner.OwnerPhone</h5></td>
-                        </tr>
-                    </table>
+    <div class="tab-content">
+        <div id="General" class="tab-pane fade in active">
+            <br />
+            <div style="width:100%;display:inline-flex">
+                <div style="width:40%">                    
+                    <h4>Detalle de Paciente</h4>
+                    <hr style="color: grey;border-color: grey;margin-top: 0">
+
+                    <div style="border:outset;border-radius:10px;background-color:lightsteelblue">
+                        <table style="margin-left:4%">
+                            <tr>
+                                <th><h5>Nro Paciente:</h5></th>
+                                <td><h5>@Model.PetId</h5></td>
+                            </tr>
+                            <tr>
+                                <th><h5>Nombre:</h5></th>
+                                <td><h5>@Model.PetName</h5></td>
+                            </tr>
+                            <tr>
+                                <th><h5>Especie:</h5></th>
+                                <td>@if (Model.PetSpecie == SistemaVeterinaria.Models.Species.Perro)
+                                {<h5>Perro</h5>}
+                                else
+                                {<h5>Gato</h5>}</td>
+                            </tr>
+                            <tr>
+                                <th><h5>Raza:</h5></th>
+                                <td><h5>@Model.PetBreed</h5></td>
+                            </tr>
+                            <tr>
+                                <th><h5>Sexo:</h5></th>
+                                <td>@if (Model.PetSex)
+                                { <h5>Macho</h5> }
+                                else
+                                { <h5>Hembra</h5> }</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div style="width:40%;margin-left:10%">
+                    <h4>Detalle de Dueño</h4>
+                    <hr style="color: grey;border-color: grey;margin-top: 0" />
+
+                    <div style="border:outset;border-radius:10px;background-color:lightsteelblue">
+                        <table style="margin-left:4%">
+                            <tr>
+                                <th><h5>Nro Dueño:</h5></th>
+                                <td><h5>@Model.OwnerId</h5></td>
+                            </tr>
+                            <tr>
+                                <th><h5>Nombre:</h5></th>
+                                <td><h5>@Model.Owner.OwnerName</h5></td>
+                            </tr>
+                            <tr>
+                                <th><h5>Apellido:</h5></th>
+                                <td><h5>@Model.Owner.OwnerLastName</h5></td>
+                            </tr>
+                            <tr>
+                                <th><h5>Domicilio:</h5></th>
+                                <td><h5>@Model.Owner.OwnerAddress</h5></td>
+                            </tr>
+                            <tr>
+                                <th><h5>Teléfono:</h5></th>
+                                <td><h5>@Model.Owner.OwnerPhone</h5></td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
-    <h3>Vacunas</h3>
-    <section>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th class="text-center">Nro</th>
-                    <th>Paciente</th>
-                    <th class="text-center">Ordinal</th>
-                    <th class="text-center">Fecha</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Vaccinations.Where(v => v.VaccineDate <= DateTime.Today))
-                {
+        <div id="Vaccines" class="tab-pane fade">
+            <br />
+            <table class="table table-bordered">
+                <thead>
                     <tr>
-                        <td class="text-center">@item.VaccineId</td>
-                        <td>@item.Pet.PetName</td>
-                        <td class="text-center">@item.VaccineNumber° Vacuna</td>
-                        <td class="text-center">@item.VaccineDate.ToString("dd/MM/yyyy")</td>
+                        <th class="text-center">Nro</th>
+                        <th>Paciente</th>
+                        <th class="text-center">Ordinal</th>
+                        <th class="text-center">Fecha</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </section>
-    <h3>Cirugías</h3>
-    <section>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th class="text-center">Nro</th>
-                    <th>Paciente</th>
-                    <th class="text-center">Cirugía</th>
-                    <th class="text-center">Fecha</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Surgeries.Where(s => s.SurgeryDate <= DateTime.Today))
-                {
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Vaccinations.Where(v => v.VaccineDate <= DateTime.Today))
+                    {
+                        <tr>
+                            <td class="text-center">@item.VaccineId</td>
+                            <td>@item.Pet.PetName</td>
+                            <td class="text-center">@item.VaccineNumber° Vacuna</td>
+                            <td class="text-center">@item.VaccineDate.ToString("dd/MM/yyyy")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div id="Surgeries" class="tab-pane fade">
+            <br />
+            <table class="table table-bordered">
+                <thead>
                     <tr>
-                        <td class="text-center">@item.SurgeryId</td>
-                        <td>@item.Pet.PetName</td>
-                        <td class="text-center">@item.SurgeryType.SurgeryTypeName</td>
-                        <td class="text-center">@item.SurgeryDate.ToString("dd/MM/yyyy")</td>
+                        <th class="text-center">Nro</th>
+                        <th>Paciente</th>
+                        <th class="text-center">Cirugía</th>
+                        <th class="text-center">Fecha</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </section>
-    <h3>Baños</h3>
-    <section>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th class="text-center">Nro</th>
-                    <th>Paciente</th>                    
-                    <th class="text-center">Fecha</th>
-                    <th class="text-center">Turno</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in ViewBag.Showers)
-                {
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Surgeries.Where(s => s.SurgeryDate <= DateTime.Today))
+                    {
+                        <tr>
+                            <td class="text-center">@item.SurgeryId</td>
+                            <td>@item.Pet.PetName</td>
+                            <td class="text-center">@item.SurgeryType.SurgeryTypeName</td>
+                            <td class="text-center">@item.SurgeryDate.ToString("dd/MM/yyyy")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div id="Showers" class="tab-pane fade">
+            <br />
+            <table class="table table-bordered">
+                <thead>
                     <tr>
-                        <td class="text-center">@item.ShowerId</td>
-                        <td>@item.PetName</td>
-                        <td class="text-center">@item.ShowerDate.ToString("dd/MM/yyyy")</td>
-                        <td class="text-center">@if (item.ShowerTurn) {<p>Mañana</p>} else {<p>Tarde</p>}</td>
+                        <th class="text-center">Nro</th>
+                        <th>Paciente</th>
+                        <th class="text-center">Fecha</th>
+                        <th class="text-center">Turno</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </section>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Showers)
+                    {
+                        <tr>
+                            <td class="text-center">@item.ShowerId</td>
+                            <td>@item.PetName</td>
+                            <td class="text-center">@item.ShowerDate.ToString("dd/MM/yyyy")</td>
+                            <td class="text-center">@if (item.ShowerTurn)
+                            {<p>Mañana</p>}
+                            else
+                            {<p>Tarde</p>}</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 @section Scripts{
@@ -166,23 +184,10 @@
         $(document).ready(function () {
             $(".table").DataTable({
                 "bInfo": false,
-                "bLengthChange": false,
-                "lengthMenu": [[6], [6]],
                 "language": {
                     "url": "/Scripts/DataTables/spanish.json"
                 }
             });
-        });
-
-        $("#example-tabs").steps({
-            headerTag: "h3",
-            bodyTag: "section",
-            transitionEffect: "slideLeft",
-            enableFinishButton: false,
-            enablePagination: false,
-            enableAllSteps: true,
-            titleTemplate: "#title#",
-            cssClass: "tabcontrol"
-        });        
+        });                
     </script>    
 }

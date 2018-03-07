@@ -2,15 +2,27 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron" style="margin-top:2%;margin-bottom:0">
-    <h1 class="text-center">Veterinaria San Francisco de Asís</h1>
-    <p class="lead text-center">Bienvenido al sistema de notificaciones de Veterinaria San Francisco de Asís</p>
+<head>
+    <style>
+        div.jumbotron {
+        background-image: url('@Url.Content("~/Content/Images/header_image1-1.jpg")');
+        background-position: 47% 50%;
+        background-size: 1100px 470px;
+        background-repeat: no-repeat;
+        opacity: .99;
+    }
+    </style>
+</head>
+
+<div class="jumbotron" style="margin-top:2%;margin-bottom:0;height:500px">
+    @*<h1 class="text-center">Veterinaria San Francisco de Asís</h1>
+    <p class="lead text-center">Bienvenido al sistema de notificaciones de Veterinaria San Francisco de Asís</p>*@
 </div>
 
-<div class="text-center">
+@*<div class="text-center">
     <img src="~/Content/Images/fondo-gato-perro.jpg" style="width:70%;display:none" />
     <img src="~/Content/Images/header_image1-1.jpg" style="width:62%;" />
-</div>
+</div>*@
 
 <div id="myModal" class="modal">
     <div class="modal-dialog" role="document">
