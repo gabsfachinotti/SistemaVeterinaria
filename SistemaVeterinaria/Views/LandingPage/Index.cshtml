@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+@{
+    Layout = null;
+}
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>San Francisco de Asís - Goya (Ctes)</title>
+    <!-- Bootstrap core CSS -->
+    <link href="~/Content/LandingPage/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom fonts for this template -->
+    <link href="~/Content/LandingPage/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <!-- Plugin CSS -->
+    <link href="~/Content/LandingPage/vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="~/Content/LandingPage/css/creative.css" rel="stylesheet">
+    <link href="~/Content/LandingPage/css/proximamente.css" rel="stylesheet">
+</head>
+<body id="page-top">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+        <div class="container">
+            @*<img src="/Content/Layout/img/logodiarionorte.png" class="navbar-brand js-scroll-trigger" href="#page-top"/>*@
+            
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#inicio">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="@Url.Action("Index","Pets")">Pacientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="@Url.Action("Index","Vaccines")">Vacunas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="@Url.Action("Index","Surgeries")">Cirugías</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="@Url.Action("Index","Showers")">Baños</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#contact">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <header id="inicio" class="masthead text-center text-white d-flex">
+        <div class="container my-auto">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h1 class="text-uppercase" style="text-shadow:2px 0 black">
+                        <strong>¡Bienvenido al Sistema de Notificaciones<br>San Francisco de Asís!</strong>
+                    </h1>
+                    <hr>
+                </div>
+                <div class="col-lg-8 mx-auto">
+                    
+                    @*<a class="btn btn-primary btn-xl js-scroll-trigger" href="/Home/Index">Iniciar sesión</a>*@
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="contact" class="bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="section-heading" style="color:white">Contáctanos!</h2>
+                    <hr style="color:white" class="my-4">
+                    <p class="mb-5" style="color:white">¿Tienes alguna duda o consulta? <br> Comunicate por cualquiera de estos medios </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 ml-auto text-center">
+                    <i style="color:white" class="fa fa-phone fa-3x mb-3 sr-contact"></i>
+                    <p style="color:white">(3777) 593194</p>
+                </div>
+                <div class="col-lg-4 mr-auto text-center">
+                    <i style="color:white" class="fa fa-envelope-o fa-3x mb-3 sr-contact"></i>
+                    <p>
+                        <a style="color:white" href="mailto:gabsfachinotti@gmail.com">gabsfachinotti@gmail.com</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <p class="text-center" style="color:white; font-size: small">GoDesa Solutions <span style="color:white; font-size: small" id="year"></span> - Veterinaria San Francisco de Asís - Rolón 1529 - Goya - Corrientes - Argentina - C.P.:3450 </p>
+    </section>
+    <!-- Bootstrap core JavaScript -->
+    <script src="~/Content/LandingPage/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Content/LandingPage/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Plugin JavaScript -->
+    <script src="~/Content/LandingPage/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="~/Content/LandingPage/vendor/scrollreveal/scrollreveal.min.js"></script>
+    <script src="~/Content/LandingPage/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+    <!-- Custom scripts for this template -->
+    <script src="~/Content/LandingPage/js/creative.js"></script>
+
+    <div id="myModal" class="modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 style="width:50%" class="modal-title">Notificación Diaria</h5>
+                    <div style="width:50%" class="text-right">
+                        <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal" aria-label="Close" id="closenotifications">
+                            @*<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>*@
+                            x
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    @if (ViewBag.Vaccines > 0)
+                    {
+                        <h6>Existen @ViewBag.Vaccines Vacunas programadas para el día de hoy.</h6>
+                    }
+                    @if (ViewBag.Surgeries > 0)
+                    {
+                        <h6>Existen @ViewBag.Surgeries Cirugías programadas para el día de hoy.</h6>
+                    }
+                    @if (ViewBag.Showers > 0)
+                    {
+                        <h6>Existen @ViewBag.Showers Baños programados para el día de hoy.</h6>
+                    }
+                </div>
+                <div class="modal-footer">
+                    @if (ViewBag.Vaccines > 0)
+                    {
+                        <a href="@Url.Action("DailyNotification","Vaccines")" class="btn btn-success">Ver Vacunas</a>
+                    }
+                    @if (ViewBag.Surgeries > 0)
+                    {
+                        <a href="@Url.Action("DailyNotification","Surgeries")" class="btn btn-primary">Ver Cirugías</a>
+                    }
+                    @if (ViewBag.Showers > 0)
+                    {
+                        <a href="@Url.Action("DailyNotification","Showers")" class="btn btn-info">Ver Baños</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            if (@ViewBag.Vaccines > 0 | @ViewBag.Surgeries > 0 | @ViewBag.Showers > 0) {
+                $('#myModal').show('slow');
+            }
+        });
+
+        $('#closenotifications').click(function () {
+            $('#myModal').hide('slow');
+        })
+    </script>
+
+
