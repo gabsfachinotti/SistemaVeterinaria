@@ -60,6 +60,7 @@
                     @item.Pet.Owner.OwnerPhone
                 </td>
                 <td id="@("Options" + item.VaccineId)" class="text-center">
+                    <button class="btn btn-danger btn-sm" title="Anular" onclick="removeVaccine(@item.VaccineId)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                     <button class="btn btn-success btn-sm" title="Aplazar" onclick="postpone(@item.VaccineId,@item.PetId)"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span></button>
                 </td>
             </tr>
@@ -113,21 +114,13 @@
 
 @section scripts{
     <script>
-        function postpone(vaccineId,petId) {
+        function postpone(vaccineId, petId) {
             $('#EditVaccineId').text($('#VaccineId' + vaccineId).html().trim());
             $('#EditVaccineNumber').text($('#VaccineNumber' + vaccineId).html().trim());
             var date = $('#VaccineDate' + vaccineId).html().trim();
             var day = date.split('/')[0];
             var month = date.split('/')[1];
             var year = date.split('/')[2]
-
-            //if (day < 10) {
-            //    day = '0' + day;
-            //}
-
-            //if (month < 10) {
-            //    month = '0' + month;
-            //}
 
             $('#EditVaccineDate').val(year + '-' + month + '-' + day);
             $('#EditVaccineDateSpan').hide();
@@ -182,7 +175,7 @@
 
                             //$('#VaccineDate' + d.vaccineId).html(d.vaccineDates[0]);
 
-                            $('#Options' + d.vaccineId).html('Aplazado al ' + d.vaccineDates[0].split('-')[2] + '/' + d.vaccineDates[0].split('-')[1] + '/' + d.vaccineDates[0].split('-')[0]).css('color', 'red');
+                            $('#Options' + d.vaccineId).html('Aplazado al ' + d.vaccineDates[0].split('-')[2] + '/' + d.vaccineDates[0].split('-')[1] + '/' + d.vaccineDates[0].split('-')[0]).css('color', 'green');
                             $('#Vaccine' + d.vaccineId).css("background-color", "#dee1ea");
                             toastr.info('Al actualizar la página no se visualizarán la notificaciones aplazadas.');
                         }
@@ -198,5 +191,39 @@
         $('#closePostpone').click(function () {
             $('#modalPostpone').hide('slow');
         });
+
+        function removeVaccine(vaccineId) {
+            bootbox.confirm({
+                title: "Anular Notificación",
+                message: "Al anular la notificación de vacuna Nro " + String(vaccineId) + " se omitirá su aviso y su correspondiente vacuna no figurará en el listado de Vacunas realizadas al Paciente.",
+                buttons: {
+                    confirm: {
+                        label: "Anular",
+                        className: "btn-danger"
+                    },
+                    cancel: {
+                        label: "Cancelar",
+                        className: "btn-primary"
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        var options = {};
+                        options.url = '@Url.Action("DeleteVaccine", "Vaccines")';
+                        options.type = "POST";
+                        options.data = { "vaccineId": vaccineId };
+                        options.dataType = "json";
+                        options.success = function (data) {
+                            if (data) {
+                                toastr.success("Notificación anulada");
+
+                                $('#Options' + vaccineId).html('Notificación y Vacuna Anuladas').css('color','red');
+                            }
+                        };
+                        $.ajax(options);
+                    }
+                }
+            });
+        }
     </script>
 }

@@ -98,15 +98,7 @@ namespace SistemaVeterinaria.Controllers
             {
                 Pet pet = db.Pets.Find(shower.PetId);
 
-                if (pet == null)
-                {
-                    shower.PetId = 0;
-                    shower.PetName = String.Empty;
-                    shower.PetSpecie = String.Empty;
-                    shower.Owner = String.Empty;
-                    shower.OwnerPhone = String.Empty;
-                }
-                else
+                if (pet != null)
                 {
                     shower.PetName = pet.PetName;
                     shower.Owner = pet.Owner.OwnerFullName;
