@@ -117,7 +117,7 @@ namespace SistemaVeterinaria.Controllers
                 db.Showers.Add(shower);
                 db.SaveChanges();                
 
-                return new JsonResult { Data = new { status = true, showerId = shower.ShowerId, petId = shower.PetId, petname = shower.PetName, owner = shower.Owner, specie = shower.PetSpecie, date = shower.ShowerDate.ToString("yyyy-MM-dd") } };
+                return new JsonResult { Data = new { status = true, showerId = shower.ShowerId, petId = shower.PetId, petname = shower.PetName, owner = shower.Owner, ownerPhone = shower.OwnerPhone, specie = shower.PetSpecie, date = shower.ShowerDate.ToString("yyyy-MM-dd") } };
             }
             else
             {
@@ -130,15 +130,7 @@ namespace SistemaVeterinaria.Controllers
             if (shower.ShowerDate != null)
             {
                 Pet pet = db.Pets.Find(shower.PetId);
-                if (pet == null)
-                {
-                    shower.PetId = 0;
-                    shower.PetName = String.Empty;
-                    shower.PetSpecie = String.Empty;
-                    shower.Owner = String.Empty;
-                    shower.OwnerPhone = String.Empty;
-                }
-                else
+                if (pet != null)
                 {
                     shower.PetName = pet.PetName;
                     shower.Owner = pet.Owner.OwnerFullName;
@@ -157,7 +149,7 @@ namespace SistemaVeterinaria.Controllers
                 db.Entry(shower).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return new JsonResult { Data = new { status = true, petId = shower.PetId, petName = shower.PetName, owner = shower.Owner, specie = shower.PetSpecie, date = shower.ShowerDate.ToString("yyyy-MM-dd") } };
+                return new JsonResult { Data = new { status = true, petId = shower.PetId, petName = shower.PetName, owner = shower.Owner, ownerPhone = shower.OwnerPhone, specie = shower.PetSpecie, date = shower.ShowerDate.ToString("yyyy-MM-dd") } };
             }
             else
             {
