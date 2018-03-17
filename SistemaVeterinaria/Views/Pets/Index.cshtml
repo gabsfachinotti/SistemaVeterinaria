@@ -134,7 +134,7 @@
                 </div>
                 <div class="modalinput" style="margin-top:1%">
                     <label class="modallabel">Raza:</label>
-                    <input id="PetBreed" style="width:40%" type="text" placeholder="(opcional)" />
+                    <input id="PetBreed" style="width:52%" type="text" placeholder="(opcional)" />
                 </div>
                 <div class="modalinput" style="margin-top:1%">
                     <label class="modallabel">Sexo:</label>
@@ -146,6 +146,15 @@
                         <input id="MaleSex" name="PetSexRadio" type="radio" />
                         Macho
                     </label>
+                </div>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Nacimiento:</label>
+                    <input id="PetBirthday" type="date" placeholder="(opcional)"/>
+                </div>
+                <span id="PetBirthdaySpan" style="color:red;display:none;margin-left:30%"></span>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Color:</label>
+                    <input id="PetColor" type="text" placeholder="(opcional)" style="width:52%" />
                 </div>
             </div>
             <div class="modal-footer">
@@ -285,6 +294,10 @@
             $('#DogSpecie').prop('checked', true);
             $('#PetBreed').val('');
             $('#FemaleSex').prop('checked', true);
+            $('#PetBirthday').val('');
+            $('#PetBirthdaySpan').hide();
+            $('#PetColor').val('');
+
             $('#modalPet').show('slow');
         });
 
@@ -307,6 +320,11 @@
             if ($('#Owner').val() == 0 | $('#Owner').val() == null) {
                 validation = false;
                 $('#SpanOwner').text('Debe seleccionar al Dueño del Paciente').show();
+            }
+
+            if ($('#PetBirthday').val() > Date.now) {
+                validation = false;
+                $('#PetBirthdaySpan').text('La fecha de nacimiento no puede ser mayor a la actual').show();
             }
 
             var specie;
@@ -342,8 +360,10 @@
                             PetSpecie: specie,
                             PetBreed: $('#PetBreed').val().trim(),
                             PetSex: sex,
+                            PetBirthday: $('#PetBirthday').val(),
+                            PetColor: $('#PetColor').val(),
                             OwnerId: $('#Owner').val(),
-                            Owner: null,
+                            Owner: null,                            
                             Vaccinations: null,
                             Surgeries: null,
                             Showers: null

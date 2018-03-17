@@ -8,12 +8,14 @@ using System.Web;
 using System.Web.Mvc;
 using SistemaVeterinaria.Context;
 using SistemaVeterinaria.Models;
+using SistemaVeterinaria.Repositories;
 
 namespace SistemaVeterinaria.Controllers
 {
     public class PetsController : Controller
     {
         private VeterinaryContext db = new VeterinaryContext();
+        PetRepository petRepository = new PetRepository();
 
         // GET: Pets
         public ActionResult Index()
@@ -36,6 +38,9 @@ namespace SistemaVeterinaria.Controllers
             {
                 return HttpNotFound();
             }
+            
+            ViewBag.Age = petRepository.CalculateAge(pet.PetBirthday);
+
             ViewBag.Showers = db.Showers.ToList().FindAll(s => s.PetId == pet.PetId);
             return View(pet);
         }

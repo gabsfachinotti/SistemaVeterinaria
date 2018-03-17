@@ -19,6 +19,12 @@ namespace SistemaVeterinaria.Models
 
         public bool PetSex { get; set; } // 0: hembra - 1: macho
 
+        public DateTime PetBirthday { get; set; }
+
+        //public string PetAge{ get { return (DateTime.Today.Year - PetBirthday.Year).ToString() + " años y " + Math.Abs(DateTime.Today.Month - PetBirthday.Month) + " meses"; } }
+
+        public string PetColor { get; set; }
+
         public int OwnerId { get; set; } //Clave foránea Owner
 
         public virtual Owner Owner { get; set; }

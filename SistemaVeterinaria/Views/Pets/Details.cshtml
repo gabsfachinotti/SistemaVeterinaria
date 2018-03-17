@@ -67,6 +67,18 @@
                                 else
                                 { <h5>Hembra</h5> }</td>
                             </tr>
+                            <tr>
+                                <th><h5>Nacimiento:</h5></th>
+                                <td><h5>@Model.PetBirthday.ToString("dd/MM/yyyy")</h5></td>
+                            </tr>
+                            <tr>
+                                <th><h5>Edad:</h5></th>
+                                <td><h5>@ViewBag.Age</h5></td>
+                            </tr>
+                            <tr>
+                                <th><h5>Color:</h5></th>
+                                <td><h5>@Model.PetColor</h5></td>
+                            </tr>
                         </table>
                     </div>
                 </div>
