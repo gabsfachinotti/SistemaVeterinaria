@@ -56,18 +56,12 @@ namespace SistemaVeterinaria.Controllers
 
         public JsonResult EditPet(Pet pet)
         {
-            Pet editPet = db.Pets.Find(pet.PetId);
-            editPet.PetName = pet.PetName;
-            editPet.PetSpecie = pet.PetSpecie;
-            editPet.PetBreed = pet.PetBreed;
-            editPet.PetSex = pet.PetSex;
-            editPet.OwnerId = pet.OwnerId;
-            editPet.Owner = db.Owners.Find(pet.OwnerId);
+            pet.Owner = db.Owners.Find(pet.OwnerId);
 
-            db.Entry(editPet).State = EntityState.Modified;
+            db.Entry(pet).State = EntityState.Modified;
             db.SaveChanges();
 
-            return new JsonResult { Data = new { OwnerName = editPet.Owner.OwnerFullName } };
+            return new JsonResult { Data = new { OwnerId = pet.OwnerId, OwnerName = pet.Owner.OwnerFullName, Birthday = pet.PetBirthday.ToString("yyyy-MM-dd"), Color = pet.PetColor } };
         }
 
         public JsonResult ValidatePet(int petId, string petName, int ownerId, int petSpecie, int petSex)

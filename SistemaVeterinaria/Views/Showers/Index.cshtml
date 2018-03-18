@@ -192,23 +192,34 @@
                     </label>
                 </div>
                 <span id="OccasionalShowerTurnSpan" style="color:red;display:none;margin-left:30%"></span>
-                <hr />
+                <hr style="margin-top: 3%" />
                 <h4 class="text-center" style="background-color:lightgray">Datos del Dueño</h4>
                 <div class="modalinput" style="margin-top:2%">
-                    <label class="mylabel">Apellido y Nombre:</label>
+                    <label class="mylabel">Nombre:</label>
                     <input id="OccasionalOwnerName" type="text" />
                 </div>
                 <span id="OccasionalOwnerNameSpan" style="color:red;display:none;margin-left:36%"></span>
+                <div class="modalinput" style="margin-top:2%">
+                    <label class="mylabel">Apellido:</label>
+                    <input id="OccasionalOwnerLastName" type="text" />
+                </div>
+                <span id="OccasionalOwnerLastNameSpan" style="color:red;display:none;margin-left:36%"></span>
                 <div class="modalinput" style="margin-top:1%">
                     <label class="mylabel">Teléfono:</label>
                     <input id="OccasionalOwnerPhone" type="text" placeholder="(opcional)" />
                 </div>
-                <hr />
+                <hr style="margin-top: 3%" />
                 <h4 class="text-center" style="background-color:lightgray">Datos del Paciente</h4>
                 <div class="modalinput" style="margin-top:2%">
                     <label class="mylabel">Nombre Paciente:</label>
-                    <input id="OccasionalPatientName" type="text" placeholder="(opcional)"/>
+                    <input id="OccasionalPatientName" type="text" />
                 </div>
+                <span id="OccasionalPatientNameSpan" style="color:red;display:none;margin-left:36%"></span>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="mylabel">Nacimiento:</label>
+                    <input id="OccasionalPatientBirthday" type="date" />
+                </div>
+                <span id="OccasionalPatientBirthdaySpan" style="color:red;display:none;margin-left:36%"></span>
                 <div class="modalinput" style="margin-top:1%">
                     <label class="mylabel">Especie:</label>
                     <label style="width:18%">
@@ -219,9 +230,20 @@
                         <input id="OccasionalPetCatSpecie" name="OccasionalPetSpecie" type="radio" />
                         Gato
                     </label>
-                </div>              
+                </div>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="mylabel">Sexo:</label>
+                    <label style="width:18%">
+                        <input id="OccasionalPetFemaleSex" name="OccasionalPetSex" type="radio" checked="checked" />
+                        Hembra
+                    </label>
+                    <label>
+                        <input id="OccasionalPetMaleSex" name="OccasionalPetSex" type="radio" />
+                        Macho
+                    </label>
+                </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="margin-top: 0">
                 <button id="OccasionalSave" type="button" class="btn btn-success">Guardar</button>
                 <button id="OccasionalCancel" type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
             </div>
@@ -391,10 +413,18 @@
         $('#OccasionalPatient').click(function () {
             $('#modalSelectShower').hide();
 
+            $('#OccasionalShowerDate').val('');
             $('#OccasionalShowerDateSpan').hide();
             $('#OccasionalShowerTurnSpan').hide();
+            $('#OccasionalOwnerName').val('');
             $('#OccasionalOwnerNameSpan').hide();
+            $('#OccasionalOwnerLastName').val('');
             $('#OccasionalOwnerLastNameSpan').hide();
+            $('#OccasionalOwnerPhone').val('');
+            $('#OccasionalPatientName').val('');
+            $('#OccasionalPatientNameSpan').hide();
+            $('#OccasionalPatientBirthday').val('');
+            $('#OccasionalPatientBirthdaySpan').hide();
 
             $('#modalOccasionalShower').show('slow');
         });
@@ -460,13 +490,13 @@
                             }
 
                             $.ajax({
-                                url: '@Url.Action("CreateShower","Showers")',
-                                type: "POST",
-                                data: JSON.stringify(shower),
-                                dataType: "JSON",
-                                contentType: "application/json",
-                                success: function (d) {
-                                    if (d.status) {
+                                 url: '@Url.Action("CreateShower","Showers")',
+                                 type: "POST",
+                                 data: JSON.stringify(shower),
+                                 dataType: "JSON",
+                                 contentType: "application/json",
+                                 success: function (d) {
+                                     if (d.status) {
                                         if (turn) {
                                             turn = 'Tarde';
                                         } else {
@@ -481,15 +511,15 @@
                                         row += '<td id="ShowerDate' + d.showerId + '" class="text-center">' + d.date.split('-')[2] + '/' + d.date.split('-')[1] + '/' + d.date.split('-')[0] + '</td>';
                                         row += '<td id="ShowerTurn' + d.showerId + '" class="text-center">' + turn + '</td>';
                                         row += '<td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editshower(\'' + d.showerId + '\',\'' + d.petId + '\',\'' + d.date + '\' )"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;';
-                                        row += '<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteshower(' + d.showerId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>';
+                                        row += '<button id="deletebutton'+ d.showerId +'" class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteshower(' + d.showerId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>';
 
                                         $('#showers').prepend(row);
 
                                         toastr.success('Se ha agregado una nueva notificación de Baño.');
-                                    } else {
+                                     } else {
                                         toastr.success('ERROR.');
-                                    }
-                                }
+                                     }
+                                 }
                             });
                             break;
                         case 1:
@@ -524,6 +554,11 @@
                 validation = false;
             }
 
+            if ($('#OccasionalOwnerLastName').val().trim() == '') {
+                $('#OccasionalOwnerLastNameSpan').text('Debe ingresar el apellido del Dueño').show();
+                validation = false;
+            }
+
             var turn;
             if ($('#OccasionalMorningShift').is(':checked')) {
                 turn = false;
@@ -532,10 +567,23 @@
             }
 
             var specie;
+            var specievalue = 0;
             if ($('#OccasionalPetDogSpecie').is(':checked')) {
                 specie = 'Perro';
+                specievalue = 1;
             } else {
                 specie = 'Gato';
+                specievalue = 2;
+            }
+
+            var sex;
+            var sexvalue;
+            if ($('#OccasionalPetFemaleSex').is(':checked')) {
+                sex = 'Hembra';
+                sexvalue = false;
+            } else {
+                sex = 'Macho';
+                sexvalue = true;
             }
 
             if (validation) {
@@ -547,7 +595,7 @@
                 options.success = function (data) {
                     switch (data) {
                         case 0:
-                            $('#modalOccasionalShower').hide('slow');
+                            //$('#modalOccasionalShower').hide('slow');
 
                             var shower = {
                                 ShowerId: null,
@@ -556,39 +604,142 @@
                                 PetId: 0,
                                 PetName: $('#OccasionalPatientName').val(),
                                 PetSpecie: specie,
-                                Owner: $('#OccasionalOwnerName').val(),
+                                PetSex: sex,
+                                Owner: $('#OccasionalOwnerLastName').val() + ', ' + $('#OccasionalOwnerName').val(),
                                 OwnerPhone: $('#OccasionalOwnerPhone').val()
-                            }
+                            }                            
 
-                            $.ajax({
-                                url: '@Url.Action("CreateShower","Showers")',
-                                type: "POST",
-                                data: JSON.stringify(shower),
-                                dataType: "JSON",
-                                contentType: "application/json",
-                                success: function (d) {
-                                    if (d.status) {
-                                        if (turn) {
-                                            turn = 'Tarde';
-                                        } else {
-                                            turn = 'Mañana';
+                            bootbox.confirm({
+                                title: "Guardar Dueño y Paciente",
+                                message: "¿Desea guardar los datos del Dueño y Paciente?",
+                                buttons: {
+                                    cancel: {
+                                        label: "No",
+                                        className: "btn-primary"
+                                    },
+                                    confirm: {
+                                        label: "Si",
+                                        className: "btn-success"
+                                    }                                    
+                                },
+                                callback: function (result) {
+                                    if (result) {
+                                        var validatePet = true;
+
+                                        if ($('#OccasionalPatientName').val() == '') {
+                                            validatePet = false;
+                                            $('#OccasionalPatientNameSpan').text('Debe ingresar el nombre del Paciente').show();
                                         }
 
-                                        var row = '<tr style="background-color: #dee1ea">';
-                                        row += '<td id="ShowerId' + d.showerId + '">' + String(d.showerId) + '</td>';
-                                        row += '<td id="PetName' + d.showerId + '">' + d.petname + '</td>';
-                                        row += '<td id="PetSpecie' + d.showerId + '">' + d.specie + '</td>';
-                                        row += '<td id="Owner' + d.showerId + '">' + d.owner + '</td>';
-                                        row += '<td id="ShowerDate' + d.showerId + '" class="text-center">' + d.date.split('-')[2] + '/' + d.date.split('-')[1] + '/' + d.date.split('-')[0] + '</td>';
-                                        row += '<td id="ShowerTurn' + d.showerId + '" class="text-center">' + turn + '</td>';
-                                        row += '<td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editOccasionalShower(\'' + d.showerId + '\',\'' + d.date + '\',\'' + d.ownerPhone + '\' )"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;';
-                                        row += '<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteshower(' + d.showerId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>';
+                                        if ($('#OccasionalPatientBirthday').val() == '') {
+                                            validatePet = false;
+                                            $('#OccasionalPatientBirthdaySpan').text('Debe ingresar la fecha de nacimiento del Paciente').show();
+                                        }
 
-                                        $('#showers').prepend(row);
+                                        if (validatePet) {
+                                            $('#modalOccasionalShower').hide('slow');
 
-                                        toastr.success('Se ha agregado una nueva notificación de Baño.');
+                                            var owner = {
+                                                OwnerId: null,
+                                                OwnerName: $('#OccasionalOwnerName').val(),
+                                                OwnerLastName: $('#OccasionalOwnerLastName').val(),
+                                                OwnerAddress: '',
+                                                OwnerPhone: $('#OccasionalOwnerPhone').val(),
+                                                Pets: null
+                                            }
+
+                                            var pet = {
+                                                PetId: null,
+                                                PetName: $('#OccasionalPatientName').val(),
+                                                PetSpecie: specievalue,
+                                                PetBreed: '',
+                                                PetSex: sexvalue,
+                                                PetBirthday: $('#OccasionalPatientBirthday').val(),
+                                                PetColor: '',
+                                                OwnerId: null,
+                                                Owner: null,
+                                                Vaccinations: null,
+                                                Surgeries: null
+                                            }
+
+                                            var ownerPetShower = {
+                                                Shower: shower,
+                                                Owner: owner,
+                                                Pet: pet
+                                            }
+
+                                            $.ajax({
+                                            url: '@Url.Action("CreateOwnerAndShower","Showers")',
+                                            type: "POST",
+                                            data: JSON.stringify(ownerPetShower),
+                                            dataType: "JSON",
+                                            contentType: "application/json",
+                                            success: function (d) {
+                                                if (d.status) {
+                                                    if (turn) {
+                                                        turn = 'Tarde';
+                                                    } else {
+                                                        turn = 'Mañana';
+                                                    }
+
+                                                    var row = '<tr style="background-color: #dee1ea">';
+                                                    row += '<td id="ShowerId' + d.showerId + '">' + String(d.showerId) + '</td>';
+                                                    row += '<td id="PetName' + d.showerId + '">' + d.petname + '</td>';
+                                                    row += '<td id="PetSpecie' + d.showerId + '">' + d.specie + '</td>';
+                                                    row += '<td id="Owner' + d.showerId + '">' + d.owner + '</td>';
+                                                    row += '<td id="ShowerDate' + d.showerId + '" class="text-center">' + d.date.split('-')[2] + '/' + d.date.split('-')[1] + '/' + d.date.split('-')[0] + '</td>';
+                                                    row += '<td id="ShowerTurn' + d.showerId + '" class="text-center">' + turn + '</td>';
+                                                    row += '<td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editshower(\'' + d.showerId + '\',\'' + d.petId + '\',\'' + d.date + '\' )"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;';
+                                                    row += '<button id="deletebutton'+ d.showerId +'" class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteshower(' + d.showerId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>';
+
+                                                    $('#showers').prepend(row);
+
+                                                    toastr.success('Se ha agregado una nueva notificación de Baño.');
+
+                                                    //agregar a la lista de pacientes el nuevo paciente
+                                                    $('#ShowerPet').append('<option value="' + d.petId + '">' + d.petname + ' (' + d.specie + ') - ' + d.owner + '</option>');
+                                                    $('#EditShowerPet').append('<option value="' + d.petId + '">' + d.petname + ' (' + d.specie + ') - ' + d.owner + '</option>');
+                                                } else {
+                                                    toastr.success('ERROR.');
+                                                }
+                                            }
+                                        });
+                                        }
                                     } else {
-                                        toastr.success('ERROR.');
+                                        $.ajax({
+                                            url: '@Url.Action("CreateShower","Showers")',
+                                            type: "POST",
+                                            data: JSON.stringify(shower),
+                                            dataType: "JSON",
+                                            contentType: "application/json",
+                                            success: function (d) {
+                                                if (d.status) {
+                                                    if (turn) {
+                                                        turn = 'Tarde';
+                                                    } else {
+                                                        turn = 'Mañana';
+                                                    }
+
+                                                    var row = '<tr style="background-color: #dee1ea">';
+                                                    row += '<td id="ShowerId' + d.showerId + '">' + String(d.showerId) + '</td>';
+                                                    row += '<td id="PetName' + d.showerId + '">' + d.petname + '</td>';
+                                                    row += '<td id="PetSpecie' + d.showerId + '">' + d.specie + '</td>';
+                                                    row += '<td id="Owner' + d.showerId + '">' + d.owner + '</td>';
+                                                    row += '<td id="ShowerDate' + d.showerId + '" class="text-center">' + d.date.split('-')[2] + '/' + d.date.split('-')[1] + '/' + d.date.split('-')[0] + '</td>';
+                                                    row += '<td id="ShowerTurn' + d.showerId + '" class="text-center">' + turn + '</td>';
+                                                    row += '<td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editshower(\'' + d.showerId + '\',\'' + d.petId + '\',\'' + d.date + '\' )"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;';
+                                                    row += '<button id="deletebutton' + d.showerId +'" class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteshower(' + d.showerId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>';
+
+                                                    $('#showers').prepend(row);
+
+                                                    toastr.success('Se ha agregado una nueva notificación de Baño.');
+                                                } else {
+                                                    toastr.success('ERROR.');
+                                                }
+
+                                                $('#modalOccasionalShower').hide('slow');
+                                            }
+                                        });
                                     }
                                 }
                             });
@@ -703,7 +854,7 @@
                                         $('#ShowerTurn' + shower.ShowerId).text(turn);
 
                                         var editbutton = '<button class="btn btn-primary btn-sm" title="Editar" onclick="editshower(\'' + shower.ShowerId + '\',\'' + d.petId + '\',\'' + d.date + '\' )"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;'
-                                        var deletebutton = '<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteshower(' + shower.showerId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>';
+                                        var deletebutton = '<button id="deletebutton' + shower.ShowerId +'" class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteshower(' + shower.showerId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>';
 
                                         $('#Buttons' + shower.ShowerId).html(editbutton + deletebutton);
                                         $('#shower' + shower.ShowerId).css("background-color", "#dee1ea");
@@ -839,7 +990,7 @@
                                         $('#ShowerTurn' + shower.ShowerId).text(turn);
 
                                         var editbutton = '<button class="btn btn-primary btn-sm" title="Editar" onclick="editOccasionalShower(\'' + shower.ShowerId + '\',\'' + d.date + '\',\'' + d.ownerPhone + '\' )"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;'
-                                        var deletebutton = '<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteshower(' + shower.showerId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>';
+                                        var deletebutton = '<button id="deletebutton' + shower.ShowerId +'" class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteshower(' + shower.showerId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>';
 
                                         $('#Buttons' + shower.ShowerId).html(editbutton + deletebutton);
                                         $('#shower' + shower.ShowerId).css("background-color", "#dee1ea");

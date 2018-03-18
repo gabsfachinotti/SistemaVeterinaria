@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using SistemaVeterinaria.Context;
 using SistemaVeterinaria.Models;
+using SistemaVeterinaria.ViewModels;
 
 namespace SistemaVeterinaria.Controllers
 {
@@ -118,6 +119,35 @@ namespace SistemaVeterinaria.Controllers
                 db.SaveChanges();                
 
                 return new JsonResult { Data = new { status = true, showerId = shower.ShowerId, petId = shower.PetId, petname = shower.PetName, owner = shower.Owner, ownerPhone = shower.OwnerPhone, specie = shower.PetSpecie, date = shower.ShowerDate.ToString("yyyy-MM-dd") } };
+            }
+            else
+            {
+                return new JsonResult { Data = new { status = false } };
+            }
+        }
+
+        public JsonResult CreateOwnerAndShower(OwnerPetShower ownerPetShower)
+        {
+            if (ownerPetShower.Shower.ShowerDate != null)
+            {
+                Owner owner = ownerPetShower.Owner;                
+                db.Owners.Add(owner);
+                db.SaveChanges();
+
+                Pet pet = ownerPetShower.Pet;
+                pet.OwnerId = owner.OwnerId;
+                pet.Owner = owner;               
+                pet.PetBreed = String.Empty;
+                pet.PetColor = String.Empty;
+                db.Pets.Add(pet);
+                db.SaveChanges();
+
+                ownerPetShower.Shower.PetId = pet.PetId;
+
+                db.Showers.Add(ownerPetShower.Shower);
+                db.SaveChanges();
+
+                return new JsonResult { Data = new { status = true, showerId = ownerPetShower.Shower.ShowerId, petId = pet.PetId, petname = pet.PetName, owner = owner.OwnerFullName, ownerPhone = owner.OwnerPhone, specie = ownerPetShower.Shower.PetSpecie, date = ownerPetShower.Shower.ShowerDate.ToString("yyyy-MM-dd") } };
             }
             else
             {

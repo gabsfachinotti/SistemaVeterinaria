@@ -21,6 +21,8 @@ namespace SistemaVeterinaria.Models
 
         public string PetSpecie { get; set; }
 
+        public string PetSex { get; set; }
+
         public string Owner { get; set; }
 
         public string OwnerPhone { get; set; }
