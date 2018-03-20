@@ -111,6 +111,32 @@
 </tbody>
 </table>
 
+<div id="modalSelectSurgery" class="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 style="width:50%" class="modal-title">Seleccionar tipo de Paciente</h5>
+                <div style="width:50%" class="text-right">
+                    <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal" aria-label="Close" id="closeSelectSurgery">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center">¿Qué tipo de Paciente recibirá la cirugía?</h4>
+                <div style="width:100%;display:inline-flex;margin-top:3%;margin-bottom:3%">
+                    <div class="text-center" style="width:50%">
+                        <button id="FrequentPatient" class="btn btn-primary">Paciente Frecuente</button>
+                    </div>
+                    <div class="text-center" style="width:50%">
+                        <button id="OccasionalPatient" class="btn btn-primary">Paciente Ocasional</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="modalSurgery" class="modal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -118,7 +144,7 @@
                 <div style="width:20%"></div>
                 <h4 style="width:60%" class="modal-title text-center">Agregar Notificación de Cirugía</h4>
                 <div style="width:20%" class="text-right">
-                    <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal" aria-label="Close" id="closeSurgery">
+                    <button type="button" class="btn btn-danger btn-xs modalClose" data-dismiss="modal" aria-label="Close">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
                 </div>
@@ -152,7 +178,7 @@
             </div>
             <div class="modal-footer">
                 <button id="Save" type="button" class="btn btn-success">Guardar</button>
-                <button id="Cancel" type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                <button id="Cancel" type="button" class="btn btn-primary modalClose" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -165,7 +191,7 @@
                 <div style="width:20%"></div>
                 <h4 style="width:60%" class="modal-title text-center">Editar Notificación de Cirugía</h4>
                 <div style="width:20%" class="text-right">
-                    <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal" aria-label="Close" id="editCloseSurgery">
+                    <button type="button" class="btn btn-danger btn-xs editClose" data-dismiss="modal" aria-label="Close">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
                 </div>
@@ -203,7 +229,7 @@
             </div>
             <div class="modal-footer">
                 <button id="EditSave" type="button" class="btn btn-success">Guardar</button>
-                <button id="EditCancel" type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                <button id="EditCancel" type="button" class="btn btn-primary editClose" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -431,6 +457,12 @@
         //////////////////////////////////// Create Surgery ///////////////////////////////////////////
 
         $('#createSurgery').click(function () {
+            $('#modalSelectSurgery').show('slow');
+        });
+
+        $('#FrequentPatient').click(function () {
+            $('#modalSelectSurgery').hide('slow');
+
             $('#SurgeryPet').val(0).trigger('change');
             $('#SurgeryTypeSelect').val(0).trigger('change');
             $('#SurgeryDateSpan').hide();
@@ -440,11 +472,7 @@
             $('#modalSurgery').show('slow');
         });
 
-        $('#Cancel').click(function () {
-            $('#modalSurgery').hide('slow');
-        });
-
-        $('#closeSurgery').click(function () {
+        $('.modalClose').click(function () {
             $('#modalSurgery').hide('slow');
         });
 
@@ -523,11 +551,7 @@
             $('#editSurgery').show('slow');
         }
 
-        $('#EditCancel').click(function () {
-            $('#editSurgery').hide('slow');
-        });
-
-        $('#editCloseSurgery').click(function () {
+        $('.editClose').click(function () {
             $('#editSurgery').hide('slow');
         });
 

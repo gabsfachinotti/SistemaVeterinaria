@@ -95,7 +95,7 @@
             <div class="modal-header">
                 <h5 style="width:50%" class="modal-title">Agregar Notificación de Baño</h5>
                 <div style="width:50%" class="text-right">
-                    <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal" aria-label="Close" id="closeShower">
+                    <button type="button" class="btn btn-danger btn-xs modalClose" data-dismiss="modal" aria-label="Close">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
                 </div>
@@ -131,7 +131,7 @@
             </div>
             <div class="modal-footer">
                 <button id="Save" type="button" class="btn btn-success">Guardar</button>
-                <button id="Cancel" type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                <button id="Cancel" type="button" class="btn btn-primary modalClose" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -169,7 +169,7 @@
             <div class="modal-header">
                 <h5 style="width:50%" class="modal-title">Agregar Notificación de Baño</h5>
                 <div style="width:50%" class="text-right">
-                    <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal" aria-label="Close" id="closeOccasionalShower">
+                    <button type="button" class="btn btn-danger btn-xs occasionalClose" data-dismiss="modal" aria-label="Close">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
                 </div>
@@ -245,7 +245,7 @@
             </div>
             <div class="modal-footer" style="margin-top: 0">
                 <button id="OccasionalSave" type="button" class="btn btn-success">Guardar</button>
-                <button id="OccasionalCancel" type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                <button id="OccasionalCancel" type="button" class="btn btn-primary occasionalClose" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -257,7 +257,7 @@
             <div class="modal-header">
                 <h5 style="width:50%" class="modal-title">Editar Notificación de Baño</h5>
                 <div style="width:50%" class="text-right">
-                    <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal" aria-label="Close" id="closeEditShower">
+                    <button type="button" class="btn btn-danger btn-xs editClose" data-dismiss="modal" aria-label="Close">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
                 </div>
@@ -297,7 +297,7 @@
             </div>
             <div class="modal-footer">
                 <button id="EditSave" type="button" class="btn btn-success">Guardar</button>
-                <button id="EditCancel" type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                <button id="EditCancel" type="button" class="btn btn-primary editClose" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -309,7 +309,7 @@
             <div class="modal-header">
                 <h5 style="width:50%" class="modal-title">Editar Notificación de Baño</h5>
                 <div style="width:50%" class="text-right">
-                    <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal" aria-label="Close" id="closeEditOccasionalShower">
+                    <button type="button" class="btn btn-danger btn-xs editOccasionalClose" data-dismiss="modal" aria-label="Close">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
                 </div>
@@ -372,7 +372,7 @@
             </div>
             <div class="modal-footer" style="margin-top: 0">
                 <button id="EditOccasionalSave" type="button" class="btn btn-success">Guardar</button>
-                <button id="EditOccasionalCancel" type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                <button id="EditOccasionalCancel" type="button" class="btn btn-primary editOccasionalClose" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -405,7 +405,7 @@
         });
 
         $('#FrequentPatient').click(function () {
-            $('#modalSelectShower').hide();
+            $('#modalSelectShower').hide('slow');
 
             $('#ShowerDateSpan').hide();
             $("#ShowerPet").val(0).trigger('change');
@@ -416,7 +416,7 @@
         });
 
         $('#OccasionalPatient').click(function () {
-            $('#modalSelectShower').hide();
+            $('#modalSelectShower').hide('slow');
 
             $('#OccasionalShowerDate').val('');
             $('#OccasionalShowerDateSpan').hide();
@@ -434,19 +434,11 @@
             $('#modalOccasionalShower').show('slow');
         });
 
-        $('#closeOccasionalShower').click(function () {
+        $('.occasionalClose').click(function () {
             $('#modalOccasionalShower').hide('slow');
         });
 
-        $('#OccasionalCancel').click(function () {
-            $('#modalOccasionalShower').hide('slow');
-        });
-
-        $('#closeShower').click(function () {
-            $('#modalShower').hide('slow');
-        });
-
-        $('#Cancel').click(function () {
+        $('.modalClose').click(function () {
             $('#modalShower').hide('slow');
         });
 
@@ -784,11 +776,7 @@
             $('#editShower').show('slow');
         }
 
-        $('#closeEditShower').click(function () {
-            $('#editShower').hide('slow');
-        });
-
-        $('#EditCancel').click(function () {
+        $('.editClose').click(function () {
             $('#editShower').hide('slow');
         });
 
@@ -919,11 +907,7 @@
             $('#editOccasionalShower').show('slow');
         }
 
-        $('#closeEditOccasionalShower').click(function () {
-            $('#editOccasionalShower').hide('slow');
-        });
-
-        $('#EditOccasionalCancel').click(function () {
+        $('.editOccasionalClose').click(function () {
             $('#editOccasionalShower').hide('slow');
         });
 

@@ -162,7 +162,11 @@ namespace SistemaVeterinaria.Controllers
                 db.SaveChanges();
             }
 
-            var position = db.Vaccines.ToList().OrderBy(v => v.VaccineNumber).Last(v => v.PetId == vaccine.PetId & v.VaccineNumber < vaccine.VaccineNumber).VaccineNumber;
+            var position = 1;
+            if (db.Vaccines.ToList().Exists(v => v.PetId == vaccine.PetId & v.VaccineNumber < vaccine.VaccineNumber))
+            {
+                position = db.Vaccines.ToList().OrderBy(v => v.VaccineNumber).Last(v => v.PetId == vaccine.PetId & v.VaccineNumber < vaccine.VaccineNumber).VaccineNumber;
+            }            
 
             return new JsonResult { Data = new { status = status, message = message, position = position, vaccineId = vaccine.VaccineId } };
         }
