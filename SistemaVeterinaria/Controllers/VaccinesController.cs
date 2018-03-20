@@ -20,7 +20,8 @@ namespace SistemaVeterinaria.Controllers
         {
             var vaccines = db.Vaccines.ToList().FindAll(v => v.VaccineDate >= DateTime.Today & v.VaccineDate < DateTime.Today.AddYears(2) & v.VaccineNumber > 1);
             ViewBag.Title = "Notificaciones Futuras de Vacunas";
-            ViewBag.Pets = db.Pets.ToList();
+            ViewBag.Pets = db.Pets.ToList().FindAll(p => !p.Vaccinations.Any());
+            ViewBag.AllPets = db.Pets.ToList();
             return View(vaccines);
         }
 
@@ -129,6 +130,69 @@ namespace SistemaVeterinaria.Controllers
             var date6 = vaccine4.VaccineDate.AddYears(1).ToString("yyyy-MM-dd");
 
             return new JsonResult { Data = new { vaccineId = vaccineId, owner = vaccine.Pet.Owner.OwnerFullName, pet = pet, specie = specie, date = date, date2 = date2, date3 = date3, date4 = date4, date5 = date5, date6 = date6 } };
+        }
+
+        public JsonResult ValidateVaccine(Vaccine vaccine)
+        {
+            var status = true;
+            var message = String.Empty;
+
+            if (db.Vaccines.ToList().Exists(v => v.PetId == vaccine.PetId & v.VaccineNumber == vaccine.VaccineNumber))
+            {
+                status = false;
+                message = "Ya existe una vacuna con el Ordinal ingresado";
+            }
+
+            if (db.Vaccines.ToList().Exists(v => v.PetId == vaccine.PetId & v.VaccineNumber < vaccine.VaccineNumber & v.VaccineDate > vaccine.VaccineDate))
+            {
+                status = false;
+                message = "No es posible agregar una vacuna con fecha inferior a la de su Nro Ordinal anterior";
+            }
+
+            if (db.Vaccines.ToList().Exists(v => v.PetId == vaccine.PetId & v.VaccineNumber > vaccine.VaccineNumber & v.VaccineDate < vaccine.VaccineDate))
+            {
+                status = false;
+                message = "No es posible agregar una vacuna con fecha superior a la de su Nro Ordinal posterior";
+            }
+
+            if (status)
+            {
+                vaccine.Pet = db.Pets.Find(vaccine.PetId);
+                db.Vaccines.Add(vaccine);
+                db.SaveChanges();
+            }
+
+            var position = db.Vaccines.ToList().OrderBy(v => v.VaccineNumber).Last(v => v.PetId == vaccine.PetId & v.VaccineNumber < vaccine.VaccineNumber).VaccineNumber;
+
+            return new JsonResult { Data = new { status = status, message = message, position = position, vaccineId = vaccine.VaccineId } };
+        }
+
+        public JsonResult ValidateEditVaccine(Vaccine vaccine)
+        {
+            var status = true;
+            var message = String.Empty;
+
+            if (db.Vaccines.ToList().Exists(v => v.PetId == vaccine.PetId & v.VaccineNumber < vaccine.VaccineNumber & v.VaccineDate > vaccine.VaccineDate))
+            {
+                status = false;
+                message = "No es posible modificar la fecha de una vacuna a una fecha inferior a la de su Nro Ordinal anterior";
+            }
+
+            if (db.Vaccines.ToList().Exists(v => v.PetId == vaccine.PetId & v.VaccineNumber > vaccine.VaccineNumber & v.VaccineDate < vaccine.VaccineDate))
+            {
+                status = false;
+                message = "No es posible modificar la fecha de una vacuna a una fecha superior a la de su siguiente Nro Ordinal";
+            }
+
+            if (status)
+            {
+                var editVaccine = db.Vaccines.Find(vaccine.VaccineId);
+                editVaccine.VaccineDate = vaccine.VaccineDate;
+                db.Entry(editVaccine).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return new JsonResult { Data = new { status = status, message = message, vaccineId = vaccine.VaccineId }};
         }
 
         [HttpPost]

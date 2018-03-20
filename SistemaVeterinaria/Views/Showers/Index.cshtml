@@ -336,18 +336,23 @@
                     </label>
                 </div>
                 <span id="EditOccasionalShowerTurnSpan" style="color:red;display:none;margin-left:30%"></span>
-                <hr />
+                <hr style="margin-top: 3%" />
                 <h4 class="text-center" style="background-color:lightgray">Datos del Dueño</h4>
                 <div class="modalinput" style="margin-top:2%">
-                    <label class="mylabel">Apellido y Nombre:</label>
+                    <label class="mylabel">Nombre:</label>
                     <input id="EditOccasionalOwnerName" type="text" />
                 </div>
                 <span id="EditOccasionalOwnerNameSpan" style="color:red;display:none;margin-left:36%"></span>
+                <div class="modalinput" style="margin-top:2%">
+                    <label class="mylabel">Apellido:</label>
+                    <input id="EditOccasionalOwnerLastName" type="text" />
+                </div>
+                <span id="EditOccasionalOwnerLastNameSpan" style="color:red;display:none;margin-left:36%"></span>
                 <div class="modalinput" style="margin-top:1%">
                     <label class="mylabel">Teléfono:</label>
                     <input id="EditOccasionalOwnerPhone" type="text" placeholder="(opcional)" />
                 </div>
-                <hr />
+                <hr style="margin-top: 3%" />
                 <h4 class="text-center" style="background-color:lightgray">Datos del Paciente</h4>
                 <div class="modalinput" style="margin-top:2%">
                     <label class="mylabel">Nombre Paciente:</label>
@@ -365,7 +370,7 @@
                     </label>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="margin-top: 0">
                 <button id="EditOccasionalSave" type="button" class="btn btn-success">Guardar</button>
                 <button id="EditOccasionalCancel" type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
             </div>
@@ -888,17 +893,19 @@
 
             $('#EditOccasionalShowerDate').val(showerDate);
 
-            if ($('#ShowerTurn' + showerId).text() == 'Tarde') {
+            if ($('#ShowerTurn' + showerId).text().trim() == 'Tarde') {
                 $('#EditOccasionalAfternoonShift').prop('checked', true);
             } else {
                 $('#EditOccasionalMorningShift').prop('checked', true);
             }
-
-            $('#EditOccasionalOwnerName').val($('#Owner' + showerId).text().trim());
+            var lastname = $('#Owner' + showerId).text().trim().split(',')[0]
+            var name = $('#Owner' + showerId).text().trim().split(', ')[1]
+            $('#EditOccasionalOwnerName').val(name);
+            $('#EditOccasionalOwnerLastName').val(lastname);
             $('#EditOccasionalOwnerPhone').val(ownerPhone);
             $('#EditOccasionalPatientName').val($('#PetName' + showerId).text().trim());
 
-            if ($('#PetSpecie' + showerId).text() == 'Perro') {
+            if ($('#PetSpecie' + showerId).text().trim() == 'Perro') {
                 $('#EditOccasionalPetDogSpecie').prop('checked', true);
             } else {
                 $('#EditOccasionalPetCatSpecie').prop('checked', true);
