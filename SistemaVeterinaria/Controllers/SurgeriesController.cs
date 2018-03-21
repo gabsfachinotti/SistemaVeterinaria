@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using SistemaVeterinaria.Context;
 using SistemaVeterinaria.Models;
+using SistemaVeterinaria.ViewModels;
 
 namespace SistemaVeterinaria.Controllers
 {
@@ -18,7 +19,7 @@ namespace SistemaVeterinaria.Controllers
         // GET: Surgeries
         public ActionResult Index()
         {
-            var surgeries = db.Surgeries.Include(s => s.Pet).Include(s => s.SurgeryType);
+            var surgeries = db.Surgeries.ToList().Where(s => s.SurgeryDate >= DateTime.Today);
             ViewBag.SurgeryTypes = db.SurgeryTypes.ToList();
             if (db.SurgeryTypes.Any())
             {
@@ -30,7 +31,7 @@ namespace SistemaVeterinaria.Controllers
             }
 
             ViewBag.Pets = db.Pets.ToList();
-            return View(surgeries.ToList());
+            return View(surgeries);
         }
 
         public ActionResult DailyNotification()
@@ -135,6 +136,26 @@ namespace SistemaVeterinaria.Controllers
                 }
             }
             return new JsonResult { Data = new { status = false } };
+        }
+
+        public JsonResult CreateOwnerSurgery(OwnerPetSurgery ownerPetSurgery)
+        {
+            Owner owner = ownerPetSurgery.Owner;
+            db.Owners.Add(owner);
+            db.SaveChanges();
+
+            Pet pet = ownerPetSurgery.Pet;
+            owner.Pets.Add(pet);
+            db.Entry(owner).State = EntityState.Modified;
+            db.SaveChanges();
+
+            Surgery surgery = ownerPetSurgery.Surgery;
+            surgery.SurgeryType = db.SurgeryTypes.Find(surgery.SurgeryTypeId);
+            pet.Surgeries.Add(surgery);
+            db.Entry(pet).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return new JsonResult { Data = new { status = true, surgeryId = surgery.SurgeryId, surgeryTypeName = surgery.SurgeryType.SurgeryTypeName } };
         }
 
         public JsonResult EditSurgery(Surgery surgery)

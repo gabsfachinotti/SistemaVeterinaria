@@ -8,12 +8,14 @@ using System.Web;
 using System.Web.Mvc;
 using SistemaVeterinaria.Context;
 using SistemaVeterinaria.Models;
+using SistemaVeterinaria.Repositories;
 
 namespace SistemaVeterinaria.Controllers
 {
     public class VaccinesController : Controller
     {
         private VeterinaryContext db = new VeterinaryContext();
+        VaccineRepository vaccineRepository = new VaccineRepository();
 
         // GET: Vaccines
         public ActionResult Index()
@@ -29,7 +31,8 @@ namespace SistemaVeterinaria.Controllers
         {
             var vaccines = db.Vaccines.ToList().FindAll(v => v.VaccineDate < DateTime.Today);
             ViewBag.Title = "Vacunas Realizadas";
-            ViewBag.Pets = db.Pets.ToList();
+            ViewBag.Pets = db.Pets.ToList().FindAll(p => !p.Vaccinations.Any());
+            ViewBag.AllPets = db.Pets.ToList();
             return View("Index", vaccines);
         }
 

@@ -170,6 +170,7 @@
                         <th>Paciente</th>
                         <th class="text-center">Cirugía</th>
                         <th class="text-center">Fecha</th>
+                        <th class="text-center">Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -180,6 +181,7 @@
                             <td>@item.Pet.PetName</td>
                             <td class="text-center">@item.SurgeryType.SurgeryTypeName</td>
                             <td class="text-center">@item.SurgeryDate.ToString("dd/MM/yyyy")</td>
+                            <td class="text-center" style="width: 15%"><button id="@("deletesurgery" + item.SurgeryId)" class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteSurgery(@item.SurgeryId)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
                         </tr>
                     }
                 </tbody>
@@ -193,7 +195,8 @@
                         <th class="text-center">Nro</th>
                         <th>Paciente</th>
                         <th class="text-center">Turno</th>
-                        <th class="text-center">Fecha</th>                        
+                        <th class="text-center">Fecha</th>
+                        <th class="text-center">Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -207,6 +210,7 @@
                             else
                             {<p>Tarde</p>}</td>
                             <td class="text-center">@item.ShowerDate.ToString("dd/MM/yyyy")</td>
+                            <td class="text-center" style="width: 15%"><button id="@("deleteshower" + item.ShowerId)" class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteShower(@item.ShowerId)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
                         </tr>
                     }
                 </tbody>
@@ -237,7 +241,9 @@
                     <input id="VaccineDate" style="width:30%" type="date" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
                 </div>
                 <span id="VaccineDateSpan" class="modalspan"></span>
-                <span id="VaccineGeneralSpan" style="color:red;display:none"></span>
+                <div class="text-center" style="margin-top: 2%; margin-bottom: 0">
+                    <span id="VaccineGeneralSpan" style="color:red;display:none"></span>
+                </div>                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" onclick="Save(@Model.PetId,'@Model.PetName','@DateTime.Today.ToString("yyyy-MM-dd")')">Guardar</button>
@@ -461,8 +467,78 @@
                         options.dataType = "json";
                         options.success = function (data) {
                             if (data) {
-                                toastr.success("Notificación eliminada");
+                                toastr.success("Vacuna eliminada");
                                 $('#deletebutton' + vaccineId).closest('tr').remove();
+                            }
+                        };
+                        $.ajax(options);
+                    }
+                }
+            });
+        }
+
+        //////////////////////////////////////// Surgeries /////////////////////////////////////////
+
+        function deleteSurgery(surgeryId) {
+            bootbox.confirm({
+                title: "Eliminar Cirugía",
+                message: "¿Está seguro de eliminar la cirugía Nro " + String(surgeryId) + "?",
+                buttons: {
+                    confirm: {
+                        label: "Eliminar",
+                        className: "btn-danger"
+                    },
+                    cancel: {
+                        label: "Cancelar",
+                        className: "btn-primary"
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        var options = {};
+                        options.url = '@Url.Action("DeleteSurgery", "Surgeries")';
+                        options.type = "POST";
+                        options.data = { "surgeryId": surgeryId };
+                        options.dataType = "json";
+                        options.success = function (data) {
+                            if (data) {
+                                toastr.success("Cirugía eliminada");
+                                $('#deletesurgery' + surgeryId).closest('tr').remove();
+                            }
+                        };
+                        $.ajax(options);
+                    }
+                }
+            });
+        }
+
+        //////////////////////////////////////////// Showers //////////////////////////////////////////
+
+        function deleteShower(showerId) {
+            bootbox.confirm({
+                title: "Eliminar Baño",
+                message: "¿Está seguro de eliminar el baño Nro " + String(showerId) + "?",
+                buttons: {
+                    confirm: {
+                        label: "Eliminar",
+                        className: "btn-danger"
+                    },
+                    cancel: {
+                        label: "Cancelar",
+                        className: "btn-primary"
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        var options = {};
+                        options.url = '@Url.Action("DeleteShower", "Showers")';
+                        options.type = "POST";
+                        options.data = { "showerId": showerId };
+                        options.dataType = "json";
+                        options.success = function (data) {
+                            if (data) {
+                                toastr.success("Baño eliminado");
+                                $('#deleteshower' + showerId).closest('tr').remove();
                             }
                         };
                         $.ajax(options);

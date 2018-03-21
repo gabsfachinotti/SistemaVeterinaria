@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using SistemaVeterinaria.Context;
 using SistemaVeterinaria.Models;
+using SistemaVeterinaria.Repositories;
 
 namespace SistemaVeterinaria.Controllers
 {

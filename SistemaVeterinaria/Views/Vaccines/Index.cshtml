@@ -156,7 +156,7 @@
                 <div class="modalinput" style="margin-top:1%">
                     <label class="modallabel">Paciente:</label>
                     <select id="EditVaccinePet" class="js-example-basic-single" style="width:60%">
-                        @foreach (var pet in ViewBag.Pets)
+                        @foreach (var pet in ViewBag.AllPets)
                         {
                             <option value="@pet.PetId">@pet.PetName (@pet.PetSpecie) - @pet.Owner.OwnerFullName</option>
                         }
@@ -202,7 +202,7 @@
 
             $('#VaccineDateSpan').hide();
             $("#VaccinePet").val(0).trigger('change');
-            $('#VaccinePetSpan').hide();
+            $('#VaccinePetSpan').text('Solo aparecerán en la lista, Pacientes sin vacunas').css('color','black').show();
             $('#modalVaccine').show('slow');
         });
 
@@ -227,7 +227,7 @@
 
             if ($('#VaccinePet').val() == 0 | $('#VaccinePet').val() == null) {
                 Validation = false;
-                $('#VaccinePetSpan').text('Debe seleccionar un paciente.').show();
+                $('#VaccinePetSpan').text('Debe seleccionar un paciente.').css('color','red').show();
             }
 
             if (Validation) {
@@ -279,6 +279,8 @@
             if (vaccineNumber > 1) {
                 $("#EditVaccinePet").attr("disabled", true);
                 $('#EditVaccinePetSpan').text('Para modificar el Paciente modifique la 1° Vacuna').css('color','black').show();
+            } else {
+                $("#EditVaccinePet").attr("disabled", false);
             }
             
             $('#EditVaccineNumber').text(String(vaccineNumber) + '° Vacuna')

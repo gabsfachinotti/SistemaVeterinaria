@@ -199,7 +199,7 @@
                     <input id="OccasionalOwnerName" type="text" />
                 </div>
                 <span id="OccasionalOwnerNameSpan" style="color:red;display:none;margin-left:36%"></span>
-                <div class="modalinput" style="margin-top:2%">
+                <div class="modalinput" style="margin-top:1%">
                     <label class="mylabel">Apellido:</label>
                     <input id="OccasionalOwnerLastName" type="text" />
                 </div>
@@ -458,11 +458,9 @@
                 $('#ShowerPetSpan').text('Debe seleccionar un Paciente').show();
             }
 
-            var turn;
+            var turn = true;
             if ($('#morningShift').is(':checked')) {
                 turn = false;
-            } else {
-                turn = true;
             }
 
             if (validation) {
@@ -556,31 +554,23 @@
                 validation = false;
             }
 
-            var turn;
+            var turn = true;
             if ($('#OccasionalMorningShift').is(':checked')) {
                 turn = false;
-            } else {
-                turn = true;
             }
 
-            var specie;
-            var specievalue = 0;
+            var specie = 'Gato';
+            var specievalue = 2;
             if ($('#OccasionalPetDogSpecie').is(':checked')) {
                 specie = 'Perro';
                 specievalue = 1;
-            } else {
-                specie = 'Gato';
-                specievalue = 2;
             }
 
-            var sex;
-            var sexvalue;
+            var sex = 'Macho';
+            var sexvalue = true;
             if ($('#OccasionalPetFemaleSex').is(':checked')) {
                 sex = 'Hembra';
                 sexvalue = false;
-            } else {
-                sex = 'Macho';
-                sexvalue = true;
             }
 
             if (validation) {
@@ -791,11 +781,9 @@
                 $('#EditShowerDateSpan').text('Debe seleccionar una fecha').show();
             }
 
-            var turn;
+            var turn = true;
             if ($('#editMorningShift').is(':checked')) {
                 turn = false;
-            } else {
-                turn = true;
             }
 
             var petId = 0;
@@ -922,18 +910,14 @@
                 $('#EditOcasionalShowerDateSpan').text('Debe seleccionar una fecha').show();
             }
 
-            var turn;
+            var turn = true;
             if ($('#EditOccasionalMorningShift').is(':checked')) {
                 turn = false;
-            } else {
-                turn = true;
             }
 
-            var specie;
+            var specie = 'Gato';
             if ($('#EditOccasionalPetDogSpecie').is(':checked')) {
                 specie = 'Perro';
-            } else {
-                specie = 'Gato';
             }
 
             if (validation) {
