@@ -35,7 +35,7 @@
 <table id="table" class="table table-bordered">
     <thead>
         <tr>
-            <th>
+            <th class="text-center">
                 Nro
             </th>
             <th>
@@ -179,6 +179,92 @@
             <div class="modal-footer">
                 <button id="Save" type="button" class="btn btn-success">Guardar</button>
                 <button id="Cancel" type="button" class="btn btn-primary modalClose" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalOccasionalSurgery" class="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 style="width:50%" class="modal-title">Agregar Notificación de Cirugía</h5>
+                <div style="width:50%" class="text-right">
+                    <button type="button" class="btn btn-danger btn-xs occasionalClose" data-dismiss="modal" aria-label="Close">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modalinput">
+                    <label class="modallabel">Fecha:</label>
+                    <input id="OccasionalSurgeryDate" style="width:30%" type="date" />
+                </div>
+                <span id="OccasionalSurgeryDateSpan" style="color:red;display:none;margin-left:30%"></span>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Cirugía:</label>
+                    <select id="OccasionalSurgeryTypeSelect" class="SurgeryTypeSelect" style="width:60%">
+                        @foreach (var item in ViewBag.SurgeryTypes)
+                        {
+                            <option value="@item.SurgeryTypeId">@item.SurgeryTypeName</option>
+                        }
+                    </select>
+                </div>
+                <span id="OccasionalSurgeryTypeSelectSpan" style="color:red;display:none;margin-left:30%"></span>
+                <hr style="margin-top: 3%" />
+                <h4 class="text-center" style="background-color:lightgray">Datos del Dueño</h4>
+                <div class="modalinput" style="margin-top:2%">
+                    <label class="mylabel">Nombre:</label>
+                    <input id="OccasionalOwnerName" type="text" />
+                </div>
+                <span id="OccasionalOwnerNameSpan" style="color:red;display:none;margin-left:36%"></span>
+                <div class="modalinput" style="margin-top:2%">
+                    <label class="mylabel">Apellido:</label>
+                    <input id="OccasionalOwnerLastName" type="text" />
+                </div>
+                <span id="OccasionalOwnerLastNameSpan" style="color:red;display:none;margin-left:36%"></span>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="mylabel">Teléfono:</label>
+                    <input id="OccasionalOwnerPhone" type="text" placeholder="(opcional)" />
+                </div>
+                <hr style="margin-top: 3%" />
+                <h4 class="text-center" style="background-color:lightgray">Datos del Paciente</h4>
+                <div class="modalinput" style="margin-top:2%">
+                    <label class="mylabel">Nombre Paciente:</label>
+                    <input id="OccasionalPatientName" type="text" />
+                </div>
+                <span id="OccasionalPatientNameSpan" style="color:red;display:none;margin-left:36%"></span>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="mylabel">Nacimiento:</label>
+                    <input id="OccasionalPatientBirthday" type="date" />
+                </div>
+                <span id="OccasionalPatientBirthdaySpan" style="color:red;display:none;margin-left:36%"></span>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="mylabel">Especie:</label>
+                    <label style="width:18%">
+                        <input id="OccasionalPetDogSpecie" name="OccasionalPetSpecie" type="radio" checked="checked" />
+                        Perro
+                    </label>
+                    <label>
+                        <input id="OccasionalPetCatSpecie" name="OccasionalPetSpecie" type="radio" />
+                        Gato
+                    </label>
+                </div>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="mylabel">Sexo:</label>
+                    <label style="width:18%">
+                        <input id="OccasionalPetFemaleSex" name="OccasionalPetSex" type="radio" checked="checked" />
+                        Hembra
+                    </label>
+                    <label>
+                        <input id="OccasionalPetMaleSex" name="OccasionalPetSex" type="radio" />
+                        Macho
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer" style="margin-top: 0">
+                <button id="OccasionalSave" type="button" class="btn btn-success">Guardar</button>
+                <button id="OccasionalCancel" type="button" class="btn btn-primary occasionalClose" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -374,6 +460,7 @@
                        //Agregar aquí la nueva cirugía a las listas de cirugías de las ventanas modales
                        $('#SurgeryTypeSelect').append('<option value="' + data.surgeryTypeId + '">' + $('#SurgeryName' + futureId).val().trim() + '</option>');
                        $('#EditSurgeryTypeSelect').append('<option value="' + data.surgeryTypeId + '">' + $('#SurgeryName' + futureId).val().trim() + '</option>');
+                       $('#OccasionalSurgeryTypeSelect').append('<option value="' + data.surgeryTypeId + '">' + $('#SurgeryName' + futureId).val().trim() + '</option>');
                    } else {
                        $('#SurgeryName' + futureId).val('');
                        $('#SurgeryName' + futureId).css("border-color", "red");
@@ -458,6 +545,10 @@
 
         $('#createSurgery').click(function () {
             $('#modalSelectSurgery').show('slow');
+        });
+
+        $('#closeSelectSurgery').click(function () {
+            $('#modalSelectSurgery').hide('slow');
         });
 
         $('#FrequentPatient').click(function () {
