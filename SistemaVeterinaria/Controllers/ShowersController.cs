@@ -118,7 +118,7 @@ namespace SistemaVeterinaria.Controllers
                 db.Showers.Add(shower);
                 db.SaveChanges();                
 
-                return new JsonResult { Data = new { status = true, showerId = shower.ShowerId, petId = shower.PetId, petname = shower.PetName, owner = shower.Owner, ownerPhone = shower.OwnerPhone, specie = shower.PetSpecie, date = shower.ShowerDate.ToString("yyyy-MM-dd") } };
+                return new JsonResult { Data = new { status = true, showerId = shower.ShowerId, petId = shower.PetId, petname = shower.PetName, owner = shower.Owner, ownerPhone = shower.OwnerPhone, specie = shower.PetSpecie, date = shower.ShowerDate.ToString("yyyy-MM-dd"), dateTitle = shower.ShowerDate.ToString("D") } };
             }
             else
             {
@@ -147,7 +147,7 @@ namespace SistemaVeterinaria.Controllers
                 db.Showers.Add(ownerPetShower.Shower);
                 db.SaveChanges();
 
-                return new JsonResult { Data = new { status = true, showerId = ownerPetShower.Shower.ShowerId, petId = pet.PetId, petname = pet.PetName, owner = owner.OwnerFullName, ownerPhone = owner.OwnerPhone, specie = ownerPetShower.Shower.PetSpecie, date = ownerPetShower.Shower.ShowerDate.ToString("yyyy-MM-dd") } };
+                return new JsonResult { Data = new { status = true, showerId = ownerPetShower.Shower.ShowerId, petId = pet.PetId, petname = pet.PetName, owner = owner.OwnerFullName, ownerPhone = owner.OwnerPhone, specie = ownerPetShower.Shower.PetSpecie, date = ownerPetShower.Shower.ShowerDate.ToString("yyyy-MM-dd"), dateTitle = ownerPetShower.Shower.ShowerDate.ToString("D") } };
             }
             else
             {
@@ -179,7 +179,7 @@ namespace SistemaVeterinaria.Controllers
                 db.Entry(shower).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return new JsonResult { Data = new { status = true, petId = shower.PetId, petName = shower.PetName, owner = shower.Owner, ownerPhone = shower.OwnerPhone, specie = shower.PetSpecie, date = shower.ShowerDate.ToString("yyyy-MM-dd") } };
+                return new JsonResult { Data = new { status = true, petId = shower.PetId, petName = shower.PetName, owner = shower.Owner, ownerPhone = shower.OwnerPhone, specie = shower.PetSpecie, date = shower.ShowerDate.ToString("yyyy-MM-dd"), dateTitle = shower.ShowerDate.ToString("D") } };
             }
             else
             {

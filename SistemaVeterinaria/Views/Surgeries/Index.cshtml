@@ -108,7 +108,7 @@
             <td id="@("SurgeryType" + item.SurgeryId)" class="text-center">
                 @Html.DisplayFor(modelItem => item.SurgeryType.SurgeryTypeName)
             </td>
-            <td id="@("SurgeryDate" + item.SurgeryId)" class="text-center">
+            <td id="@("SurgeryDate" + item.SurgeryId)" class="text-center" data-toggle="tooltip" title="@item.SurgeryDate.ToString("D")">
                 <text>@item.SurgeryDate.ToString("yyyy/MM/dd")</text>
                 <text>@item.SurgeryDate.ToString("dd/MM/yyyy")</text>
             </td>
@@ -726,7 +726,7 @@
                                             '<td id="SurgeryPetSex' + d.surgeryId + '" class="text-center">' + d.petSex + '</td>' +
                                             '<td id="SurgeryPetOwner' + d.surgeryId + '" class="text-center">' + d.owner + '</td>' +
                                             '<td id="SurgeryType' + d.surgeryId + '" class="text-center">' + d.surgeryType + '</td>' +
-                                            '<td id="SurgeryDate' + d.surgeryId + '" class="text-center">' + d.date.split('-')[2] + '/' + d.date.split('-')[1] + '/' + d.date.split('-')[0] + '</td>' +
+                                            '<td id="SurgeryDate' + d.surgeryId + '" class="text-center" data-toggle="tooltip" title="'+ d.dateTitle +'">' + d.date.split('-')[2] + '/' + d.date.split('-')[1] + '/' + d.date.split('-')[0] + '</td>' +
                                             '<td id="SurgeryButtons' + d.surgeryId + '" class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editSurgery(\'' + d.surgeryId + '\',\'' + $('#SurgeryPet').val() + '\',\'' + $('#SurgeryTypeSelect').val() + '\',\'' + d.date + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteSurgery('+ d.surgeryId +')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>' +
                                         '</tr>';
 
@@ -886,29 +886,25 @@
                             dataType: "JSON",
                             contentType: "application/json",
                             success: function (d) {
-                                if (d.status) {
-                                    $('#modalOccasionalSurgery').hide('slow');
+                                $('#modalOccasionalSurgery').hide('slow');
 
-                                    var row = '<tr id="Surgery' + d.surgeryId +'" style="background-color: #dee1ea">' +
-                                        '<td id="SurgeryId'+ d.surgeryId +'" class="text-center">'+ d.surgeryId +'</td>' +
-                                        '<td id="SurgeryPet' + d.surgeryId +'">' + pet.PetName + '</td>' +
-                                        '<td id="SurgeryPetSpecie' + d.surgeryId +'" class="text-center">' + specievalue + '</td>' +
-                                        '<td id="SurgeryPetSex' + d.surgeryId +'" class="text-center">' + sexvalue + '</td>' +
-                                        '<td id="SurgeryPetOwner' + d.surgeryId +'" class="text-center">' + owner.OwnerLastName + ', ' + owner.OwnerName + '</td>' +
-                                        '<td id="SurgeryType' + d.surgeryId +'" class="text-center">' + d.surgeryTypeName + '</td>' +
-                                        '<td id="SurgeryDate' + d.surgeryId +'" class="text-center">' + surgery.SurgeryDate.split('-')[2] + '/' + surgery.SurgeryDate.split('-')[1] + '/' + surgery.SurgeryDate.split('-')[0] + '</td>'
+                                var row = '<tr id="Surgery' + d.surgeryId + '" style="background-color: #dee1ea">' +
+                                    '<td id="SurgeryId' + d.surgeryId + '" class="text-center">' + d.surgeryId + '</td>' +
+                                    '<td id="SurgeryPet' + d.surgeryId + '">' + pet.PetName + '</td>' +
+                                    '<td id="SurgeryPetSpecie' + d.surgeryId + '" class="text-center">' + specievalue + '</td>' +
+                                    '<td id="SurgeryPetSex' + d.surgeryId + '" class="text-center">' + sexvalue + '</td>' +
+                                    '<td id="SurgeryPetOwner' + d.surgeryId + '" class="text-center">' + owner.OwnerLastName + ', ' + owner.OwnerName + '</td>' +
+                                    '<td id="SurgeryType' + d.surgeryId + '" class="text-center">' + d.surgeryTypeName + '</td>' +
+                                    '<td id="SurgeryDate' + d.surgeryId + '" class="text-center" data-toggle="tooltip" title="' + d.dateTitle + '">' + surgery.SurgeryDate.split('-')[2] + '/' + surgery.SurgeryDate.split('-')[1] + '/' + surgery.SurgeryDate.split('-')[0] + '</td>'
 
-                                    if (ownerPetSurgery.Surgery.SurgeryPatientFrequent) {
-                                        row += '<td id="SurgeryButtons" class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick=""><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick=""><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>';
-                                    } else {
-                                        row += '<td id="SurgeryButtons" class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick=""><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick=""><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>';
-                                    }
-
-                                    $('#Surgeries').prepend(row);
-                                    toastr.success('Se ha añadido una nueva cirugía')
+                                if (ownerPetSurgery.Surgery.SurgeryPatientFrequent) {
+                                    row += '<td id="SurgeryButtons" class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick=""><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick=""><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>';
                                 } else {
-                                    toastr.warning('Error: No ha podido realizarse la agregación de cirugía correctamente, si el error persiste contacte al desarrollador')
+                                    row += '<td id="SurgeryButtons" class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick=""><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick=""><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>';
                                 }
+
+                                $('#Surgeries').prepend(row);
+                                toastr.success('Se ha añadido una nueva cirugía');
                             }
                         });
                     }
@@ -984,6 +980,7 @@
                             $('#SurgeryPetOwner' + surgeryId).html(d.owner);
                             $('#SurgeryType' + surgeryId).html(d.surgeryType);
                             $('#SurgeryDate' + surgeryId).html(d.date.split('-')[2] + '/' + d.date.split('-')[1] + '/' + d.date.split('-')[0]);
+                            $('#SurgeryDate' + surgeryId).attr('title', d.dateTitle);
 
                             $('#SurgeryButtons' + surgeryId).html('<button class="btn btn-primary btn-sm" onclick="editSurgery(\'' + surgeryId + '\',\'' + $('#EditSurgeryPet').val() + '\',\'' + d.surgeryTypeId + '\',\'' + d.date + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteSurgery(' + surgeryId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>');
                             $('#Surgery' + surgeryId).css('background-color', '#dee1ea');
@@ -1086,6 +1083,71 @@
             if ($('#EditOccasionalPetMaleSex').is(':checked')) {
                 sex = true;
                 sexvalue = 'Macho';
+            }
+
+            if (validation) {
+                $('#editOccasionalSurgery').hide('slow');
+
+                var surgery = {
+                    SurgeryId: parseInt($('#OccasionalSurgeryId').text()),
+                    SurgeryTypeId: $('#EditOccasionalSurgeryTypeSelect').val(),
+                    SurgeryType: null,
+                    SurgeryDate: $('#EditOccasionalSurgeryDate').val(),
+                    PetId: null,
+                    Pet: null,
+                    SurgeryPatientFrequent: false
+                }
+
+                var pet = {
+                    PetId: null,
+                    PetName: $('#EditOccasionalPatientName').val().trim(),
+                    PetSpecie: specie,
+                    PetBreed: '',
+                    PetSex: sex,
+                    PetBirthday: $('#EditOccasionalPatientBirthday').val(),
+                    PetColor: '',
+                    OwnerId: null,
+                    Owner: null,
+                    Vaccinations: null,
+                    Surgeries: null
+                }
+
+                var owner = {
+                    OwnerId: null,
+                    OwnerName: $('#EditOccasionalOwnerName').val().trim(),
+                    OwnerLastName: $('#EditOccasionalOwnerLastName').val().trim(),
+                    OwnerAddress: '',
+                    OwnerPhone: $('#EditOccasionalOwnerPhone').val(),
+                    Pets: null
+                }
+
+                var ownerPetSurgery = {
+                    Surgery: surgery,
+                    Owner: owner,
+                    Pet: pet
+                }
+
+                $.ajax({
+                    url: '@Url.Action("EditOwnerSurgery","Surgeries")',
+                    type: "POST",
+                    data: JSON.stringify(ownerPetSurgery),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        $('#SurgeryPet' + d.surgeryId).html(pet.PetName);
+                        $('#SurgeryPetSpecie' + d.surgeryId).html(specievalue);
+                        $('#SurgeryPetSex' + d.surgeryId).html(sexvalue);
+                        $('#SurgeryPetOwner' + d.surgeryId).html(d.owner);
+                        $('#SurgeryType' + d.surgeryId).html(d.surgeryType);
+                        $('#SurgeryDate' + d.surgeryId).html(d.date.split('-')[2] + '/' + d.date.split('-')[1] + '/' + d.date.split('-')[0]);
+                        $('#SurgeryDate' + d.surgeryId).attr('title', d.dateTitle);
+
+                        $('#SurgeryButtons' + d.surgeryId).html('<button class="btn btn-primary btn-sm" onclick="editOccasionalSurgery(\'' + d.surgeryId + '\',\'' + surgery.SurgeryDate + '\',\'' + surgery.SurgeryTypeId + '\',\'' + pet.PetBirthday + '\',\'' + owner.OwnerPhone + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteSurgery(' + d.surgeryId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>');
+                        $('#Surgery' + d.surgeryId).css('background-color', '#dee1ea');
+
+                        toastr.success('Se ha modificado la notificación de cirugía nro ' + String(d.surgeryId));
+                    }
+                });
             }
 
         });

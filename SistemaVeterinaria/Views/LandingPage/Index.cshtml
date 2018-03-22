@@ -137,15 +137,15 @@
                 <div class="modal-footer">
                     @if (ViewBag.Vaccines > 0)
                     {
-                        <a href="@Url.Action("DailyNotification","Vaccines")" class="btn btn-success">Ver Vacunas</a>
+                        <a href="@Url.Action("DailyNotification","Vaccines")" class="btn btn-success">Ver Vacunas (@ViewBag.Vaccines)</a>
                     }
                     @if (ViewBag.Surgeries > 0)
                     {
-                        <a href="@Url.Action("DailyNotification","Surgeries")" class="btn btn-primary">Ver Cirugías</a>
+                        <a href="@Url.Action("DailyNotification","Surgeries")" class="btn btn-primary">Ver Cirugías (@ViewBag.Surgeries)</a>
                     }
                     @if (ViewBag.Showers > 0)
                     {
-                        <a href="@Url.Action("DailyNotification","Showers")" class="btn btn-info">Ver Baños</a>
+                        <a href="@Url.Action("DailyNotification","Showers")" class="btn btn-info">Ver Baños (@ViewBag.Showers)</a>
                     }
                 </div>
             </div>

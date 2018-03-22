@@ -85,7 +85,7 @@
                             </tr>
                             <tr>
                                 <th><h5>Nacimiento:</h5></th>
-                                <td><h5>@Model.PetBirthday.ToString("dd/MM/yyyy")</h5></td>
+                                <td data-toggle="tooltip" title="@Model.PetBirthday.ToString("D")"><h5>@Model.PetBirthday.ToString("dd/MM/yyyy")</h5></td>
                             </tr>
                             <tr>
                                 <th><h5>Edad:</h5></th>
@@ -148,7 +148,7 @@
                             <td class="text-center">@item.VaccineId</td>
                             <td>@item.Pet.PetName</td>
                             <td class="text-center">@item.VaccineNumber° Vacuna</td>
-                            <td class="text-center">
+                            <td class="text-center" data-toggle="tooltip" title="@item.VaccineDate.ToString("D")">
                                 <p>@item.VaccineDate.ToString("yyyy/MM/dd")</p>
                                 <p>@item.VaccineDate.ToString("dd/MM/yyyy")</p>
                             </td>
@@ -180,7 +180,9 @@
                             <td class="text-center">@item.SurgeryId</td>
                             <td>@item.Pet.PetName</td>
                             <td class="text-center">@item.SurgeryType.SurgeryTypeName</td>
-                            <td class="text-center">@item.SurgeryDate.ToString("dd/MM/yyyy")</td>
+                            <td class="text-center" data-toggle="tooltip" title="@item.SurgeryDate.ToString("D")">
+                                @item.SurgeryDate.ToString("dd/MM/yyyy")
+                            </td>
                             <td class="text-center" style="width: 15%"><button id="@("deletesurgery" + item.SurgeryId)" class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteSurgery(@item.SurgeryId)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
                         </tr>
                     }
@@ -209,7 +211,9 @@
                             {<p>Mañana</p>}
                             else
                             {<p>Tarde</p>}</td>
-                            <td class="text-center">@item.ShowerDate.ToString("dd/MM/yyyy")</td>
+                            <td class="text-center" data-toggle="tooltip" title="@item.ShowerDate.ToString("D")">
+                                @item.ShowerDate.ToString("dd/MM/yyyy")
+                            </td>
                             <td class="text-center" style="width: 15%"><button id="@("deleteshower" + item.ShowerId)" class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteShower(@item.ShowerId)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
                         </tr>
                     }

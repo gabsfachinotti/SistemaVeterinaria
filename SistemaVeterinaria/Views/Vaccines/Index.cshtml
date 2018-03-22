@@ -79,7 +79,7 @@
                         <p id="@("number" + item.VaccineId)">@item.VaccineNumber° Vacuna</p>
                     }
                 </td>
-                <td id="@("date" + item.VaccineId)" class="text-center">
+                <td id="@("date" + item.VaccineId)" class="text-center" data-toggle="tooltip" title="@item.VaccineDate.ToString("D")">
                     <text>@item.VaccineDate.ToString("yyyy/MM/dd")</text>                    
                     <text>@item.VaccineDate.ToString("dd/MM/yyyy")</text>
                 </td>

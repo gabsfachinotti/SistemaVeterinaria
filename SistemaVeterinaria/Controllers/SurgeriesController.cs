@@ -132,7 +132,7 @@ namespace SistemaVeterinaria.Controllers
                         sex = "Hembra";
                     }
 
-                    return new JsonResult { Data = new { status = true, surgeryId = surgery.SurgeryId, surgeryType = surgery.SurgeryType.SurgeryTypeName, petName = surgery.Pet.PetName, petSpecie = specie, petSex = sex, owner = surgery.Pet.Owner.OwnerFullName, date = surgery.SurgeryDate.ToString("yyyy-MM-dd") } };
+                    return new JsonResult { Data = new { status = true, surgeryId = surgery.SurgeryId, surgeryType = surgery.SurgeryType.SurgeryTypeName, petName = surgery.Pet.PetName, petSpecie = specie, petSex = sex, owner = surgery.Pet.Owner.OwnerFullName, date = surgery.SurgeryDate.ToString("yyyy-MM-dd"), dateTitle = surgery.SurgeryDate.ToString("D") } };
                 }
             }
             return new JsonResult { Data = new { status = false } };
@@ -155,7 +155,7 @@ namespace SistemaVeterinaria.Controllers
             db.Entry(pet).State = EntityState.Modified;
             db.SaveChanges();
 
-            return new JsonResult { Data = new { status = true, surgeryId = surgery.SurgeryId, surgeryTypeName = surgery.SurgeryType.SurgeryTypeName } };
+            return new JsonResult { Data = new { surgeryId = surgery.SurgeryId, surgeryTypeName = surgery.SurgeryType.SurgeryTypeName, dateTitle = surgery.SurgeryDate.ToString("D") } };
         }
 
         public JsonResult EditSurgery(Surgery surgery)
@@ -190,11 +190,38 @@ namespace SistemaVeterinaria.Controllers
                         sex = "Hembra";
                     }
 
-                    return new JsonResult { Data = new { status = true, date = surgery.SurgeryDate.ToString("yyyy-MM-dd"), owner = surgery.Pet.Owner.OwnerFullName, pet = surgery.Pet.PetName, specie = specie, sex = sex, surgeryTypeId = surgery.SurgeryTypeId, surgeryType = surgery.SurgeryType.SurgeryTypeName} };
+                    return new JsonResult { Data = new { status = true, date = surgery.SurgeryDate.ToString("yyyy-MM-dd"), dateTitle = surgery.SurgeryDate.ToString("D"), owner = surgery.Pet.Owner.OwnerFullName, pet = surgery.Pet.PetName, specie = specie, sex = sex, surgeryTypeId = surgery.SurgeryTypeId, surgeryType = surgery.SurgeryType.SurgeryTypeName} };
                 }
             }
 
             return new JsonResult { Data = new { status = false } };
+        }
+
+        public JsonResult EditOwnerSurgery(OwnerPetSurgery ownerPetSurgery)
+        {
+            Surgery surgery = db.Surgeries.Find(ownerPetSurgery.Surgery.SurgeryId);
+            surgery.SurgeryDate = ownerPetSurgery.Surgery.SurgeryDate;
+            surgery.SurgeryTypeId = ownerPetSurgery.Surgery.SurgeryTypeId;
+            surgery.SurgeryType = db.SurgeryTypes.Find(ownerPetSurgery.Surgery.SurgeryTypeId);
+            db.Entry(surgery).State = EntityState.Modified;
+            db.SaveChanges();
+
+            Pet pet = db.Pets.Find(surgery.PetId);
+            pet.PetName = ownerPetSurgery.Pet.PetName;
+            pet.PetBirthday = ownerPetSurgery.Pet.PetBirthday;
+            pet.PetSpecie = ownerPetSurgery.Pet.PetSpecie;
+            pet.PetSex = ownerPetSurgery.Pet.PetSex;
+            db.Entry(pet).State = EntityState.Modified;
+            db.SaveChanges();
+
+            Owner owner = db.Owners.Find(pet.OwnerId);
+            owner.OwnerName = ownerPetSurgery.Owner.OwnerName;
+            owner.OwnerLastName = ownerPetSurgery.Owner.OwnerLastName;
+            owner.OwnerPhone = ownerPetSurgery.Owner.OwnerPhone;
+            db.Entry(owner).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return new JsonResult { Data = new { surgeryId = surgery.SurgeryId, owner = owner.OwnerFullName, surgeryType = surgery.SurgeryType.SurgeryTypeName, date = surgery.SurgeryDate.ToString("yyyy-MM-dd"), dateTitle = surgery.SurgeryDate.ToString("D") } };
         }
 
         [HttpPost]
