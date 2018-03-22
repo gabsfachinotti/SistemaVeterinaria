@@ -27,6 +27,11 @@
             margin-left: 10%;
             width: 26%;
         }
+
+        .hrmodal{
+            margin-top: 3%;
+            margin-bottom: 1%;
+        }
     </style>
 </head>
 <div style="width: 100%;display: inline-flex">
@@ -108,7 +113,14 @@
                 <text>@item.SurgeryDate.ToString("dd/MM/yyyy")</text>
             </td>
             <td id="@("SurgeryButtons" + item.SurgeryId)" class="text-center">
-                <button class="btn btn-primary btn-sm" title="Editar" onclick="editSurgery(@item.SurgeryId,@item.PetId,@item.SurgeryTypeId,'@item.SurgeryDate.ToString("yyyy-MM-dd")')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                @if (item.SurgeryPatientFrequent)
+                {
+                    <button class="btn btn-primary btn-sm" title="Editar" onclick="editSurgery(@item.SurgeryId,@item.PetId,@item.SurgeryTypeId,'@item.SurgeryDate.ToString("yyyy-MM-dd")')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                }
+                else
+                {
+                    <button class="btn btn-primary btn-sm" title="Editar" onclick="editOccasionalSurgery(@item.SurgeryId,'@item.SurgeryDate.ToString("yyyy-MM-dd")',@item.SurgeryTypeId,'@item.Pet.PetBirthday.ToString("yyyy-MM-dd")',@item.Pet.Owner.OwnerPhone)"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                }
                 <button class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteSurgery(@item.SurgeryId)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
             </td>
         </tr>
@@ -216,7 +228,7 @@
                     </select>
                 </div>
                 <span id="OccasionalSurgeryTypeSelectSpan" style="color:red;display:none;margin-left:30%"></span>
-                <hr style="margin-top: 3%" />
+                <hr class="hrmodal" />
                 <h4 class="text-center" style="background-color:lightgray">Datos del Dueño</h4>
                 <div class="modalinput" style="margin-top:2%">
                     <label class="mylabel">Nombre:</label>
@@ -232,7 +244,7 @@
                     <label class="mylabel">Teléfono:</label>
                     <input id="OccasionalOwnerPhone" type="text" placeholder="(opcional)" />
                 </div>
-                <hr style="margin-top: 3%" />
+                <hr class="hrmodal" />
                 <h4 class="text-center" style="background-color:lightgray">Datos del Paciente</h4>
                 <div class="modalinput" style="margin-top:2%">
                     <label class="mylabel">Nombre Paciente:</label>
@@ -321,6 +333,96 @@
             <div class="modal-footer">
                 <button id="EditSave" type="button" class="btn btn-success">Guardar</button>
                 <button id="EditCancel" type="button" class="btn btn-primary editClose" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editOccasionalSurgery" class="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="margin-top: -2%">
+            <div class="modal-header">
+                <h5 style="width:50%" class="modal-title">Editar Notificación de Cirugía</h5>
+                <div style="width:50%" class="text-right">
+                    <button type="button" class="btn btn-danger btn-xs editOccasionalClose" data-dismiss="modal" aria-label="Close">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modalinput">
+                    <label class="modallabel">Nro Cirugía:</label>
+                    <p id="OccasionalSurgeryId"></p>
+                </div>
+                <div class="modalinput">
+                    <label class="modallabel">Fecha:</label>
+                    <input id="EditOccasionalSurgeryDate" style="width:30%" type="date" />
+                </div>
+                <span id="EditOccasionalSurgeryDateSpan" style="color:red;display:none;margin-left:30%"></span>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Cirugía:</label>
+                    <select id="EditOccasionalSurgeryTypeSelect" class="SurgeryTypeSelect" style="width:60%">
+                        @foreach (var item in ViewBag.SurgeryTypes)
+                        {
+                            <option value="@item.SurgeryTypeId">@item.SurgeryTypeName</option>
+                        }
+                    </select>
+                </div>
+                <span id="EditOccasionalSurgeryTypeSelectSpan" style="color:red;display:none;margin-left:30%"></span>
+                <hr class="hrmodal" />
+                <h4 class="text-center" style="background-color:lightgray">Datos del Dueño</h4>
+                <div class="modalinput" style="margin-top:2%">
+                    <label class="mylabel">Nombre:</label>
+                    <input id="EditOccasionalOwnerName" type="text" />
+                </div>
+                <span id="EditOccasionalOwnerNameSpan" style="color:red;display:none;margin-left:36%"></span>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="mylabel">Apellido:</label>
+                    <input id="EditOccasionalOwnerLastName" type="text" />
+                </div>
+                <span id="EditOccasionalOwnerLastNameSpan" style="color:red;display:none;margin-left:36%"></span>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="mylabel">Teléfono:</label>
+                    <input id="EditOccasionalOwnerPhone" type="text" placeholder="(opcional)" />
+                </div>
+                <hr class="hrmodal" />
+                <h4 class="text-center" style="background-color:lightgray">Datos del Paciente</h4>
+                <div class="modalinput" style="margin-top:2%">
+                    <label class="mylabel">Nombre Paciente:</label>
+                    <input id="EditOccasionalPatientName" type="text" />
+                </div>
+                <span id="EditOccasionalPatientNameSpan" style="color:red;display:none;margin-left:36%"></span>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="mylabel">Nacimiento:</label>
+                    <input id="EditOccasionalPatientBirthday" type="date" />
+                </div>
+                <span id="EditOccasionalPatientBirthdaySpan" style="color:red;display:none;margin-left:36%"></span>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="mylabel">Especie:</label>
+                    <label style="width:18%">
+                        <input id="EditOccasionalPetDogSpecie" name="OccasionalPetSpecie" type="radio" checked="checked" />
+                        Perro
+                    </label>
+                    <label>
+                        <input id="EditOccasionalPetCatSpecie" name="OccasionalPetSpecie" type="radio" />
+                        Gato
+                    </label>
+                </div>
+                <div class="modalinput" style="margin-top:1%">
+                    <label class="mylabel">Sexo:</label>
+                    <label style="width:18%">
+                        <input id="EditOccasionalPetFemaleSex" name="OccasionalPetSex" type="radio" checked="checked" />
+                        Hembra
+                    </label>
+                    <label>
+                        <input id="EditOccasionalPetMaleSex" name="OccasionalPetSex" type="radio" />
+                        Macho
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer" style="margin-top: 0">
+                <button id="EditOccasionalSave" type="button" class="btn btn-success">Guardar</button>
+                <button id="EditOccasionalCancel" type="button" class="btn btn-primary editOccasionalClose" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -694,6 +796,16 @@
                 $('#OccasionalOwnerLastNameSpan').text('Debe ingresar el apellido del Dueño').show();
             }
 
+            if ($('#OccasionalPatientName').val().trim() == '') {
+                validation = false;
+                $('#OccasionalPatientNameSpan').text('Debe ingresar el nombre del paciente').show();
+            }
+
+            if ($('#OccasionalPatientBirthday').val() == '') {
+                validation = false;
+                $('#OccasionalPatientBirthdaySpan').text('Debe ingresar la fecha de nacimiento del paciente').show();
+            }
+
             var specie = 1;
             var specievalue = 'Perro';
             if ($('#OccasionalPetCatSpecie').is(':checked')) {
@@ -764,6 +876,7 @@
                     callback: function (result) {
                         if (result) {
                             ownerPetSurgery.Surgery.SurgeryPatientFrequent = true;
+                            toastr.success('Se han guardado los datos del Dueño y Paciente ingresados');
                         }
 
                         $.ajax({
@@ -792,14 +905,12 @@
                                     }
 
                                     $('#Surgeries').prepend(row);
-
-                                    
+                                    toastr.success('Se ha añadido una nueva cirugía')
                                 } else {
                                     toastr.warning('Error: No ha podido realizarse la agregación de cirugía correctamente, si el error persiste contacte al desarrollador')
                                 }
                             }
                         });
-
                     }
                 });
             }
@@ -882,6 +993,101 @@
                     }
                 });
             }
+        });
+
+        //-------------------------------------------- Edit Occasional Surgery -----------------------------------------
+
+        function editOccasionalSurgery(surgeryId,surgeryDate,surgeryTypeId,petBirthday,ownerPhone) {
+            $('#EditOccasionalSurgeryDateSpan').hide();
+            $('#EditOccasionalSurgeryTypeSelectSpan').hide();
+            $('#EditOccasionalOwnerNameSpan').hide();
+            $('#EditOccasionalOwnerLastNameSpan').hide();
+            $('#EditOccasionalPatientNameSpan').hide();
+            $('#EditOccasionalPatientBirthdaySpan').hide();
+
+            $('#OccasionalSurgeryId').text(surgeryId);
+            $('#EditOccasionalSurgeryDate').val(surgeryDate);
+            $('#EditOccasionalSurgeryTypeSelect').val(surgeryTypeId).trigger('change');
+            var owner = $('#SurgeryPetOwner' + surgeryId).html().trim().split(',')[1];
+            $('#EditOccasionalOwnerName').val(owner.trim());
+            owner = $('#SurgeryPetOwner' + surgeryId).html().trim().split(',')[0];
+            $('#EditOccasionalOwnerLastName').val(owner.trim());
+            $('#EditOccasionalOwnerPhone').val(ownerPhone);
+            $('#EditOccasionalPatientName').val($('#SurgeryPet' + surgeryId).html().trim());
+            $('#EditOccasionalPatientBirthday').val(petBirthday);
+
+            if ($('#SurgeryPetSpecie' + surgeryId).html().trim() == 'Perro') {
+                $('#EditOccasionalPetDogSpecie').prop('checked', true);
+            } else {
+                $('#EditOccasionalPetCatSpecie').prop('checked', true);
+            }
+
+            if ($('#SurgeryPetSex' + surgeryId).html().trim() == 'Macho') {
+                $('#EditOccasionalPetMaleSex').prop('checked', true);
+            } else {
+                $('#EditOccasionalPetFemaleSex').prop('checked', true);
+            }
+
+            $('#editOccasionalSurgery').show('slow');
+        }
+
+        $('.editOccasionalClose').click(function () {
+            $('#editOccasionalSurgery').hide('slow');
+        });
+
+        $('#EditOccasionalSave').click(function () {
+            $('#EditOccasionalSurgeryDateSpan').hide();
+            $('#EditOccasionalSurgeryTypeSelectSpan').hide();
+            $('#EditOccasionalOwnerNameSpan').hide();
+            $('#EditOccasionalOwnerLastNameSpan').hide();
+            $('#EditOccasionalPatientNameSpan').hide();
+            $('#EditOccasionalPatientBirthdaySpan').hide();
+
+            var validation = true;
+            if ($('#EditOccasionalSurgeryDate').val() == '') {
+                validation = false;
+                $('#EditOccasionalSurgeryDateSpan').text('Debe ingresar una fecha').show();
+            }
+
+            if ($('#EditOccasionalSurgeryTypeSelect').val() == 0 | $('#EditOccasionalSurgeryTypeSelect').val() == null) {
+                validation = false;
+                $('#EditOccasionalSurgeryTypeSelectSpan').text('Debe seleccionar una cirugía').show();
+            }
+
+            if ($('#EditOccasionalOwnerName').val().trim() == '') {
+                validation = false;
+                $('#EditOccasionalOwnerNameSpan').text('Debe ingresar el nombre del Dueño').show();
+            }
+
+            if ($('#EditOccasionalOwnerLastName').val().trim() == '') {
+                validation = false;
+                $('#EditOccasionalOwnerLastNameSpan').text('Debe ingresar el apellido del Dueño').show();
+            }
+
+            if ($('#EditOccasionalPatientName').val().trim() == '') {
+                validation = false;
+                $('#EditOccasionalPatientNameSpan').text('Debe ingresar el nombre del paciente').show();
+            }
+
+            if ($('#EditOccasionalPatientBirthday').val() == '') {
+                validation = false;
+                $('#EditOccasionalPatientBirthdaySpan').text('Debe ingresar la fecha de nacimiento del paciente').show();
+            }
+
+            var specie = 1;
+            var specievalue = 'Perro';
+            if ($('#EditOccasionalPetCatSpecie').is(':checked')) {
+                specie = 2;
+                specievalue = 'Gato';
+            }
+
+            var sex = false;
+            var sexvalue = 'Hembra';
+            if ($('#EditOccasionalPetMaleSex').is(':checked')) {
+                sex = true;
+                sexvalue = 'Macho';
+            }
+
         });
 
         /////////////////////////////////////////////////// Delete Surgery //////////////////////////////////////////////
