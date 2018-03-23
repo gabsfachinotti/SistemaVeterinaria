@@ -21,7 +21,7 @@
     </style>
 </head>    
 <div style="width: 100%;display: inline-flex">
-    <div style="width: 25%"><a id="createVaccine" class="btn btn-success" style="margin-top: 6%">Agregar Notificación</a></div>
+    <div style="width: 25%"><a class="btn btn-success" style="margin-top: 6%" onclick="createVaccine('@DateTime.Today.ToString("yyyy-MM-dd")')">Agregar Notificación</a></div>
     <div style="width: 50%">
         <h2 class="text-center">@ViewBag.Title</h2>
     </div>
@@ -79,7 +79,7 @@
                         <p id="@("number" + item.VaccineId)">@item.VaccineNumber° Vacuna</p>
                     }
                 </td>
-                <td id="@("date" + item.VaccineId)" class="text-center" data-toggle="tooltip" title="@item.VaccineDate.ToString("D")">
+                <td id="@("date" + item.VaccineId)" class="text-center" title="@item.VaccineDate.ToString("D")">
                     <text>@item.VaccineDate.ToString("yyyy/MM/dd")</text>                    
                     <text>@item.VaccineDate.ToString("dd/MM/yyyy")</text>
                 </td>
@@ -110,6 +110,18 @@
                 </div>
                 <span id="VaccineDateSpan" style="color:red;margin-left:30%">Ingrese la fecha de la 1° Vacuna</span>
                 <div class="modalinput" style="margin-top:1%">
+                    <label class="modallabel">Ordinal:</label>
+                    <select id="VaccineNumber" class="js-example-basic-single" style="width:60%">
+                        <option value="1">1° Vacuna</option>
+                        <option value="2">2° Vacuna</option>
+                        <option value="3">3° Vacuna</option>
+                        <option value="4">4° Vacuna</option>
+                        <option value="5">5° Vacuna</option>
+                        <option value="6"> Vacuna Anual</option>
+                    </select>
+                </div>
+                <span id="VaccineNumberSpan" style="color:red;display:none;margin-left:30%"></span>
+                <div class="modalinput" style="margin-top:1%">
                     <label class="modallabel">Paciente:</label>
                     <select id="VaccinePet" class="js-example-basic-single" style="width:60%">
                         @foreach (var pet in ViewBag.Pets)
@@ -119,8 +131,13 @@
                     </select>
                 </div>
                 <span id="VaccinePetSpan" style="color:red;display:none;margin-left:30%"></span>
+                
+                <div class="modalinput" style="margin-top:2%">
+                    <label style="margin-left:10%">Generar notificaciones posteriores</label>
+                    <input id="GenerateNextVaccines" type="checkbox" style="margin-left: 2%"/>
+                </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="margin-top: 0">
                 <button id="Save" type="button" class="btn btn-success">Guardar</button>
                 <button id="Cancel" type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
             </div>
@@ -194,17 +211,20 @@
             allowClear: true
         });
 
-        $('#createVaccine').click(function () {
+        function createVaccine(today) {
             //$('#modalVaccine').fadeIn('slow')
             //$('#modalVaccine').modal('toggle')
             //$('#modalVaccine').modal('show')
             //$('#modalVaccine').toggle('slow')
 
+            $('#VaccineDate').val(today);
             $('#VaccineDateSpan').hide();
+            $('#VaccineNumber').val(1).trigger('change');
             $("#VaccinePet").val(0).trigger('change');
-            $('#VaccinePetSpan').text('Solo aparecerán en la lista, Pacientes sin vacunas').css('color','black').show();
+            $('#VaccinePetSpan').text('Solo aparecerán en la lista, Pacientes sin vacunas').css('color', 'black').show();
+
             $('#modalVaccine').show('slow');
-        });
+        }
 
         $('#closeVaccine').click(function () {
             $('#modalVaccine').hide('slow');
@@ -230,18 +250,91 @@
                 $('#VaccinePetSpan').text('Debe seleccionar un paciente.').css('color','red').show();
             }
 
-            if (Validation) {
-                $('#modalVaccine').hide('slow');
+            if (Validation) {              
 
                 var vaccine = {
                     VaccineId: null,
-                    VaccineNumber: 1,
+                    VaccineNumber: $('#VaccineNumber').val(),
                     VaccineDate: $('#VaccineDate').val(),
                     PetId: $('#VaccinePet').val(),
                     Pet: null
                 }
 
-                $.ajax({
+                if ($('#GenerateNextVaccines').is(':checked')) {
+                    $.ajax({
+                        url: '@Url.Action("CreateVaccines","Vaccines")',
+                        type: "POST",
+                        data: JSON.stringify(vaccine),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            if (d.status) {
+                                $('#modalVaccine').hide('slow');
+
+                                var nextvaccineid = d.vaccineId + 5;                                
+
+                                $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + nextvaccineid + '</td><td id="pet' + nextvaccineid + '">' + d.pet + '</td><td id="specie' + nextvaccineid + '">' + d.specie + '</td><td id="owner' + nextvaccineid + '">' + d.owner + '</td><td class="text-center">6° Vacuna (Anual)</td><td id="date' + nextvaccineid + '" class="text-center">' + d.date6.split('-')[2] + '/' + d.date6.split('-')[1] + '/' + d.date6.split('-')[0] + '</td><td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + nextvaccineid + '\',\'' + $('#VaccinePet').val() + '\',\'' + 6 + '\',\'' + d.date6 + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + nextvaccineid + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
+                                nextvaccineid--;
+                                var cant = 1;
+
+                                if (d.date5.split('-')[0] > 1) {
+                                    $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + nextvaccineid + '</td><td id="pet' + nextvaccineid + '">' + d.pet + '</td><td id="specie' + nextvaccineid + '">' + d.specie + '</td><td id="owner' + nextvaccineid + '">' + d.owner + '</td><td class="text-center">5° Vacuna</td><td id="date' + nextvaccineid + '" class="text-center">' + d.date5.split('-')[2] + '/' + d.date5.split('-')[1] + '/' + d.date5.split('-')[0] + '</td><td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + nextvaccineid + '\',\'' + $('#VaccinePet').val() + '\',\'' + 5 + '\',\'' + d.date5 + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + nextvaccineid + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
+                                    cant++;
+                                }
+                                nextvaccineid--;
+
+                                if (d.date4.split('-')[0] > 1) {
+                                    $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + nextvaccineid + '</td><td id="pet' + nextvaccineid + '">' + d.pet + '</td><td id="specie' + nextvaccineid + '">' + d.specie + '</td><td id="owner' + nextvaccineid + '">' + d.owner + '</td><td class="text-center">4° Vacuna</td><td id="date' + nextvaccineid + '" class="text-center">' + d.date4.split('-')[2] + '/' + d.date4.split('-')[1] + '/' + d.date4.split('-')[0] + '</td><td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + nextvaccineid + '\',\'' + $('#VaccinePet').val() + '\',\'' + 4 + '\',\'' + d.date4 + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + nextvaccineid + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
+                                    cant++;
+                                }
+                                nextvaccineid--;
+
+                                if (d.date3.split('-')[0] > 1) {
+                                    $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + nextvaccineid + '</td><td id="pet' + nextvaccineid + '">' + d.pet + '</td><td id="specie' + nextvaccineid + '">' + d.specie + '</td><td id="owner' + nextvaccineid + '">' + d.owner + '</td><td class="text-center">3° Vacuna</td><td id="date' + nextvaccineid + '" class="text-center">' + d.date3.split('-')[2] + '/' + d.date3.split('-')[1] + '/' + d.date3.split('-')[0] + '</td><td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + nextvaccineid + '\',\'' + $('#VaccinePet').val() + '\',\'' + 3 + '\',\'' + d.date3 + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + nextvaccineid + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
+                                    cant++;
+                                }
+                                nextvaccineid--;
+
+                                if (d.date2.split('-')[0] > 1) {
+                                    $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + nextvaccineid + '</td><td id="pet' + nextvaccineid + '">' + d.pet + '</td><td id="specie' + nextvaccineid + '">' + d.specie + '</td><td id="owner' + nextvaccineid + '">' + d.owner + '</td><td class="text-center">2° Vacuna</td><td id="date' + nextvaccineid + '" class="text-center">' + d.date2.split('-')[2] + '/' + d.date2.split('-')[1] + '/' + d.date2.split('-')[0] + '</td><td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + nextvaccineid + '\',\'' + $('#VaccinePet').val() + '\',\'' + 2 + '\',\'' + d.date2 + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + nextvaccineid + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
+                                    cant++;
+                                }
+
+                                if (d.date.split('-')[0] > 1) {
+                                    $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + d.vaccineId + '</td><td id="pet' + d.vaccineId + '">' + d.pet + '</td><td id="specie' + d.vaccineId + '">' + d.specie + '</td><td id="owner' + d.vaccineId + '">' + d.owner + '</td><td class="text-center">1° Vacuna</td><td id="date' + d.vaccineId + '" class="text-center">' + d.date.split('-')[2] + '/' + d.date.split('-')[1] + '/' + d.date.split('-')[0] + '</td><td class="text-center"><button id="editbutton' + d.vaccineId + '" class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + d.vaccineId + '\',\'' + $('#VaccinePet').val() + '\',\'' + 1 + '\',\'' + d.date + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + d.vaccineId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
+                                    cant++;
+                                }
+
+                                toastr.success('Se han agregado ' + String(cant) + ' notificaciones de Vacunas.');
+                            } else {
+                                $('#VaccineNumberSpan').text('Ya existen vacunas con los ordinales que intenta ingresar').show();
+                            }
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: '@Url.Action("CreateVaccine","Vaccines")',
+                        type: "POST",
+                        data: JSON.stringify(vaccine),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            if (d.status) {
+                                $('#modalVaccine').hide('slow');
+
+                                $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + d.vaccineId + '</td><td id="pet' + d.vaccineId + '">' + d.pet + '</td><td id="specie' + d.vaccineId + '">' + d.specie + '</td><td id="owner' + d.vaccineId + '">' + d.owner + '</td><td class="text-center">1° Vacuna</td><td id="date' + d.vaccineId + '" class="text-center">' + d.date.split('-')[2] + '/' + d.date.split('-')[1] + '/' + d.date.split('-')[0] + '</td><td class="text-center"><button id="editbutton' + d.vaccineId + '" class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + d.vaccineId + '\',\'' + $('#VaccinePet').val() + '\',\'' + 1 + '\',\'' + d.date + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + d.vaccineId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
+
+                                toastr.success('Se ha agregado una nueva notificación de vacuna');
+                            } else {
+                                $('#VaccineNumberSpan').text('Ya existe una vacuna con el Nro Ordinal que intenta ingresar').show();
+                            }
+
+                            
+                        }
+                    });
+                }
+
+                @*$.ajax({
                     url: '@Url.Action("CreateVaccine","Vaccines")',
                     type: "POST",
                     data: JSON.stringify(vaccine),
@@ -249,7 +342,7 @@
                     contentType: "application/json",
                     success: function (d) {
                         var nextvaccineid = d.vaccineId + 5;
- 
+
                         $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + nextvaccineid + '</td><td id="pet' + nextvaccineid + '">' + d.pet + '</td><td id="specie' + nextvaccineid + '">' + d.specie + '</td><td id="owner' + nextvaccineid + '">' + d.owner + '</td><td class="text-center">6° Vacuna (Anual)</td><td id="date' + nextvaccineid + '" class="text-center">' + d.date6.split('-')[2] + '/' + d.date6.split('-')[1] + '/' + d.date6.split('-')[0] + '</td><td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + nextvaccineid + '\',\'' + $('#VaccinePet').val() + '\',\'' + 6 + '\',\'' + d.date6 + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + nextvaccineid + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
                         nextvaccineid--;
                         $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + nextvaccineid + '</td><td id="pet' + nextvaccineid + '">' + d.pet + '</td><td id="specie' + nextvaccineid + '">' + d.specie + '</td><td id="owner' + nextvaccineid + '">' + d.owner + '</td><td class="text-center">5° Vacuna</td><td id="date' + nextvaccineid + '" class="text-center">' + d.date5.split('-')[2] + '/' + d.date5.split('-')[1] + '/' + d.date5.split('-')[0] + '</td><td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + nextvaccineid + '\',\'' + $('#VaccinePet').val() + '\',\'' + 5 + '\',\'' + d.date5 + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + nextvaccineid + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
@@ -263,7 +356,7 @@
 
                         toastr.success('Se han agregado 6 notificaciones de Vacunas.');
                     }
-                });
+                });*@
             }
         });
 
@@ -282,7 +375,7 @@
             } else {
                 $("#EditVaccinePet").attr("disabled", false);
             }
-            
+
             $('#EditVaccineNumber').text(String(vaccineNumber) + '° Vacuna')
             $('#editVaccine').show('slow');
         }
@@ -341,7 +434,7 @@
                             $('#vaccine' + d.vaccineId).css("background-color", "#dee1ea");
                             d.vaccineId++;
                             pos++;
-                        }                        
+                        }
                     }
                 })
             }

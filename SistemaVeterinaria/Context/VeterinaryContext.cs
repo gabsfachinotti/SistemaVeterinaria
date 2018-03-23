@@ -11,7 +11,7 @@ namespace SistemaVeterinaria.Context
         public VeterinaryContext()
             : base("name=VeterinaryContext")
         {
-
+            //this.Configuration.ProxyCreationEnabled = false;
         }
 
         public System.Data.Entity.DbSet<SistemaVeterinaria.Models.Owner> Owners { get; set; }
