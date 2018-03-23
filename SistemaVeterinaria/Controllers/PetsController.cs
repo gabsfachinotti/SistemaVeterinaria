@@ -101,6 +101,28 @@ namespace SistemaVeterinaria.Controllers
             return new JsonResult { Data = new { status = status}};
         }
 
+        public void CreateClinicHistory(ClinicHistory clinicHistory)
+        {
+            db.ClinicHistories.Add(clinicHistory);
+            db.SaveChanges();
+        }
+
+        public void EditClinicHistory(ClinicHistory clinicHistory)
+        {
+            db.Entry(clinicHistory).State = EntityState.Modified;
+            db.SaveChanges();
+        }
+
+        public void DeleteClinicHistory(ClinicHistory clinicHistoryId)
+        {
+            ClinicHistory clinicHistory = db.ClinicHistories.Find(clinicHistoryId);
+            if (clinicHistory != null)
+            {
+                db.ClinicHistories.Remove(clinicHistory);
+                db.SaveChanges();
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
