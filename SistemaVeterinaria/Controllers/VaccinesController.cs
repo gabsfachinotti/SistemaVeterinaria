@@ -15,15 +15,13 @@ namespace SistemaVeterinaria.Controllers
     public class VaccinesController : Controller
     {
         private VeterinaryContext db = new VeterinaryContext();
-        VaccineRepository vaccineRepository = new VaccineRepository();
 
         // GET: Vaccines
         public ActionResult Index()
         {
             var vaccines = db.Vaccines.ToList().FindAll(v => v.VaccineDate >= DateTime.Today & v.VaccineDate < DateTime.Today.AddYears(2) & v.VaccineNumber > 1);
             ViewBag.Title = "Notificaciones Futuras de Vacunas";
-            ViewBag.Pets = db.Pets.ToList().FindAll(p => !p.Vaccinations.Any());
-            ViewBag.AllPets = db.Pets.ToList();
+            ViewBag.Pets = db.Pets.ToList();
             return View(vaccines);
         }
 

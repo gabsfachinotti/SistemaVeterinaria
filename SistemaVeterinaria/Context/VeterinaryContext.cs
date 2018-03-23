@@ -11,7 +11,6 @@ namespace SistemaVeterinaria.Context
         public VeterinaryContext()
             : base("name=VeterinaryContext")
         {
-            //this.Configuration.ProxyCreationEnabled = false;
         }
 
         public System.Data.Entity.DbSet<SistemaVeterinaria.Models.Owner> Owners { get; set; }
@@ -25,5 +24,7 @@ namespace SistemaVeterinaria.Context
         public System.Data.Entity.DbSet<SistemaVeterinaria.Models.Vaccine> Vaccines { get; set; }
 
         public System.Data.Entity.DbSet<SistemaVeterinaria.Models.Shower> Showers { get; set; }
+
+        public System.Data.Entity.DbSet<SistemaVeterinaria.Models.ClinicHistory> ClinicHistories { get; set; }
     }
 }

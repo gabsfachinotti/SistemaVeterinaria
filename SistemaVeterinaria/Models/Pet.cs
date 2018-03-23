@@ -21,8 +21,6 @@ namespace SistemaVeterinaria.Models
 
         public DateTime PetBirthday { get; set; }
 
-        //public string PetAge{ get { return (DateTime.Today.Year - PetBirthday.Year).ToString() + " años y " + Math.Abs(DateTime.Today.Month - PetBirthday.Month) + " meses"; } }
-
         public string PetColor { get; set; }
 
         public int OwnerId { get; set; } //Clave foránea Owner
@@ -32,6 +30,8 @@ namespace SistemaVeterinaria.Models
         public virtual ICollection<Vaccine> Vaccinations { get; set; }
 
         public virtual ICollection<Surgery> Surgeries { get; set; }
+
+        public virtual ICollection<ClinicHistory> ClinicHistories { get; set; }
 
         //public virtual ICollection<Shower> Showers { get; set; }
     }
