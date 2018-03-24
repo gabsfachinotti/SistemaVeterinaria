@@ -81,7 +81,7 @@
                 </td>
                 <td id="@("date" + item.VaccineId)" class="text-center" title="@item.VaccineDate.ToString("D")">
                     <text>@item.VaccineDate.ToString("yyyy/MM/dd")</text>                    
-                    <text>@item.VaccineDate.ToString("dd/MM/yyyy")</text>
+                    <text>@item.VaccineDate.ToString("D")</text>
                 </td>
                 <td class="text-center">
                     <button id="@("editbutton" + item.VaccineId)" class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(@item.VaccineId,@item.PetId,@item.VaccineNumber,'@item.VaccineDate.ToString("yyyy-MM-dd")')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
@@ -271,43 +271,56 @@
                             if (d.status) {
                                 $('#modalVaccine').hide('slow');
 
+                                var date = d.date6.split('.')[0];
+                                var longdate = d.date6.split('.')[1];
+
                                 var nextvaccineid = d.vaccineId + 5;
                                 var vaccineNumber = 6;
 
-                                $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + nextvaccineid + '</td><td id="pet' + nextvaccineid + '">' + d.pet + '</td><td id="specie' + nextvaccineid + '">' + d.specie + '</td><td id="owner' + nextvaccineid + '">' + d.owner + '</td><td class="text-center">'+ vaccineNumber +'° Vacuna (Anual)</td><td id="date' + nextvaccineid + '" class="text-center">' + d.date6.split('-')[2] + '/' + d.date6.split('-')[1] + '/' + d.date6.split('-')[0] + '</td><td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + nextvaccineid + '\',\'' + $('#VaccinePet').val() + '\',\'' + 6 + '\',\'' + d.date6 + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + nextvaccineid + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
+                                $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + nextvaccineid + '</td><td id="pet' + nextvaccineid + '">' + d.pet + '</td><td id="specie' + nextvaccineid + '">' + d.specie + '</td><td id="owner' + nextvaccineid + '">' + d.owner + '</td><td class="text-center">'+ vaccineNumber +'° Vacuna (Anual)</td><td id="date' + nextvaccineid + '" class="text-center">' + longdate + '</td><td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + nextvaccineid + '\',\'' + $('#VaccinePet').val() + '\',\'' + 6 + '\',\'' + date + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + nextvaccineid + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
                                 nextvaccineid--;
                                 vaccineNumber--;
+                                date = d.date5.split('.')[0];
+                                longdate = d.date5.split('.')[1];
                                 var cant = 1;
 
-                                if (d.date5.split('-')[0] > 1) {
-                                    $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + nextvaccineid + '</td><td id="pet' + nextvaccineid + '">' + d.pet + '</td><td id="specie' + nextvaccineid + '">' + d.specie + '</td><td id="owner' + nextvaccineid + '">' + d.owner + '</td><td class="text-center">'+ vaccineNumber +'° Vacuna</td><td id="date' + nextvaccineid + '" class="text-center">' + d.date5.split('-')[2] + '/' + d.date5.split('-')[1] + '/' + d.date5.split('-')[0] + '</td><td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + nextvaccineid + '\',\'' + $('#VaccinePet').val() + '\',\'' + 5 + '\',\'' + d.date5 + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + nextvaccineid + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
+                                if (date.split('-')[0] > 1) {
+                                    $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + nextvaccineid + '</td><td id="pet' + nextvaccineid + '">' + d.pet + '</td><td id="specie' + nextvaccineid + '">' + d.specie + '</td><td id="owner' + nextvaccineid + '">' + d.owner + '</td><td class="text-center">' + vaccineNumber + '° Vacuna</td><td id="date' + nextvaccineid + '" class="text-center">' + longdate + '</td><td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + nextvaccineid + '\',\'' + $('#VaccinePet').val() + '\',\'' + 5 + '\',\'' + date + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + nextvaccineid + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
+                                    date = d.date4.split('.')[0];
+                                    longdate = d.date4.split('.')[1]; 
                                     cant++;
                                     vaccineNumber--;
                                 }
                                 nextvaccineid--;
 
-                                if (d.date4.split('-')[0] > 1) {
-                                    $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + nextvaccineid + '</td><td id="pet' + nextvaccineid + '">' + d.pet + '</td><td id="specie' + nextvaccineid + '">' + d.specie + '</td><td id="owner' + nextvaccineid + '">' + d.owner + '</td><td class="text-center">' + vaccineNumber +'° Vacuna</td><td id="date' + nextvaccineid + '" class="text-center">' + d.date4.split('-')[2] + '/' + d.date4.split('-')[1] + '/' + d.date4.split('-')[0] + '</td><td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + nextvaccineid + '\',\'' + $('#VaccinePet').val() + '\',\'' + 4 + '\',\'' + d.date4 + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + nextvaccineid + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
+                                if (date.split('-')[0] > 1) {
+                                    $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + nextvaccineid + '</td><td id="pet' + nextvaccineid + '">' + d.pet + '</td><td id="specie' + nextvaccineid + '">' + d.specie + '</td><td id="owner' + nextvaccineid + '">' + d.owner + '</td><td class="text-center">' + vaccineNumber + '° Vacuna</td><td id="date' + nextvaccineid + '" class="text-center">' + longdate + '</td><td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + nextvaccineid + '\',\'' + $('#VaccinePet').val() + '\',\'' + 4 + '\',\'' + date + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + nextvaccineid + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
+                                    date = d.date3.split('.')[0];
+                                    longdate = d.date3.split('.')[1];
                                     cant++;
                                     vaccineNumber--;
                                 }
                                 nextvaccineid--;
 
-                                if (d.date3.split('-')[0] > 1) {
-                                    $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + nextvaccineid + '</td><td id="pet' + nextvaccineid + '">' + d.pet + '</td><td id="specie' + nextvaccineid + '">' + d.specie + '</td><td id="owner' + nextvaccineid + '">' + d.owner + '</td><td class="text-center">' + vaccineNumber +'° Vacuna</td><td id="date' + nextvaccineid + '" class="text-center">' + d.date3.split('-')[2] + '/' + d.date3.split('-')[1] + '/' + d.date3.split('-')[0] + '</td><td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + nextvaccineid + '\',\'' + $('#VaccinePet').val() + '\',\'' + 3 + '\',\'' + d.date3 + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + nextvaccineid + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
+                                if (date.split('-')[0] > 1) {
+                                    $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + nextvaccineid + '</td><td id="pet' + nextvaccineid + '">' + d.pet + '</td><td id="specie' + nextvaccineid + '">' + d.specie + '</td><td id="owner' + nextvaccineid + '">' + d.owner + '</td><td class="text-center">' + vaccineNumber + '° Vacuna</td><td id="date' + nextvaccineid + '" class="text-center">' + longdate + '</td><td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + nextvaccineid + '\',\'' + $('#VaccinePet').val() + '\',\'' + 3 + '\',\'' + date + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + nextvaccineid + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
+                                    date = d.date2.split('.')[0];
+                                    longdate = d.date2.split('.')[1];
                                     cant++;
                                     vaccineNumber--;
                                 }
                                 nextvaccineid--;
 
-                                if (d.date2.split('-')[0] > 1) {
-                                    $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + nextvaccineid + '</td><td id="pet' + nextvaccineid + '">' + d.pet + '</td><td id="specie' + nextvaccineid + '">' + d.specie + '</td><td id="owner' + nextvaccineid + '">' + d.owner + '</td><td class="text-center">' + vaccineNumber +'° Vacuna</td><td id="date' + nextvaccineid + '" class="text-center">' + d.date2.split('-')[2] + '/' + d.date2.split('-')[1] + '/' + d.date2.split('-')[0] + '</td><td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + nextvaccineid + '\',\'' + $('#VaccinePet').val() + '\',\'' + 2 + '\',\'' + d.date2 + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + nextvaccineid + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
+                                if (date.split('-')[0] > 1) {
+                                    $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + nextvaccineid + '</td><td id="pet' + nextvaccineid + '">' + d.pet + '</td><td id="specie' + nextvaccineid + '">' + d.specie + '</td><td id="owner' + nextvaccineid + '">' + d.owner + '</td><td class="text-center">' + vaccineNumber + '° Vacuna</td><td id="date' + nextvaccineid + '" class="text-center">' + longdate + '</td><td class="text-center"><button class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + nextvaccineid + '\',\'' + $('#VaccinePet').val() + '\',\'' + 2 + '\',\'' + date + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + nextvaccineid + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
+                                    date = d.date.split('.')[0];
+                                    longdate = d.date.split('.')[1];
                                     cant++;
                                     vaccineNumber--;
                                 }
 
-                                if (d.date.split('-')[0] > 1) {
-                                    $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + d.vaccineId + '</td><td id="pet' + d.vaccineId + '">' + d.pet + '</td><td id="specie' + d.vaccineId + '">' + d.specie + '</td><td id="owner' + d.vaccineId + '">' + d.owner + '</td><td class="text-center">' + vaccineNumber +'° Vacuna</td><td id="date' + d.vaccineId + '" class="text-center">' + d.date.split('-')[2] + '/' + d.date.split('-')[1] + '/' + d.date.split('-')[0] + '</td><td class="text-center"><button id="editbutton' + d.vaccineId + '" class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + d.vaccineId + '\',\'' + $('#VaccinePet').val() + '\',\'' + 1 + '\',\'' + d.date + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + d.vaccineId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
+                                if (date.split('-')[0] > 1) {
+                                    $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + d.vaccineId + '</td><td id="pet' + d.vaccineId + '">' + d.pet + '</td><td id="specie' + d.vaccineId + '">' + d.specie + '</td><td id="owner' + d.vaccineId + '">' + d.owner + '</td><td class="text-center">' + vaccineNumber +'° Vacuna</td><td id="date' + d.vaccineId + '" class="text-center">' + longdate + '</td><td class="text-center"><button id="editbutton' + d.vaccineId + '" class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + d.vaccineId + '\',\'' + $('#VaccinePet').val() + '\',\'' + 1 + '\',\'' + date + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + d.vaccineId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
                                     cant++;
                                 }
 
@@ -328,7 +341,10 @@
                             if (d.status) {
                                 $('#modalVaccine').hide('slow');
 
-                                $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + d.vaccineId + '</td><td id="pet' + d.vaccineId + '">' + d.pet + '</td><td id="specie' + d.vaccineId + '">' + d.specie + '</td><td id="owner' + d.vaccineId + '">' + d.owner + '</td><td class="text-center">1° Vacuna</td><td id="date' + d.vaccineId + '" class="text-center">' + d.date.split('-')[2] + '/' + d.date.split('-')[1] + '/' + d.date.split('-')[0] + '</td><td class="text-center"><button id="editbutton' + d.vaccineId + '" class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + d.vaccineId + '\',\'' + $('#VaccinePet').val() + '\',\'' + 1 + '\',\'' + d.date + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + d.vaccineId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
+                                var longdate = d.date.split('.')[1];
+                                var date = d.date.split('.')[0];
+
+                                $('#Vaccines').prepend('<tr style="background-color: #dee1ea"><td>' + d.vaccineId + '</td><td id="pet' + d.vaccineId + '">' + d.pet + '</td><td id="specie' + d.vaccineId + '">' + d.specie + '</td><td id="owner' + d.vaccineId + '">' + d.owner + '</td><td class="text-center">1° Vacuna</td><td id="date' + d.vaccineId + '" class="text-center">' + longdate + '</td><td class="text-center"><button id="editbutton' + d.vaccineId + '" class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(\'' + d.vaccineId + '\',\'' + $('#VaccinePet').val() + '\',\'' + 1 + '\',\'' + date + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" title="Eliminar" onclick="deletevaccine(' + d.vaccineId + ')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>');
 
                                 toastr.success('Se ha agregado una nueva notificación de vacuna');
                             } else {
@@ -345,7 +361,7 @@
         function editvaccine(vaccineId,petId,vaccineNumber,vaccineDate) {
             $('#EditVaccineId').text(String(vaccineId));
 
-            vaccineDate = String(vaccineDate)
+            vaccineDate = String(vaccineDate);
 
             $('#EditVaccineDate').val(vaccineDate);
             $('#EditVaccineDateSpan').hide();
@@ -358,7 +374,7 @@
                 $("#EditVaccinePet").attr("disabled", false);
             }
 
-            $('#EditVaccineNumber').text(String(vaccineNumber) + '° Vacuna')
+            $('#EditVaccineNumber').text(String(vaccineNumber) + '° Vacuna');
             $('#editVaccine').show('slow');
         }
 
@@ -403,24 +419,28 @@
                         toastr.success('Se han modificado ' + String(d.vaccineDates.length) + ' notificaciones de Vacunas.');
 
                         var pos = 0;
-                        while (d.vaccineId < d.lastId) {
+                        var date;
+                        var longdate;
+                        while (d.vaccineId <= d.lastId) {
                             $('#owner' + d.vaccineId).html(d.owner);
                             $('#pet' + d.vaccineId).html(d.pet);
                             $('#specie' + d.vaccineId).html(d.specie);
 
-                            var pos = d.vaccineDates[pos];
+                            //pos = d.vaccineDates[pos];
+                            date = "'" + d.vaccineDates[pos].split('.')[0] + "'";
+                            longdate = d.vaccineDates[pos].split('.')[1];
 
-                            $('#date' + d.vaccineId).html(pos.split('-')[2] + '/' + pos.split('-')[1] + '/' + pos.split('-')[0]);
+                            $('#date' + d.vaccineId).html(longdate);
 
-                            $('#editbutton' + d.vaccineId).replaceWith('<button id="editbutton' + d.vaccineId + '" class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(' + d.vaccineId + ',' + $('#EditVaccinePet').val() + ',' + parseInt($('#number' + d.vaccineId).text()) + ',' + d.vaccineDates[pos] + ')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>');
+                            $('#editbutton' + d.vaccineId).replaceWith('<button id="editbutton' + d.vaccineId + '" class="btn btn-primary btn-sm" title="Editar" onclick="editvaccine(' + d.vaccineId + ',' + $('#EditVaccinePet').val() + ',' + parseInt($('#number' + d.vaccineId).text()) + ',' + date + ')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>');
                             $('#vaccine' + d.vaccineId).css("background-color", "#dee1ea");
                             d.vaccineId++;
                             pos++;
                         }
                     }
-                })
+                });
             }
-        })
+        });
 
         function deletevaccine(vaccineId) {
             bootbox.confirm({

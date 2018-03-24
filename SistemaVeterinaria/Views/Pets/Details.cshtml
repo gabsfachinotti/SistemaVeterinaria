@@ -89,7 +89,7 @@
                             </tr>
                             <tr>
                                 <th><h5>Nacimiento:</h5></th>
-                                <td data-toggle="tooltip" title="@Model.PetBirthday.ToString("D")"><h5>@Model.PetBirthday.ToString("dd/MM/yyyy")</h5></td>
+                                <td><h5>@Model.PetBirthday.ToString("D")</h5></td>
                             </tr>
                             <tr>
                                 <th><h5>Edad:</h5></th>
@@ -152,9 +152,9 @@
                             <td class="text-center">@item.VaccineId</td>
                             <td>@item.Pet.PetName</td>
                             <td class="text-center">@item.VaccineNumber° Vacuna</td>
-                            <td class="text-center" data-toggle="tooltip" title="@item.VaccineDate.ToString("D")">
+                            <td class="text-center">
                                 <p>@item.VaccineDate.ToString("yyyy/MM/dd")</p>
-                                <p>@item.VaccineDate.ToString("dd/MM/yyyy")</p>
+                                <p>@item.VaccineDate.ToString("D")</p>
                             </td>
                             <td class="text-center" style="width:13%">
                                 <button class="btn btn-success btn-sm" title="Editar" onclick="editVaccine(@item.VaccineId,@item.VaccineNumber,'@item.VaccineDate.ToString("yyyy-MM-dd")')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
@@ -184,8 +184,8 @@
                             <td class="text-center">@item.SurgeryId</td>
                             <td>@item.Pet.PetName</td>
                             <td class="text-center">@item.SurgeryType.SurgeryTypeName</td>
-                            <td class="text-center" data-toggle="tooltip" title="@item.SurgeryDate.ToString("D")">
-                                @item.SurgeryDate.ToString("dd/MM/yyyy")
+                            <td class="text-center">
+                                @item.SurgeryDate.ToString("D")
                             </td>
                             <td class="text-center" style="width: 15%"><button id="@("deletesurgery" + item.SurgeryId)" class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteSurgery(@item.SurgeryId)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
                         </tr>
@@ -215,8 +215,8 @@
                                                 {<p>Mañana</p>}
                                                 else
                                                 {<p>Tarde</p>}</td>
-                        <td class="text-center" data-toggle="tooltip" title="@item.ShowerDate.ToString("D")">
-                            @item.ShowerDate.ToString("dd/MM/yyyy")
+                        <td class="text-center">
+                            @item.ShowerDate.ToString("D")
                         </td>
                         <td class="text-center" style="width: 15%">
                             <button id="@("deleteshower" + item.ShowerId)" class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteShower(@item.ShowerId)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
@@ -236,15 +236,15 @@
                     <th class="text-center">Opciones</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="ClinicHistories">
                 @foreach (var item in Model.ClinicHistories)
                 {
-                    <tr>
-                        <td class="text-center" style="vertical-align: middle">@item.ClinicHistoryNumber</td>
-                        <td class="text-justify" style="width: 70%">@item.ClinicHistoryData</td>
+                    <tr id="@("CHistory" + item.ClinicHistoryId)">
+                        <td id="@("CHNumber" + item.ClinicHistoryId)" class="text-center" style="vertical-align: middle">@item.ClinicHistoryNumber</td>
+                        <td id="@("CHData" + item.ClinicHistoryId)" class="text-justify" style="width: 70%">@item.ClinicHistoryData</td>
                         <td class="text-center">
-                            <button class="btn btn-success btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
-                            <button class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                            <button id="@("editCH" + item.ClinicHistoryId)" class="btn btn-success btn-sm" onclick="editClinicHistory(@item.ClinicHistoryId)"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteClinicHistory(@item.ClinicHistoryId)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                         </td>
                     </tr>
                 }
@@ -334,11 +334,12 @@
                     </button>
                 </div>
             </div>
+            <input id="ClinicHistoryId" type="number" style="display: none"/>
             <div class="modal-body">
-                <textarea id="ClinicHistoryData" type="text" style="max-width: 100%!important; width: 100% !important;height: 100px" onFocus="this.select()" placeholder="Escriba aquí..."></textarea>
+                <textarea id="ClinicHistoryData" type="text" style="max-width: 100%!important; width: 100% !important;height: 140px" onFocus="this.select()" placeholder="Escriba aquí..."></textarea>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" onclick="SaveClinicHistory()">Guardar</button>
+                <button type="button" class="btn btn-success" onclick="SaveClinicHistory(@Model.PetId)">Guardar</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="CancelClinicHistory()">Cancelar</button>
             </div>
         </div>
@@ -502,7 +503,7 @@
                                 '<td class="text-center">' + vaccine.VaccineNumber + '° Vacuna ' + '</td>' +
                                 '<td class="text-center">' + String(vaccine.VaccineDate).split('-')[2] + '/' + String(vaccine.VaccineDate).split('-')[1] + '/' + String(vaccine.VaccineDate).split('-')[0] + '</td>' +
                                 '<td class="text-center"><button class="btn btn-success btn-sm" title="Editar" onclick="editVaccine(\'' + d.vaccineId + '\',\'' + vaccine.VaccineNumber + '\',\'' + vaccine.VaccineDate + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button id="deletebutton'+ d.vaccineId +'" class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteVaccine('+ d.vaccineId +')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>' +
-                            '</tr>'
+                            '</tr>';
 
                             $('#Vaccine' + vaccine.VaccineNumber).replaceWith(replace);
 
@@ -621,12 +622,112 @@
         /////////////////////////////////////// Clinic Histories ///////////////////////////////////////////
 
         $('#createClinicHistory').click(function () {
+            $('#ClinicHistoryId').val(0);
             $('#ClinicHistoryData').val('');
+
             $('#modalClinicHistory').show('slow');
         });
 
         function CancelClinicHistory() {
             $('#modalClinicHistory').hide('slow');
         }
+
+        function SaveClinicHistory(petId) {
+            if ($('#ClinicHistoryData').val().trim() == '') {
+                $('#modalClinicHistory').hide('slow');
+            } else {
+                $('#modalClinicHistory').hide('slow');
+
+                var clinickHistory = {
+                    ClinicHistoryId: $('#ClinicHistoryId').val(),
+                    ClinicHistoryNumber: 0,
+                    ClinicHistoryData: $('#ClinicHistoryData').val().trim(),
+                    PetId: petId,
+                    Pet: null
+                }
+
+                if (clinickHistory.ClinicHistoryId == 0) {
+                    $.ajax({
+                        url: '@Url.Action("CreateClinicHistory","Pets")',
+                        type: "POST",
+                        data: JSON.stringify(clinickHistory),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function(d) {
+                            if (d.status) {
+                                var row = '<tr id="CHistory' + d.clinicHistoryId + '" style="background-color: #dee1ea">' +
+                                    '<td class="text-center" style="vertical-align: middle">' + d.clinicHistoryNumber + '</td>' +
+                                    '<td id="CHData' + d.clinicHistoryId + '" class="text-justify">' + clinickHistory.ClinicHistoryData + '</td>' +
+                                    '<td class="text-center"><button id="editCH'+ d.clinicHistoryId +'" class="btn btn-success btn-sm" onclick="editClinicHistory('+ d.clinicHistoryId +')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button class="btn btn-danger btn-sm" onclick="deleteClinicHistory('+ d.clinicHistoryId +')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>' +
+                                    '</tr>';
+
+                                $('#ClinicHistories').prepend(row);
+                                toastr.success('Se ha agregado una nueva Historia Clínica');
+                            }
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: '@Url.Action("EditClinicHistory","Pets")',
+                        type: "POST",
+                        data: JSON.stringify(clinickHistory),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            if (d.status) {
+
+                                $('#CHData' + d.clinicHistoryId).html(clinickHistory.ClinicHistoryData);
+                                $('#CHistory' + clinickHistory.ClinicHistoryId).css("background-color", "#dee1ea");
+
+                                toastr.success('Se ha modificado una nueva Historia Clínica');
+                            }
+                        }
+                    });
+                }
+            }
+        }
+
+        function editClinicHistory(clinicHistoryId) {
+            $('#ClinicHistoryId').val(clinicHistoryId);
+            $('#ClinicHistoryData').val($('#CHData' + clinicHistoryId).text().trim());
+
+            $('#modalClinicHistory').show('slow');
+        }
+
+        function deleteClinicHistory(clinicHistoryId) {
+            bootbox.confirm({
+                title: "Eliminar Historia Clínica",
+                message: "¿Está seguro de eliminar la Historia Clínica Nro " + $('#CHNumber' + clinicHistoryId).html() + "?",
+                buttons: {
+                    confirm: {
+                        label: "Eliminar",
+                        className: "btn-danger"
+                    },
+                    cancel: {
+                        label: "Cancelar",
+                        className: "btn-primary"
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        var options = {};
+                        options.url = '@Url.Action("DeleteClinicHistory", "Pets")';
+                        options.type = "POST";
+                        options.data = { "clinicHistoryId": clinicHistoryId };
+                        options.dataType = "json";
+                        options.success = function (data) {
+                            if (data) {
+                                toastr.success("Historia Clínica eliminada");
+                                $('#CHistory' + clinicHistoryId).remove();
+                            }
+                        };
+                        $.ajax(options);
+                    }
+                }
+            });
+        }
     </script>    
 }
+
+@*<button id="@("editCH" + item.ClinicHistoryId)" class="btn btn-success btn-sm" onclick="editClinicHistory(@item.ClinicHistoryId)"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+<button class="btn btn-danger btn-sm" onclick="deleteClinicHistory(@item.ClinicHistoryId)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>*@

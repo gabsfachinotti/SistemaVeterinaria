@@ -110,7 +110,7 @@
             </td>
             <td id="@("SurgeryDate" + item.SurgeryId)" class="text-center" data-toggle="tooltip" title="@item.SurgeryDate.ToString("D")">
                 <text>@item.SurgeryDate.ToString("yyyy/MM/dd")</text>
-                <text>@item.SurgeryDate.ToString("dd/MM/yyyy")</text>
+                <text>@item.SurgeryDate.ToString("D")</text>
             </td>
             <td id="@("SurgeryButtons" + item.SurgeryId)" class="text-center">
                 @if (item.SurgeryPatientFrequent)

@@ -61,7 +61,7 @@ namespace SistemaVeterinaria.Controllers
             db.Entry(pet).State = EntityState.Modified;
             db.SaveChanges();
 
-            return new JsonResult { Data = new { OwnerId = pet.OwnerId, OwnerName = pet.Owner.OwnerFullName, Birthday = pet.PetBirthday.ToString("yyyy-MM-dd"), Color = pet.PetColor } };
+            return new JsonResult { Data = new { OwnerId = pet.OwnerId, OwnerName = pet.Owner.OwnerFullName, Birthday = pet.PetBirthday.ToString("yyyy-MM-dd") + "." + pet.PetBirthday.ToString("D"), Color = pet.PetColor } };
         }
 
         public JsonResult ValidatePet(int petId, string petName, int ownerId, int petSpecie, int petSex)
@@ -101,19 +101,28 @@ namespace SistemaVeterinaria.Controllers
             return new JsonResult { Data = new { status = status}};
         }
 
-        public void CreateClinicHistory(ClinicHistory clinicHistory)
+        public JsonResult CreateClinicHistory(ClinicHistory clinicHistory)
         {
+            clinicHistory.Pet = db.Pets.Find(clinicHistory.PetId);
+            clinicHistory.ClinicHistoryNumber =
+                clinicHistory.Pet.ClinicHistories.ToList().Last().ClinicHistoryNumber + 1;
             db.ClinicHistories.Add(clinicHistory);
             db.SaveChanges();
+
+            return new JsonResult{ Data = new { status = true, clinicHistoryId = clinicHistory.ClinicHistoryId, clinicHistoryNumber = clinicHistory.ClinicHistoryNumber }};
         }
 
-        public void EditClinicHistory(ClinicHistory clinicHistory)
+        public JsonResult EditClinicHistory(ClinicHistory clinicHistory)
         {
-            db.Entry(clinicHistory).State = EntityState.Modified;
+            var ch = db.ClinicHistories.Find(clinicHistory.ClinicHistoryId);
+            ch.ClinicHistoryData = clinicHistory.ClinicHistoryData;
+            db.Entry(ch).State = EntityState.Modified;
             db.SaveChanges();
+
+            return new JsonResult { Data = new { status = true, clinicHistoryId = clinicHistory.ClinicHistoryId } };
         }
 
-        public void DeleteClinicHistory(ClinicHistory clinicHistoryId)
+        public JsonResult DeleteClinicHistory(int clinicHistoryId)
         {
             ClinicHistory clinicHistory = db.ClinicHistories.Find(clinicHistoryId);
             if (clinicHistory != null)
@@ -121,6 +130,8 @@ namespace SistemaVeterinaria.Controllers
                 db.ClinicHistories.Remove(clinicHistory);
                 db.SaveChanges();
             }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

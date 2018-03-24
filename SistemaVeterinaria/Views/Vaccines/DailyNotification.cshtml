@@ -51,7 +51,8 @@
                     @item.VaccineNumber° Vacuna
                 </td>
                 <td id="@("VaccineDate" + item.VaccineId)" class="text-center">
-                    @item.VaccineDate.ToString("dd/MM/yyyy")
+                    
+                    @item.VaccineDate.ToString("D")
                 </td>
                 <td id="@("Owner" + item.VaccineId)" class="text-center">
                     @item.Pet.Owner.OwnerFullName
@@ -60,7 +61,7 @@
                     @item.Pet.Owner.OwnerPhone
                 </td>
                 <td id="@("Options" + item.VaccineId)" class="text-center">
-                    <button class="btn btn-success btn-sm" title="Aplazar" onclick="postpone(@item.VaccineId,@item.PetId)"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span></button>
+                    <button class="btn btn-success btn-sm" title="Aplazar" onclick="postpone(@item.VaccineId,@item.PetId,'@DateTime.Today.ToString("yyyy-MM-dd")')"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span></button>
                     <button class="btn btn-danger btn-sm" title="Anular" onclick="removeVaccine(@item.VaccineId)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>                    
                 </td>
             </tr>
@@ -105,7 +106,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="Postpone" type="button" class="btn btn-primary">Aplazar</button>
+                <button id="Postpone" type="button" class="btn btn-primary" onclick="SavePostpone('@DateTime.Today.ToString("yyyy-MM-dd")')">Aplazar</button>
                 <button id="Cancel" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
@@ -114,15 +115,12 @@
 
 @section scripts{
     <script>
-        function postpone(vaccineId, petId) {
+        function postpone(vaccineId, petId, today) {
             $('#EditVaccineId').text($('#VaccineId' + vaccineId).html().trim());
             $('#EditVaccineNumber').text($('#VaccineNumber' + vaccineId).html().trim());
             var date = $('#VaccineDate' + vaccineId).html().trim();
-            var day = date.split('/')[0];
-            var month = date.split('/')[1];
-            var year = date.split('/')[2]
 
-            $('#EditVaccineDate').val(year + '-' + month + '-' + day);
+            $('#EditVaccineDate').val(today);
             $('#EditVaccineDateSpan').hide();
             $('#EditPetId').text(petId);
             var pet = $('#PetName' + vaccineId).html().trim() + ' (' + $('#PetSpecie' + vaccineId).html().trim() + ')' + ' - ' + $('#Owner' + vaccineId).html().trim();
@@ -131,31 +129,14 @@
             $('#modalPostpone').show('slow');
         }
 
-        $('#Postpone').click(function () {
-            var date = String($('#EditVaccineDate').val());
-            var currentdate = $('#VaccineDate' + $('#EditVaccineId').text()).html().trim();
+        function SavePostpone(today) {
+            var date = String($('#EditVaccineDate').val());;
 
-            date = date.split('-')[0] + date.split('-')[1] + date.split('-')[2];
-
-            var day = currentdate.split('/')[0];
-            var month = currentdate.split('/')[1];
-            var year = currentdate.split('/')[2]
-
-            if (day < 10) {
-                day = '0' + day;
-            }
-
-            if (month < 10) {
-                month = '0' + month;
-            }
-
-            currentdate = year + month + day;
-
-            if (date < currentdate) {
-                $('#EditVaccineDateSpan').text('La nueva fecha no puede ser menor a la actual.').show();
+            if (date < today | date == '') {
+                $('#EditVaccineDateSpan').text('Ingrese una fecha válida superior a la de hoy.').show();
             } else {
                 $('#modalPostpone').hide('slow');
-                if (date > currentdate) {
+                if (date > today) {
                     var vaccine = {
                         VaccineId: parseInt($('#EditVaccineId').text()),
                         VaccineNumber: parseInt($('#EditVaccineNumber').text()),
@@ -175,14 +156,14 @@
 
                             //$('#VaccineDate' + d.vaccineId).html(d.vaccineDates[0]);
 
-                            $('#Options' + d.vaccineId).html('Aplazado al ' + d.vaccineDates[0].split('-')[2] + '/' + d.vaccineDates[0].split('-')[1] + '/' + d.vaccineDates[0].split('-')[0]).css('color', 'green');
+                            $('#Options' + d.vaccineId).html('Aplazado al ' + d.vaccineDates[0].split('.')[1]).css('color', 'green');
                             $('#Vaccine' + d.vaccineId).css("background-color", "#dee1ea");
                             toastr.info('Al actualizar la página no se visualizarán la notificaciones aplazadas.');
                         }
-                    })
+                    });
                 }
             }
-        });
+        }
 
         $('#Cancel').click(function () {
             $('#modalPostpone').hide('slow');
@@ -217,7 +198,7 @@
                             if (data) {
                                 toastr.success("Notificación anulada");
 
-                                $('#Options' + vaccineId).html('Notificación y Vacuna Anuladas').css('color','red');
+                                $('#Options' + vaccineId).html('Notificación y Vacuna Anuladas').css('color', 'red');
                             }
                         };
                         $.ajax(options);

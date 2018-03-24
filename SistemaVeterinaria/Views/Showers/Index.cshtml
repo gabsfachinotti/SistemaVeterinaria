@@ -71,9 +71,9 @@
                 <td id="@("Owner" + item.ShowerId)">
                     @item.Owner
                 </td>
-                <td id="@("ShowerDate" + item.ShowerId)" class="text-center" data-toggle="tooltip" title="@item.ShowerDate.ToString("D")">
+                <td id="@("ShowerDate" + item.ShowerId)" class="text-center">
                     <text>@item.ShowerDate.ToString("yyyy/MM/dd")</text>
-                    <text>@item.ShowerDate.ToString("dd/MM/yyyy")</text>
+                    <text>@item.ShowerDate.ToString("D")</text>
                 </td>
                 <td class="text-center">
                     @if (item.ShowerTurn) {<p id="@("ShowerTurn" + item.ShowerId)">Tarde</p>}else{<p id="@("ShowerTurn" + item.ShowerId)">Mañana</p>}</td>
