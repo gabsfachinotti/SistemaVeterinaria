@@ -38,29 +38,29 @@
             <div class="modal-body">
                 @if (ViewBag.Vaccines > 0)
                 {
-                    <p>Existen @ViewBag.Vaccines Vacunas programadas para el día de hoy.</p>
+                    <p>Existen Vacunas programadas para el día de hoy.</p>
                 }
                 @if (ViewBag.Surgeries > 0)
                 {
-                    <p>Existen @ViewBag.Surgeries Cirugías programadas para el día de hoy.</p>
+                    <p>Existen Cirugías programadas para el día de hoy.</p>
                 }
                 @if (ViewBag.Showers > 0)
                 {
-                    <p>Existen @ViewBag.Showers Baños programados para el día de hoy.</p>
+                    <p>Existen Baños programados para el día de hoy.</p>
                 }
             </div>
             <div class="modal-footer">
                 @if (ViewBag.Vaccines > 0)
                 {
-                    <a href="@Url.Action("DailyNotification","Vaccines")" class="btn btn-success">Ver Vacunas</a>
+                    <a href="@Url.Action("DailyNotification","Vaccines")" class="btn btn-success">Ver Vacunas (@ViewBag.Vaccines)</a>
                 }
                 @if (ViewBag.Surgeries > 0)
                 {
-                    <a href="@Url.Action("DailyNotification","Surgeries")" class="btn btn-primary">Ver Cirugías</a>
+                    <a href="@Url.Action("DailyNotification","Surgeries")" class="btn btn-primary">Ver Cirugías (@ViewBag.Surgeries)</a>
                 }
                 @if (ViewBag.Showers > 0)
                 {
-                    <a href="@Url.Action("DailyNotification","Showers")" class="btn btn-info">Ver Baños</a>
+                    <a href="@Url.Action("DailyNotification","Showers")" class="btn btn-info">Ver Baños (@ViewBag.Showers)</a>
                 }
             </div>
         </div>

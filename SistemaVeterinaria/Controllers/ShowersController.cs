@@ -30,21 +30,6 @@ namespace SistemaVeterinaria.Controllers
             return View(db.Showers.ToList().FindAll(s => s.ShowerDate == DateTime.Today));
         }
 
-        // GET: Showers/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Shower shower = db.Showers.Find(id);
-            if (shower == null)
-            {
-                return HttpNotFound();
-            }
-            return View(shower);
-        }
-
         public JsonResult ValidateShower(DateTime showerDate, int petId, bool showerTurn)
         {
             int data = 0; //Baño Validado

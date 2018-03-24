@@ -155,7 +155,7 @@ namespace SistemaVeterinaria.Controllers
             db.Entry(pet).State = EntityState.Modified;
             db.SaveChanges();
 
-            return new JsonResult { Data = new { surgeryId = surgery.SurgeryId, surgeryTypeName = surgery.SurgeryType.SurgeryTypeName, dateTitle = surgery.SurgeryDate.ToString("D") } };
+            return new JsonResult { Data = new { surgeryId = surgery.SurgeryId, petId = surgery.PetId , surgeryTypeName = surgery.SurgeryType.SurgeryTypeName, dateTitle = surgery.SurgeryDate.ToString("D") } };
         }
 
         public JsonResult EditSurgery(Surgery surgery)
