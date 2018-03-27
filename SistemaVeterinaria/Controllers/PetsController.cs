@@ -104,8 +104,15 @@ namespace SistemaVeterinaria.Controllers
         public JsonResult CreateClinicHistory(ClinicHistory clinicHistory)
         {
             clinicHistory.Pet = db.Pets.Find(clinicHistory.PetId);
-            clinicHistory.ClinicHistoryNumber =
-                clinicHistory.Pet.ClinicHistories.ToList().Last().ClinicHistoryNumber + 1;
+            if (clinicHistory.Pet.ClinicHistories.Any())
+            {
+                clinicHistory.ClinicHistoryNumber =
+                    clinicHistory.Pet.ClinicHistories.ToList().Last().ClinicHistoryNumber + 1;
+            }
+            else
+            {
+                clinicHistory.ClinicHistoryNumber = 1;
+            }
             db.ClinicHistories.Add(clinicHistory);
             db.SaveChanges();
 
