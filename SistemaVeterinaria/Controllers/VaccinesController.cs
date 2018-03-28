@@ -235,7 +235,7 @@ namespace SistemaVeterinaria.Controllers
                 position = db.Vaccines.ToList().OrderBy(v => v.VaccineNumber).Last(v => v.PetId == vaccine.PetId & v.VaccineNumber < vaccine.VaccineNumber).VaccineNumber;
             }            
 
-            return new JsonResult { Data = new { status = status, message = message, position = position, vaccineId = vaccine.VaccineId } };
+            return new JsonResult { Data = new { status = status, message = message, position = position, vaccineId = vaccine.VaccineId, dateTitle = vaccine.VaccineDate.ToString("D") } };
         }
 
         public JsonResult ValidateEditVaccine(Vaccine vaccine)
@@ -263,7 +263,7 @@ namespace SistemaVeterinaria.Controllers
                 db.SaveChanges();
             }
 
-            return new JsonResult { Data = new { status = status, message = message, vaccineId = vaccine.VaccineId }};
+            return new JsonResult { Data = new { status = status, message = message, vaccineId = vaccine.VaccineId, dateTitle = vaccine.VaccineDate.ToString("D") }};
         }
 
         [HttpPost]

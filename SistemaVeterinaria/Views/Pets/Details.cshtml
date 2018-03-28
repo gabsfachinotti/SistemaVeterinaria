@@ -442,7 +442,7 @@
                                 '<td class="text-center">' + d.vaccineId + '</td>' +
                                 '<td>' + petName + '</td>' +
                                 '<td class="text-center">' + $('#VaccineNumber').val() + '° Vacuna ' + '</td>' +
-                                '<td class="text-center">' + String(vaccinateDate).split('-')[2] + '/' + String(vaccinateDate).split('-')[1] + '/' + String(vaccinateDate).split('-')[0] + '</td>' +
+                                '<td class="text-center">' + d.dateTitle + '</td>' +
                                 '<td class="text-center"><button class="btn btn-success btn-sm" title="Editar" onclick="editVaccine(\'' + d.vaccineId + '\',\'' + $('#VaccineNumber').val() + '\',\'' + vaccinateDate + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button id="deletebutton'+ d.vaccineId +'" class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteVaccine('+ d.vaccineId +')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>' +
                             '</tr>';
 
@@ -505,7 +505,7 @@
                                 '<td class="text-center">' + d.vaccineId + '</td>' +
                                 '<td>' + petName + '</td>' +
                                 '<td class="text-center">' + vaccine.VaccineNumber + '° Vacuna ' + '</td>' +
-                                '<td class="text-center">' + String(vaccine.VaccineDate).split('-')[2] + '/' + String(vaccine.VaccineDate).split('-')[1] + '/' + String(vaccine.VaccineDate).split('-')[0] + '</td>' +
+                                '<td class="text-center">' + d.dateTitle + '</td>' +
                                 '<td class="text-center"><button class="btn btn-success btn-sm" title="Editar" onclick="editVaccine(\'' + d.vaccineId + '\',\'' + vaccine.VaccineNumber + '\',\'' + vaccine.VaccineDate + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;<button id="deletebutton'+ d.vaccineId +'" class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteVaccine('+ d.vaccineId +')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>' +
                             '</tr>';
 
