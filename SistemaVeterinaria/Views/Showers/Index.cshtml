@@ -229,11 +229,11 @@
                     <label class="mylabel">Especie:</label>
                     <label style="width:18%">
                         <input id="OccasionalPetDogSpecie" name="OccasionalPetSpecie" type="radio" checked="checked" />
-                        Perro
+                        Canina
                     </label>
                     <label>
                         <input id="OccasionalPetCatSpecie" name="OccasionalPetSpecie" type="radio" />
-                        Gato
+                        Felina
                     </label>
                 </div>
                 <div class="modalinput" style="margin-top:1%">
@@ -367,11 +367,11 @@
                     <label class="mylabel">Especie:</label>
                     <label style="width:18%">
                         <input id="EditOccasionalPetDogSpecie" name="EditOccasionalPetSpecie" type="radio" checked="checked" />
-                        Perro
+                        Canina
                     </label>
                     <label>
                         <input id="EditOccasionalPetCatSpecie" name="EditOccasionalPetSpecie" type="radio" />
-                        Gato
+                        Felina
                     </label>
                 </div>
                 <div class="modalinput" style="margin-top:1%">
@@ -575,10 +575,10 @@
                 turn = false;
             }
 
-            var specie = 'Gato';
+            var specie = 'Felina';
             var specievalue = 2;
             if ($('#OccasionalPetDogSpecie').is(':checked')) {
-                specie = 'Perro';
+                specie = 'Canina';
                 specievalue = 1;
             }
 
@@ -897,7 +897,7 @@
             $('#EditOccasionalOwnerPhone').val(ownerPhone);
             $('#EditOccasionalPatientName').val($('#PetName' + showerId).text().trim());
 
-            if ($('#PetSpecie' + showerId).text().trim() == 'Perro') {
+            if ($('#PetSpecie' + showerId).text().trim() == 'Canina') {
                 $('#EditOccasionalPetDogSpecie').prop('checked', true);
             } else {
                 $('#EditOccasionalPetCatSpecie').prop('checked', true);
@@ -937,9 +937,9 @@
                 turn = false;
             }
 
-            var specie = 'Gato';
+            var specie = 'Felina';
             if ($('#EditOccasionalPetDogSpecie').is(':checked')) {
-                specie = 'Perro';
+                specie = 'Canina';
             }
 
             var sex = 'Hembra';

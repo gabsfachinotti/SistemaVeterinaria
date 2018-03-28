@@ -69,13 +69,13 @@ namespace SistemaVeterinaria.Controllers
                 var vaccineId = vaccine.VaccineId;
                 var pet = vaccine.Pet.PetName;
                 var specie = String.Empty;
-                if (vaccine.Pet.PetSpecie == Species.Perro)
+                if (vaccine.Pet.PetSpecie == Species.Canina)
                 {
-                    specie = "Perro";
+                    specie = "Canina";
                 }
                 else
                 {
-                    specie = "Gato";
+                    specie = "Felina";
                 }
                 DateTime date = db.Vaccines.ToList().Find(v => v.PetId == vaccine.PetId & v.VaccineNumber == vaccine.VaccineNumber).VaccineDate;
                 DateTime date2 = DateTime.MinValue;
@@ -187,10 +187,10 @@ namespace SistemaVeterinaria.Controllers
                 db.Vaccines.Add(vaccine);
                 db.SaveChanges();
 
-                var specie = "Perro";
-                if (vaccine.Pet.PetSpecie == Species.Gato)
+                var specie = "Canina";
+                if (vaccine.Pet.PetSpecie == Species.Felina)
                 {
-                    specie = "Gato";
+                    specie = "Felina";
                 }
 
                 return new JsonResult { Data = new { status = true, vaccineId = vaccine.VaccineId, owner = vaccine.Pet.Owner.OwnerFullName, pet = vaccine.Pet.PetName, specie = specie, date = vaccine.VaccineDate.ToString("yyyy-MM-dd") + "." + vaccine.VaccineDate.ToString("D") } };
@@ -330,13 +330,13 @@ namespace SistemaVeterinaria.Controllers
 
             var petName = v.Pet.PetName;
             var specie = String.Empty;
-            if (v.Pet.PetSpecie == Species.Perro)
+            if (v.Pet.PetSpecie == Species.Canina)
             {
-                specie = "Perro";
+                specie = "Canina";
             }
             else
             {
-                specie = "Gato";
+                specie = "Felina";
             }
 
             return new JsonResult { Data = new { owner = v.Pet.Owner.OwnerFullName, pet = petName, specie = specie, vaccineId = vaccineId, vaccineDates = vaccineDates, lastId = lastnotification } };

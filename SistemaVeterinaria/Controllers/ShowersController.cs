@@ -90,13 +90,13 @@ namespace SistemaVeterinaria.Controllers
                     shower.Owner = pet.Owner.OwnerFullName;
                     shower.OwnerPhone = pet.Owner.OwnerPhone;
 
-                    if (pet.PetSpecie == Species.Perro)
+                    if (pet.PetSpecie == Species.Canina)
                     {
-                        shower.PetSpecie = "Perro";
+                        shower.PetSpecie = "Canina";
                     }
                     else
                     {
-                        shower.PetSpecie = "Gato";
+                        shower.PetSpecie = "Felina";
                     }
                 }
 
@@ -151,13 +151,13 @@ namespace SistemaVeterinaria.Controllers
                     shower.Owner = pet.Owner.OwnerFullName;
                     shower.OwnerPhone = pet.Owner.OwnerPhone;
 
-                    if (pet.PetSpecie == Species.Perro)
+                    if (pet.PetSpecie == Species.Canina)
                     {
-                        shower.PetSpecie = "Perro";
+                        shower.PetSpecie = "Canina";
                     }
                     else
                     {
-                        shower.PetSpecie = "Gato";
+                        shower.PetSpecie = "Felina";
                     }
                 }
 

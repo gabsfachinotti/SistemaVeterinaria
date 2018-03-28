@@ -66,10 +66,10 @@ namespace SistemaVeterinaria.Controllers
 
         public JsonResult ValidatePet(int petId, string petName, int ownerId, int petSpecie, int petSex)
         {
-            var specie = Species.Perro;
+            var specie = Species.Canina;
             if (petSpecie == 2)
             {
-                specie = Species.Gato;
+                specie = Species.Felina;
             }
 
             var sex = false;

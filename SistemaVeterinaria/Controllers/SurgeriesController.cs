@@ -113,13 +113,13 @@ namespace SistemaVeterinaria.Controllers
                     db.SaveChanges();
 
                     string specie;
-                    if (surgery.Pet.PetSpecie == Species.Perro)
+                    if (surgery.Pet.PetSpecie == Species.Canina)
                     {
-                        specie = "Perro";
+                        specie = "Canina";
                     }
                     else
                     {
-                        specie = "Gato";
+                        specie = "Felina";
                     }
 
                     string sex;
@@ -171,13 +171,13 @@ namespace SistemaVeterinaria.Controllers
                     db.SaveChanges();
 
                     var specie = String.Empty;
-                    if (surgery.Pet.PetSpecie == Species.Perro)
+                    if (surgery.Pet.PetSpecie == Species.Canina)
                     {
-                        specie = "Perro";
+                        specie = "Canina";
                     }
                     else
                     {
-                        specie = "Gato";
+                        specie = "Felina";
                     }
 
                     var sex = String.Empty;

@@ -8,8 +8,8 @@ namespace SistemaVeterinaria.Models
 {
     public enum Species
     {
-        Perro = 1,
+        Canina = 1,
         
-        Gato = 2
+        Felina = 2
     }
 }

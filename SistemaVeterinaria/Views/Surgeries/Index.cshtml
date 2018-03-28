@@ -83,13 +83,13 @@
                 @Html.DisplayFor(modelItem => item.Pet.PetName)
             </td>
             <td id="@("SurgeryPetSpecie" + item.SurgeryId)" class="text-center">
-                @if (item.Pet.PetSpecie == SistemaVeterinaria.Models.Species.Perro)
+                @if (item.Pet.PetSpecie == SistemaVeterinaria.Models.Species.Canina)
                 {
-                    <text>Perro</text>
+                    <text>Canina</text>
                 }
                 else
                 {
-                    <text>Gato</text>
+                    <text>Felina</text>
                 }
             </td>
             <td id="@("SurgeryPetSex" + item.SurgeryId)" class="text-center">
@@ -260,11 +260,11 @@
                     <label class="mylabel">Especie:</label>
                     <label style="width:18%">
                         <input id="OccasionalPetDogSpecie" name="OccasionalPetSpecie" type="radio" checked="checked" />
-                        Perro
+                        Canina
                     </label>
                     <label>
                         <input id="OccasionalPetCatSpecie" name="OccasionalPetSpecie" type="radio" />
-                        Gato
+                        Felina
                     </label>
                 </div>
                 <div class="modalinput" style="margin-top:1%">
@@ -401,11 +401,11 @@
                     <label class="mylabel">Especie:</label>
                     <label style="width:18%">
                         <input id="EditOccasionalPetDogSpecie" name="EditOccasionalPetSpecie" type="radio" checked="checked" />
-                        Perro
+                        Canina
                     </label>
                     <label>
                         <input id="EditOccasionalPetCatSpecie" name="EditOccasionalPetSpecie" type="radio" />
-                        Gato
+                        Felina
                     </label>
                 </div>
                 <div class="modalinput" style="margin-top:1%">
@@ -808,10 +808,10 @@
             }
 
             var specie = 1;
-            var specievalue = 'Perro';
+            var specievalue = 'Canina';
             if ($('#OccasionalPetCatSpecie').is(':checked')) {
                 specie = 2;
-                specievalue = 'Gato';
+                specievalue = 'Felina';
             }
 
             var sex = false;
@@ -1013,7 +1013,7 @@
             $('#EditOccasionalPatientName').val($('#SurgeryPet' + surgeryId).html().trim());
             $('#EditOccasionalPatientBirthday').val(petBirthday);
 
-            if ($('#SurgeryPetSpecie' + surgeryId).html().trim() == 'Perro') {
+            if ($('#SurgeryPetSpecie' + surgeryId).html().trim() == 'Canina') {
                 $('#EditOccasionalPetDogSpecie').prop('checked', true);
             } else {
                 $('#EditOccasionalPetCatSpecie').prop('checked', true);
@@ -1072,10 +1072,10 @@
             }
 
             var specie = 1;
-            var specievalue = 'Perro';
+            var specievalue = 'Canina';
             if ($('#EditOccasionalPetCatSpecie').is(':checked')) {
                 specie = 2;
-                specievalue = 'Gato';
+                specievalue = 'Felina';
             }
 
             var sex = false;
