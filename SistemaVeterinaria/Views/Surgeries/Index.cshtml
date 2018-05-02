@@ -80,7 +80,8 @@
                 @item.SurgeryId
             </td>
             <td id="@("SurgeryPet" + item.SurgeryId)">
-                @Html.DisplayFor(modelItem => item.Pet.PetName)
+                @*@Html.DisplayFor(modelItem => item.Pet.PetName)*@
+                <a href="@Url.Action("Details","Pets", new {id = item.PetId})">@item.Pet.PetName</a>
             </td>
             <td id="@("SurgeryPetSpecie" + item.SurgeryId)" class="text-center">
                 @if (item.Pet.PetSpecie == SistemaVeterinaria.Models.Species.Canina)
@@ -721,7 +722,7 @@
                         if (d.status) {
                             var row = '<tr id="Surgery' + d.surgeryId + '" style="background-color: #dee1ea">' +
                                             '<td id="SurgeryId' + d.surgeryId + '" class="text-center">' + d.surgeryId + '</td>' +
-                                            '<td id="SurgeryPet' + d.surgeryId + '">' + d.petName + '</td>' +
+                                            '<td id="SurgeryPet' + d.surgeryId + '"><a href="Pets/Details/' + $('#SurgeryPet').val() +'">' + d.petName + '</a></td>' +
                                             '<td id="SurgeryPetSpecie' + d.surgeryId + '" class="text-center">' + d.petSpecie + '</td>' +
                                             '<td id="SurgeryPetSex' + d.surgeryId + '" class="text-center">' + d.petSex + '</td>' +
                                             '<td id="SurgeryPetOwner' + d.surgeryId + '" class="text-center">' + d.owner + '</td>' +
@@ -891,7 +892,7 @@
 
                                 var row = '<tr id="Surgery' + d.surgeryId + '" style="background-color: #dee1ea">' +
                                     '<td id="SurgeryId' + d.surgeryId + '" class="text-center">' + d.surgeryId + '</td>' +
-                                    '<td id="SurgeryPet' + d.surgeryId + '">' + pet.PetName + '</td>' +
+                                    '<td id="SurgeryPet' + d.surgeryId + '"><a href="Pets/Details/'+ d.petId +'">' + pet.PetName + '</a></td>' +
                                     '<td id="SurgeryPetSpecie' + d.surgeryId + '" class="text-center">' + specievalue + '</td>' +
                                     '<td id="SurgeryPetSex' + d.surgeryId + '" class="text-center">' + sexvalue + '</td>' +
                                     '<td id="SurgeryPetOwner' + d.surgeryId + '" class="text-center">' + owner.OwnerLastName + ', ' + owner.OwnerName + '</td>' +
