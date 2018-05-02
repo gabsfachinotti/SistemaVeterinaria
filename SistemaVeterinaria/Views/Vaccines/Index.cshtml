@@ -172,8 +172,8 @@
                 <span id="EditVaccineDateSpan" style="color:red;display:none;margin-left:30%"></span>
                 <div class="modalinput" style="margin-top:1%">
                     <label class="modallabel">Paciente:</label>
-                    <select id="EditVaccinePet" class="js-example-basic-single" style="width:60%">
-                        @foreach (var pet in ViewBag.Pets)
+                    <select id="EditVaccinePet" class="js-example-basic-single" disabled="disabled" style="width:60%">
+                        @foreach (var pet in ViewBag.AllPets)
                         {
                             <option value="@pet.PetId">@pet.PetName (@pet.PetSpecie) - @pet.Owner.OwnerFullName</option>
                         }
@@ -182,7 +182,7 @@
                 <span id="EditVaccinePetSpan" style="color:red;display:none;margin-left:30%"></span>
                 <div style="margin-left:10%;margin-top:7%">
                     <text style="color:red;font-weight:bold">IMPORTANTE:</text>
-                    <span>Si modifica la fecha de la notificación, se modificarán las fechas de las notificaciones posteriores.</span>
+                    <span>Si modifica la fecha de la vacuna, se modificarán las fechas de las vacunas posteriores.</span>
                 </div>
             </div>
             <div class="modal-footer">
@@ -367,12 +367,12 @@
             $('#EditVaccineDateSpan').hide();
             $("#EditVaccinePet").val(petId).trigger('change');
             $('#EditVaccinePetSpan').hide();
-            if (vaccineNumber > 1) {
-                $("#EditVaccinePet").attr("disabled", true);
-                $('#EditVaccinePetSpan').text('Para modificar el Paciente modifique la 1° Vacuna').css('color','black').show();
-            } else {
-                $("#EditVaccinePet").attr("disabled", false);
-            }
+            //if (vaccineNumber > 1) {
+            //    $("#EditVaccinePet").attr("disabled", true);
+            //    $('#EditVaccinePetSpan').text('Para modificar el Paciente modifique la 1° Vacuna').css('color','black').show();
+            //} else {
+            //    $("#EditVaccinePet").attr("disabled", false);
+            //}
 
             $('#EditVaccineNumber').text(String(vaccineNumber) + '° Vacuna');
             $('#editVaccine').show('slow');
@@ -393,10 +393,10 @@
                 $('#EditVaccineDateSpan').text('Debe especificar la fecha de vacunación.').show();
             }
 
-            if ($('#EditVaccinePet').val() == 0 | $('#EditVaccinePet').val() == null) {
-                validation = false;
-                $('#EditVaccinePetSpan').text('Debe seleccionar un paciente.').show();
-            }
+            //if ($('#EditVaccinePet').val() == 0 | $('#EditVaccinePet').val() == null) {
+            //    validation = false;
+            //    $('#EditVaccinePetSpan').text('Debe seleccionar un paciente.').show();
+            //}
 
             if (validation) {
                 $('#editVaccine').hide('slow');
@@ -488,7 +488,7 @@
                         className: "btn-primary"
                     }
                 }
-            })
+            });
         }
     </script>
 }

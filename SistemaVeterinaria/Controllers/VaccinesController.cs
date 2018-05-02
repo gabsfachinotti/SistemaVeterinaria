@@ -19,9 +19,10 @@ namespace SistemaVeterinaria.Controllers
         // GET: Vaccines
         public ActionResult Index()
         {
-            var vaccines = db.Vaccines.ToList().FindAll(v => v.VaccineDate >= DateTime.Today & v.VaccineDate < DateTime.Today.AddYears(2) & v.VaccineNumber > 1);
+            var vaccines = db.Vaccines.ToList().FindAll(v => v.VaccineDate >= DateTime.Today & v.VaccineDate < DateTime.Today.AddYears(2)/* & v.VaccineNumber > 1*/);
             ViewBag.Title = "Notificaciones Futuras de Vacunas";
-            ViewBag.Pets = db.Pets.ToList();
+            ViewBag.Pets = db.Pets.ToList().FindAll(p => !p.Vaccinations.Any());
+            ViewBag.AllPets = db.Pets.ToList();
             return View(vaccines);
         }
 
@@ -282,7 +283,7 @@ namespace SistemaVeterinaria.Controllers
             db.SaveChanges();
             vaccineDates.Add(v.VaccineDate.ToString("yyyy-MM-dd") + "." + v.VaccineDate.ToString("D"));
 
-            //Guardo el próximo numero de vacuna a actualizar para modificar las posteriores
+            //Guardo el próximo número de vacuna a actualizar para modificar las posteriores
             var pet = v.Pet;
             Vaccine nextvaccine = new Vaccine();
             var lastnotification = v.VaccineId;
@@ -309,7 +310,15 @@ namespace SistemaVeterinaria.Controllers
                         nextvaccine.VaccineDate = vaccine.VaccineDate.AddMonths(1);
                         break;
                     case 6:
-                        nextvaccine.VaccineDate = db.Vaccines.ToList().Find(va => va.PetId == vaccine.PetId & va.VaccineNumber == 4).VaccineDate.AddYears(1);
+                        if (pet.Vaccinations.ToList().Exists(va => va.VaccineNumber == 4)/*db.Vaccines.ToList().Exists(va => va.PetId == vaccine.PetId & va.VaccineNumber == 4)*/)
+                        {
+                            nextvaccine.VaccineDate = pet.Vaccinations.ToList().Find(va => va.VaccineNumber == 4).VaccineDate.AddYears(1);
+                            //db.Vaccines.ToList().Find(va => va.PetId == vaccine.PetId & va.VaccineNumber == 4).VaccineDate.AddYears(1);
+                        }
+                        else
+                        {
+                            nextvaccine.VaccineDate = vaccine.VaccineDate.AddMonths(11);
+                        }
                         break;
                     default:
                         nextvaccine.VaccineDate = vaccine.VaccineDate.AddYears(1);
