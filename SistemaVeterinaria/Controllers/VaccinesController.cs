@@ -45,22 +45,23 @@ namespace SistemaVeterinaria.Controllers
             if (!db.Vaccines.ToList().Exists(v => v.PetId == vaccine.PetId & v.VaccineNumber >= vaccine.VaccineNumber))
             {
                 vaccine.Pet = db.Pets.Find(vaccine.PetId);
+                bool done = vaccine.VaccineDate <= DateTime.Today;
 
                 if (vaccine.Pet.PetSpecie == Species.Canina)
                 {
                     if (vaccine.VaccineNumber < 5)
                     {
-                        CreateVaccineNumberOne(vaccine);
+                        CreateVaccineNumberOne(vaccine,done);
                     }
                     else
                     {
                         if (vaccine.VaccineNumber == 5)
                         {
-                            CreateVaccineNumberFive(vaccine);
+                            CreateVaccineNumberFive(vaccine,done);
                         }
                         else
                         {
-                            CreateVaccineNumberSix(vaccine);
+                            CreateVaccineNumberSix(vaccine,done);
                         }
                     }
 
@@ -110,11 +111,11 @@ namespace SistemaVeterinaria.Controllers
                 {
                     if (vaccine.VaccineNumber < 4)
                     {
-                        CreateVaccineNumberOne(vaccine);
+                        CreateVaccineNumberOne(vaccine,done);
                     }
                     else
                     {
-                        CreateVaccineNumberSix(vaccine);
+                        CreateVaccineNumberSix(vaccine,done);
                     }
 
                     var vaccineId = vaccine.VaccineId;
@@ -157,11 +158,7 @@ namespace SistemaVeterinaria.Controllers
                 db.Vaccines.Add(vaccine);
                 db.SaveChanges();
 
-                var specie = "Canina";
-                if (vaccine.Pet.PetSpecie == Species.Felina)
-                {
-                    specie = "Felina";
-                }
+                var specie = vaccine.Pet.PetSpecie == Species.Canina ? "Canina" : "Felina";
 
                 return new JsonResult { Data = new { status = true, vaccineId = vaccine.VaccineId, owner = vaccine.Pet.Owner.OwnerFullName, pet = vaccine.Pet.PetName, specie = specie, date = vaccine.VaccineDate.ToString("yyyy-MM-dd") + "." + vaccine.VaccineDate.ToString("D") } };
             }
@@ -225,15 +222,16 @@ namespace SistemaVeterinaria.Controllers
                 message = "No es posible modificar la fecha de una vacuna a una fecha superior a la de su siguiente Nro Ordinal";
             }
 
+            var editVaccine = db.Vaccines.Find(vaccine.VaccineId);
+            var done = editVaccine.Done ? "Si" : "No";
             if (status)
             {
-                var editVaccine = db.Vaccines.Find(vaccine.VaccineId);
                 editVaccine.VaccineDate = vaccine.VaccineDate;
                 db.Entry(editVaccine).State = EntityState.Modified;
                 db.SaveChanges();
             }
 
-            return new JsonResult { Data = new { status = status, message = message, vaccineId = vaccine.VaccineId, dateTitle = vaccine.VaccineDate.ToString("D") }};
+            return new JsonResult { Data = new { status = status, message = message, vaccineId = vaccine.VaccineId, dateTitle = vaccine.VaccineDate.ToString("D"), done = done } };
         }
 
         [HttpPost]
@@ -324,10 +322,26 @@ namespace SistemaVeterinaria.Controllers
 
             return Json(status, JsonRequestBehavior.AllowGet);
         }
-        public void CreateVaccineNumberOne(Vaccine v)
+
+        [HttpPost]
+        public JsonResult ConfirmVaccine(int vaccineId)
+        {
+            Vaccine vaccine = db.Vaccines.Find(vaccineId);
+            if (vaccine != null)
+            {
+                vaccine.Done = true;
+                db.Entry(vaccine).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(false, JsonRequestBehavior.AllowGet);
+        }
+        public void CreateVaccineNumberOne(Vaccine v, bool done)
         {
             v.VaccineDate = VerifyDate(v.VaccineDate);
-
+            v.Done = done;
             db.Vaccines.Add(v);
             db.SaveChanges();
 
@@ -341,12 +355,12 @@ namespace SistemaVeterinaria.Controllers
                 if (vaccine2.VaccineNumber < 5)
                 {
                     vaccine2.VaccineDate = v.VaccineDate.AddDays(21);
-                    CreateVaccineNumberOne(vaccine2);
+                    CreateVaccineNumberOne(vaccine2,false);
                 }
                 else
                 {
                     vaccine2.VaccineDate = v.VaccineDate.AddMonths(1);
-                    CreateVaccineNumberFive(vaccine2);
+                    CreateVaccineNumberFive(vaccine2,false);
                 }
             }
             else
@@ -354,21 +368,21 @@ namespace SistemaVeterinaria.Controllers
                 if (vaccine2.VaccineNumber < 3)
                 {
                     vaccine2.VaccineDate = v.VaccineDate.AddDays(30);
-                    CreateVaccineNumberOne(vaccine2);
+                    CreateVaccineNumberOne(vaccine2,false);
                 }
                 else
                 {
                     vaccine2.VaccineDate = v.VaccineDate.AddYears(1);
-                    CreateVaccineNumberSix(vaccine2);
+                    CreateVaccineNumberSix(vaccine2,false);
                 }
             }
           
         }
 
-        public void CreateVaccineNumberFive(Vaccine vaccine)
+        public void CreateVaccineNumberFive(Vaccine vaccine, bool done)
         {
             vaccine.VaccineDate = VerifyDate(vaccine.VaccineDate);
-
+            vaccine.Done = done;
             db.Vaccines.Add(vaccine);
             db.SaveChanges();
 
@@ -377,15 +391,15 @@ namespace SistemaVeterinaria.Controllers
             vaccine6.VaccineDate = vaccine.VaccineDate.AddMonths(11);
             vaccine6.PetId = vaccine.PetId;
             vaccine6.Pet = vaccine.Pet;
-            CreateVaccineNumberSix(vaccine6);
+            CreateVaccineNumberSix(vaccine6,false);
         }
 
-        public void CreateVaccineNumberSix(Vaccine vaccine)
+        public void CreateVaccineNumberSix(Vaccine vaccine, bool done)
         {
             if (vaccine.VaccineNumber < 25)
             {
                 vaccine.VaccineDate = VerifyDate(vaccine.VaccineDate);
-
+                vaccine.Done = done;
                 db.Vaccines.Add(vaccine);
                 db.SaveChanges();
 
@@ -394,20 +408,37 @@ namespace SistemaVeterinaria.Controllers
                 vaccine7.VaccineDate = vaccine.VaccineDate.AddYears(1);
                 vaccine7.PetId = vaccine.PetId;
                 vaccine7.Pet = vaccine.Pet;
-                CreateVaccineNumberSix(vaccine7);
+                CreateVaccineNumberSix(vaccine7,false);
             }
         }
 
         private DateTime VerifyDate(DateTime date)
-        {
-            if (date.DayOfWeek == DayOfWeek.Sunday || (date.Day == 25 && date.Month == 12) || (date.Day == 1 && date.Month == 1))
+        {            
+            switch (date.Month)
+            {
+                case 1:
+                    date = date.Day == 1 ? date.AddDays(1) : date; //Año Nuevo
+                    break;
+                case 5:
+                    date = date.Day == 1 ? date.AddDays(1) : date; //Día del Trabajador
+                    break;
+                case 7:
+                    date = date.Day == 9 ? date.AddDays(1) : date; //Día de la Independencia
+                    break;
+                case 8:
+                    date = date.Day == 6 ? date.AddDays(1) : date; //Día del Veterinario
+                    break;
+                case 12:
+                    date = date.Day == 25 ? date.AddDays(1) : date; //Navidad
+                    break;
+            }
+
+            if (date.DayOfWeek == DayOfWeek.Sunday)
             {
                 return date.AddDays(1);
             }
-            else
-            {
-                return date;
-            }
+
+            return date;
         }
 
         protected override void Dispose(bool disposing)

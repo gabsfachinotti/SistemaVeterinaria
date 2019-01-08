@@ -37,34 +37,44 @@
     <tbody id="Vaccines">
         @foreach (var item in Model)
         {
-            <tr id="@("Vaccine" + item.VaccineId)">
-                <td id="@("VaccineId" + item.VaccineId)">
-                    @item.VaccineId
-                </td>
-                <td id="@("PetName" + item.VaccineId)">
-                    @Html.DisplayFor(modelItem => item.Pet.PetName)
-                </td>
-                <td id="@("PetSpecie" + item.VaccineId)" class="text-center">
-                    @Html.DisplayFor(modelItem => item.Pet.PetSpecie)
-                </td>                
-                <td id="@("VaccineNumber" + item.VaccineId)" class="text-center">
-                    @item.VaccineNumber° Vacuna
-                </td>
-                <td id="@("VaccineDate" + item.VaccineId)" class="text-center">
-                    
-                    @item.VaccineDate.ToString("D")
-                </td>
-                <td id="@("Owner" + item.VaccineId)" class="text-center">
-                    @item.Pet.Owner.OwnerFullName
-                </td>
-                <td class="text-center">
-                    @item.Pet.Owner.OwnerPhone
-                </td>
+        <tr id="@("Vaccine" + item.VaccineId)">
+            <td id="@("VaccineId" + item.VaccineId)">
+                @item.VaccineId
+            </td>
+            <td id="@("PetName" + item.VaccineId)">
+                @Html.DisplayFor(modelItem => item.Pet.PetName)
+            </td>
+            <td id="@("PetSpecie" + item.VaccineId)" class="text-center">
+                @Html.DisplayFor(modelItem => item.Pet.PetSpecie)
+            </td>
+            <td id="@("VaccineNumber" + item.VaccineId)" class="text-center">
+                @item.VaccineNumber° Vacuna
+            </td>
+            <td id="@("VaccineDate" + item.VaccineId)" class="text-center">
+
+                @item.VaccineDate.ToString("D")
+            </td>
+            <td id="@("Owner" + item.VaccineId)" class="text-center">
+                @item.Pet.Owner.OwnerFullName
+            </td>
+            <td class="text-center">
+                @item.Pet.Owner.OwnerPhone
+            </td>
+            @if (!item.Done)
+            {
                 <td id="@("Options" + item.VaccineId)" class="text-center">
-                    <button class="btn btn-success btn-sm" title="Aplazar" onclick="postpone(@item.VaccineId,@item.PetId,'@DateTime.Today.ToString("yyyy-MM-dd")')"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span></button>
-                    <button class="btn btn-danger btn-sm" title="Anular" onclick="removeVaccine(@item.VaccineId)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>                    
+                    <button class="btn btn-success btn-sm" title="Confirmar" onclick="vaccineConfirm(@item.VaccineId,@item.VaccineNumber,'@item.Pet.PetName')"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                    <button class="btn btn-primary btn-sm" title="Aplazar" onclick="postpone(@item.VaccineId,@item.PetId,'@DateTime.Today.ToString("yyyy-MM-dd")')"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span></button>
+                    <button class="btn btn-danger btn-sm" title="Anular" onclick="removeVaccine(@item.VaccineId)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                 </td>
-            </tr>
+            }
+            else
+            {
+                <td id="@("Options" + item.VaccineId)" class="text-center" style="color:green">
+                    Realizada
+                </td>
+            }
+        </tr>
         }
     </tbody>
 </table>
@@ -199,6 +209,42 @@
                                 toastr.success("Notificación anulada");
 
                                 $('#Options' + vaccineId).html('Notificación y Vacuna Anuladas').css('color', 'red');
+                            }
+                        };
+                        $.ajax(options);
+                    }
+                }
+            });
+        }
+
+        function vaccineConfirm(vaccineId,vaccineNumber,petName) {
+            bootbox.confirm({
+                title: "Confirmar Vacuna",
+                message: "¿Desea confirmar la realización de la vacuna Nro " + String(vaccineNumber) + " a " + petName + "?",
+                buttons: {
+                    confirm: {
+                        label: "Confirmar",
+                        className: "btn-success"
+                    },
+                    cancel: {
+                        label: "Cancelar",
+                        className: "btn-primary"
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        var options = {};
+                        options.url = '@Url.Action("ConfirmVaccine", "Vaccines")';
+                        options.type = "POST";
+                        options.data = { "vaccineId": vaccineId };
+                        options.dataType = "json";
+                        options.success = function (data) {
+                            if (data) {
+                                toastr.success("Vacuna realizada exitosamente");
+
+                                $('#Options' + vaccineId).html('Realizada').css('color', 'green');
+                            } else {
+                                toastr.error("Error: La Vacuna que intenta confirmar ha sido eliminada.");
                             }
                         };
                         $.ajax(options);
