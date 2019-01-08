@@ -21,8 +21,7 @@ namespace SistemaVeterinaria.Controllers
         {
             var vaccines = db.Vaccines.ToList().FindAll(v => v.VaccineDate >= DateTime.Today & v.VaccineDate < DateTime.Today.AddYears(2)/* & v.VaccineNumber > 1*/);
             ViewBag.Title = "Notificaciones Futuras de Vacunas";
-            ViewBag.Pets = db.Pets.ToList().FindAll(p => !p.Vaccinations.Any());
-            ViewBag.AllPets = db.Pets.ToList();
+            ViewBag.Pets = db.Pets.ToList();
             return View(vaccines);
         }
 
@@ -30,8 +29,7 @@ namespace SistemaVeterinaria.Controllers
         {
             var vaccines = db.Vaccines.ToList().FindAll(v => v.VaccineDate < DateTime.Today);
             ViewBag.Title = "Vacunas Realizadas";
-            ViewBag.Pets = db.Pets.ToList().FindAll(p => !p.Vaccinations.Any());
-            ViewBag.AllPets = db.Pets.ToList();
+            ViewBag.Pets = db.Pets.ToList();
             return View("Index", vaccines);
         }
 
@@ -46,135 +44,106 @@ namespace SistemaVeterinaria.Controllers
         {
             if (!db.Vaccines.ToList().Exists(v => v.PetId == vaccine.PetId & v.VaccineNumber >= vaccine.VaccineNumber))
             {
-                //db.Vaccines.RemoveRange(db.Vaccines.ToList().FindAll(v => v.PetId == vaccine.PetId & v.VaccineNumber >= vaccine.VaccineNumber));
-                //db.SaveChanges();
-
                 vaccine.Pet = db.Pets.Find(vaccine.PetId);
 
-                if (vaccine.VaccineNumber < 5)
+                if (vaccine.Pet.PetSpecie == Species.Canina)
                 {
-                    CreateVaccineNumberOne(vaccine);
+                    if (vaccine.VaccineNumber < 5)
+                    {
+                        CreateVaccineNumberOne(vaccine);
+                    }
+                    else
+                    {
+                        if (vaccine.VaccineNumber == 5)
+                        {
+                            CreateVaccineNumberFive(vaccine);
+                        }
+                        else
+                        {
+                            CreateVaccineNumberSix(vaccine);
+                        }
+                    }
+
+                    var vaccineId = vaccine.VaccineId;
+                    var pet = vaccine.Pet.PetName;
+                    var specie = "Canina";
+                    
+                    DateTime date = db.Vaccines.ToList().Find(v => v.PetId == vaccine.PetId & v.VaccineNumber == vaccine.VaccineNumber).VaccineDate;
+                    DateTime date2 = DateTime.MinValue;
+                    DateTime date3 = DateTime.MinValue;
+                    DateTime date4 = DateTime.MinValue;
+                    DateTime date5 = DateTime.MinValue;
+                    DateTime date6 = DateTime.MinValue;
+
+                    switch (vaccine.VaccineNumber)
+                    {
+                        case 1:
+                            date2 = VerifyDate(vaccine.VaccineDate.AddDays(21));
+                            date3 = VerifyDate(date2.AddDays(21));                            
+                            date4 = VerifyDate(date3.AddDays(21));
+                            date5 = VerifyDate(date4.AddMonths(1));
+                            date6 = VerifyDate(date4.AddYears(1));
+                            break;
+                        case 2:
+                            date3 = VerifyDate(date2.AddDays(21));
+                            date4 = VerifyDate(date3.AddDays(21));
+                            date5 = VerifyDate(date4.AddMonths(1));
+                            date6 = VerifyDate(date4.AddYears(1));
+                            break;
+                        case 3:
+                            date4 = VerifyDate(date3.AddDays(21));
+                            date5 = VerifyDate(date4.AddMonths(1));
+                            date6 = VerifyDate(date4.AddYears(1));
+                            break;
+                        case 4:
+                            date5 = VerifyDate(date4.AddMonths(1));
+                            date6 = VerifyDate(date4.AddYears(1));
+                            break;
+                        case 5:
+                            date6 = VerifyDate(date4.AddYears(1));
+                            break;
+                    }
+
+                    return new JsonResult { Data = new { status = true, vaccineId = vaccineId, owner = vaccine.Pet.Owner.OwnerFullName, pet = pet, specie = specie, date = date.ToString("yyyy-MM-dd") + "." + date.ToString("D"), date2 = date2.ToString("yyyy-MM-dd") + "." + date2.ToString("D"), date3 = date3.ToString("yyyy-MM-dd") + "." + date3.ToString("D"), date4 = date4.ToString("yyyy-MM-dd") + "." + date4.ToString("D"), date5 = date5.ToString("yyyy-MM-dd") + "." + date5.ToString("D"), date6 = date6.ToString("yyyy-MM-dd") + "." + date6.ToString("D") } };
                 }
                 else
                 {
-                    if (vaccine.VaccineNumber == 5)
+                    if (vaccine.VaccineNumber < 4)
                     {
-                        CreateVaccineNumberFive(vaccine);
+                        CreateVaccineNumberOne(vaccine);
                     }
                     else
                     {
                         CreateVaccineNumberSix(vaccine);
                     }
-                }
 
-                var vaccineId = vaccine.VaccineId;
-                var pet = vaccine.Pet.PetName;
-                var specie = String.Empty;
-                if (vaccine.Pet.PetSpecie == Species.Canina)
-                {
-                    specie = "Canina";
-                }
-                else
-                {
-                    specie = "Felina";
-                }
-                DateTime date = db.Vaccines.ToList().Find(v => v.PetId == vaccine.PetId & v.VaccineNumber == vaccine.VaccineNumber).VaccineDate;
-                DateTime date2 = DateTime.MinValue;
-                DateTime date3 = DateTime.MinValue;
-                DateTime date4 = DateTime.MinValue;
-                DateTime date5 = DateTime.MinValue;
-                DateTime date6 = DateTime.MinValue;
+                    var vaccineId = vaccine.VaccineId;
+                    var pet = vaccine.Pet.PetName;
+                    var specie = "Felina";
+                    
+                    DateTime date = db.Vaccines.ToList().Find(v => v.PetId == vaccine.PetId & v.VaccineNumber == vaccine.VaccineNumber).VaccineDate;
+                    DateTime date2 = DateTime.MinValue;
+                    DateTime date3 = DateTime.MinValue;
+                    DateTime date4 = DateTime.MinValue;
 
-                switch (vaccine.VaccineNumber)
-                {
-                    case 1:
-                        date2 = vaccine.VaccineDate.AddDays(21);
-                        if (date2.DayOfWeek == DayOfWeek.Sunday)
-                        {
-                            date2 = vaccine.VaccineDate.AddDays(1);
-                        }
-                        date3 = date2.AddDays(21);
-                        if (date3.DayOfWeek == DayOfWeek.Sunday)
-                        {
-                            date3 = date3.AddDays(1);
-                        }
-                        date4 = date3.AddDays(21);
-                        if (date4.DayOfWeek == DayOfWeek.Sunday)
-                        {
-                            date4 = date4.AddDays(1);
-                        }
-                        date5 = date4.AddMonths(1);
-                        if (date5.DayOfWeek == DayOfWeek.Sunday)
-                        {
-                            date5 = date5.AddDays(1);
-                        }
-                        date6 = date4.AddYears(1);
-                        if (date6.DayOfWeek == DayOfWeek.Sunday)
-                        {
-                            date6 = date6.AddDays(1);
-                        }
-                        break;
-                    case 2:
-                        date3 = date.AddDays(21);
-                        if (date3.DayOfWeek == DayOfWeek.Sunday)
-                        {
-                            date3 = date3.AddDays(1);
-                        }
-                        date4 = date3.AddDays(21);
-                        if (date4.DayOfWeek == DayOfWeek.Sunday)
-                        {
-                            date4 = date4.AddDays(1);
-                        }
-                        date5 = date4.AddMonths(1);
-                        if (date5.DayOfWeek == DayOfWeek.Sunday)
-                        {
-                            date5 = date5.AddDays(1);
-                        }
-                        date6 = date4.AddYears(1);
-                        if (date6.DayOfWeek == DayOfWeek.Sunday)
-                        {
-                            date6 = date6.AddDays(1);
-                        }
-                        break;
-                    case 3:
-                        date4 = date.AddDays(21);
-                        if (date4.DayOfWeek == DayOfWeek.Sunday)
-                        {
-                            date4 = date4.AddDays(1);
-                        }
-                        date5 = date4.AddMonths(1);
-                        if (date5.DayOfWeek == DayOfWeek.Sunday)
-                        {
-                            date5 = date5.AddDays(1);
-                        }
-                        date6 = date4.AddYears(1);
-                        if (date6.DayOfWeek == DayOfWeek.Sunday)
-                        {
-                            date6 = date6.AddDays(1);
-                        }
-                        break;
-                    case 4:
-                        date5 = date.AddMonths(1);
-                        if (date5.DayOfWeek == DayOfWeek.Sunday)
-                        {
-                            date5 = date5.AddDays(1);
-                        }
-                        date6 = date.AddMonths(11);
-                        if (date6.DayOfWeek == DayOfWeek.Sunday)
-                        {
-                            date6 = date6.AddDays(1);
-                        }
-                        break;
-                    case 5:
-                        date6 = date.AddMonths(11);
-                        if (date6.DayOfWeek == DayOfWeek.Sunday)
-                        {
-                            date6 = date6.AddDays(1);
-                        }
-                        break;
-                }
+                    switch (vaccine.VaccineNumber)
+                    {
+                        case 1:
+                            date2 = VerifyDate(vaccine.VaccineDate.AddDays(30));
+                            date3 = VerifyDate(date2.AddDays(30));
+                            date4 = VerifyDate(date3.AddYears(1));
+                            break;
+                        case 2:
+                            date3 = VerifyDate(date.AddDays(30));
+                            date4 = VerifyDate(date3.AddYears(1));
+                            break;
+                        case 3:
+                            date4 = VerifyDate(date.AddYears(1));
+                            break;                        
+                    }
 
-                return new JsonResult { Data = new { status = true, vaccineId = vaccineId, owner = vaccine.Pet.Owner.OwnerFullName, pet = pet, specie = specie, date = date.ToString("yyyy-MM-dd") + "." + date.ToString("D"), date2 = date2.ToString("yyyy-MM-dd") + "." + date2.ToString("D"), date3 = date3.ToString("yyyy-MM-dd") + "." + date3.ToString("D"), date4 = date4.ToString("yyyy-MM-dd") + "." + date4.ToString("D"), date5 = date5.ToString("yyyy-MM-dd") + "." + date5.ToString("D"), date6 = date6.ToString("yyyy-MM-dd") + "." + date6.ToString("D") } };
+                    return new JsonResult { Data = new { status = true, vaccineId = vaccineId, owner = vaccine.Pet.Owner.OwnerFullName, pet = pet, specie = specie, date = date.ToString("yyyy-MM-dd") + "." + date.ToString("D"), date2 = date2.ToString("yyyy-MM-dd") + "." + date2.ToString("D"), date3 = date3.ToString("yyyy-MM-dd") + "." + date3.ToString("D"), date4 = date4.ToString("yyyy-MM-dd") + "." + date4.ToString("D"), date5 = "", date6 = "" } };
+                }
             }
 
             return new JsonResult { Data = new { status = false } };
@@ -274,11 +243,7 @@ namespace SistemaVeterinaria.Controllers
             List<string> vaccineDates = new List<string>();
 
             var v = db.Vaccines.Find(vaccine.VaccineId);
-            v.VaccineDate = vaccine.VaccineDate;
-            if (v.VaccineDate.DayOfWeek == DayOfWeek.Sunday)
-            {
-                v.VaccineDate = v.VaccineDate.AddDays(1);
-            }
+            v.VaccineDate = VerifyDate(vaccine.VaccineDate);
             db.Entry(v).State = EntityState.Modified;
             db.SaveChanges();
             vaccineDates.Add(v.VaccineDate.ToString("yyyy-MM-dd") + "." + v.VaccineDate.ToString("D"));
@@ -298,37 +263,39 @@ namespace SistemaVeterinaria.Controllers
                 switch (item.VaccineNumber)
                 {
                     case 2:
-                        nextvaccine.VaccineDate = vaccine.VaccineDate.AddDays(21);
+                        nextvaccine.VaccineDate = item.Pet.PetSpecie == Species.Canina ? VerifyDate(vaccine.VaccineDate.AddDays(21)) : VerifyDate(vaccine.VaccineDate.AddDays(30));
                         break;
                     case 3:
-                        nextvaccine.VaccineDate = vaccine.VaccineDate.AddDays(21);
+                        nextvaccine.VaccineDate = item.Pet.PetSpecie == Species.Canina ? VerifyDate(vaccine.VaccineDate.AddDays(21)) : VerifyDate(vaccine.VaccineDate.AddDays(30));
                         break;
                     case 4:
-                        nextvaccine.VaccineDate = vaccine.VaccineDate.AddDays(21);
+                        nextvaccine.VaccineDate = item.Pet.PetSpecie == Species.Canina ? VerifyDate(vaccine.VaccineDate.AddDays(21)) : VerifyDate(vaccine.VaccineDate.AddYears(1)); ;
                         break;
                     case 5:
-                        nextvaccine.VaccineDate = vaccine.VaccineDate.AddMonths(1);
+                        nextvaccine.VaccineDate = vaccine.Pet.PetSpecie == Species.Canina ? VerifyDate(vaccine.VaccineDate.AddMonths(1)) : VerifyDate(vaccine.VaccineDate.AddYears(1));
                         break;
                     case 6:
-                        if (pet.Vaccinations.ToList().Exists(va => va.VaccineNumber == 4)/*db.Vaccines.ToList().Exists(va => va.PetId == vaccine.PetId & va.VaccineNumber == 4)*/)
+                        if (vaccine.Pet.PetSpecie == Species.Canina)
                         {
-                            nextvaccine.VaccineDate = pet.Vaccinations.ToList().Find(va => va.VaccineNumber == 4).VaccineDate.AddYears(1);
-                            //db.Vaccines.ToList().Find(va => va.PetId == vaccine.PetId & va.VaccineNumber == 4).VaccineDate.AddYears(1);
+                            if (pet.Vaccinations.ToList().Exists(va => va.VaccineNumber == 4))
+                            {
+                                nextvaccine.VaccineDate = VerifyDate(pet.Vaccinations.ToList().Find(va => va.VaccineNumber == 4).VaccineDate.AddYears(1));
+                            }
+                            else
+                            {
+                                nextvaccine.VaccineDate = VerifyDate(vaccine.VaccineDate.AddMonths(11));
+                            }
                         }
                         else
                         {
-                            nextvaccine.VaccineDate = vaccine.VaccineDate.AddMonths(11);
-                        }
+                            nextvaccine.VaccineDate = VerifyDate(vaccine.VaccineDate.AddYears(1));
+                        }                        
                         break;
                     default:
-                        nextvaccine.VaccineDate = vaccine.VaccineDate.AddYears(1);
+                        nextvaccine.VaccineDate = VerifyDate(vaccine.VaccineDate.AddYears(1));
                         break;
                 }
-
-                if (nextvaccine.VaccineDate.DayOfWeek == DayOfWeek.Sunday)
-                {
-                    nextvaccine.VaccineDate = nextvaccine.VaccineDate.AddDays(1);
-                }
+                                
                 db.Entry(nextvaccine).State = EntityState.Modified;
                 db.SaveChanges();
 
@@ -338,15 +305,7 @@ namespace SistemaVeterinaria.Controllers
             }
 
             var petName = v.Pet.PetName;
-            var specie = String.Empty;
-            if (v.Pet.PetSpecie == Species.Canina)
-            {
-                specie = "Canina";
-            }
-            else
-            {
-                specie = "Felina";
-            }
+            var specie = v.Pet.PetSpecie == Species.Canina ? "Canina" : "Felina";
 
             return new JsonResult { Data = new { owner = v.Pet.Owner.OwnerFullName, pet = petName, specie = specie, vaccineId = vaccineId, vaccineDates = vaccineDates, lastId = lastnotification } };
         }
@@ -367,10 +326,7 @@ namespace SistemaVeterinaria.Controllers
         }
         public void CreateVaccineNumberOne(Vaccine v)
         {
-            if (v.VaccineDate.DayOfWeek == DayOfWeek.Sunday)
-            {
-                v.VaccineDate = v.VaccineDate.AddDays(1);
-            }
+            v.VaccineDate = VerifyDate(v.VaccineDate);
 
             db.Vaccines.Add(v);
             db.SaveChanges();
@@ -380,25 +336,39 @@ namespace SistemaVeterinaria.Controllers
             vaccine2.PetId = v.PetId;
             vaccine2.Pet = v.Pet;
 
-            if (vaccine2.VaccineNumber < 5)
+            if (v.Pet.PetSpecie == Species.Canina)
             {
-                vaccine2.VaccineDate = v.VaccineDate.AddDays(21);
-                CreateVaccineNumberOne(vaccine2);
+                if (vaccine2.VaccineNumber < 5)
+                {
+                    vaccine2.VaccineDate = v.VaccineDate.AddDays(21);
+                    CreateVaccineNumberOne(vaccine2);
+                }
+                else
+                {
+                    vaccine2.VaccineDate = v.VaccineDate.AddMonths(1);
+                    CreateVaccineNumberFive(vaccine2);
+                }
             }
             else
             {
-                vaccine2.VaccineDate = v.VaccineDate.AddMonths(1);
-                CreateVaccineNumberFive(vaccine2);
+                if (vaccine2.VaccineNumber < 3)
+                {
+                    vaccine2.VaccineDate = v.VaccineDate.AddDays(30);
+                    CreateVaccineNumberOne(vaccine2);
+                }
+                else
+                {
+                    vaccine2.VaccineDate = v.VaccineDate.AddYears(1);
+                    CreateVaccineNumberSix(vaccine2);
+                }
             }
           
         }
 
         public void CreateVaccineNumberFive(Vaccine vaccine)
         {
-            if (vaccine.VaccineDate.DayOfWeek == DayOfWeek.Sunday)
-            {
-                vaccine.VaccineDate = vaccine.VaccineDate.AddDays(1);
-            }
+            vaccine.VaccineDate = VerifyDate(vaccine.VaccineDate);
+
             db.Vaccines.Add(vaccine);
             db.SaveChanges();
 
@@ -414,10 +384,8 @@ namespace SistemaVeterinaria.Controllers
         {
             if (vaccine.VaccineNumber < 25)
             {
-                if (vaccine.VaccineDate.DayOfWeek == DayOfWeek.Sunday)
-                {
-                    vaccine.VaccineDate = vaccine.VaccineDate.AddDays(1);
-                }
+                vaccine.VaccineDate = VerifyDate(vaccine.VaccineDate);
+
                 db.Vaccines.Add(vaccine);
                 db.SaveChanges();
 
@@ -429,6 +397,19 @@ namespace SistemaVeterinaria.Controllers
                 CreateVaccineNumberSix(vaccine7);
             }
         }
+
+        private DateTime VerifyDate(DateTime date)
+        {
+            if (date.DayOfWeek == DayOfWeek.Sunday || (date.Day == 25 && date.Month == 12) || (date.Day == 1 && date.Month == 1))
+            {
+                return date.AddDays(1);
+            }
+            else
+            {
+                return date;
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -18,5 +18,7 @@ namespace SistemaVeterinaria.Models
         public int PetId { get; set; }
 
         public virtual Pet Pet { get; set; }
+
+        public bool Done { get; set; }
     }
 }

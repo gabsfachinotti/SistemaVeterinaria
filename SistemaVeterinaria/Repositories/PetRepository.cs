@@ -7,7 +7,7 @@ namespace SistemaVeterinaria.Repositories
 {
     public class PetRepository
     {
-        public string CalculateAge(DateTime petBirthday)
+        public dynamic CalculateAge(DateTime petBirthday)
         {
             var age = String.Empty;
             var years = DateTime.Today.Year - petBirthday.Year;
@@ -37,6 +37,11 @@ namespace SistemaVeterinaria.Repositories
                     {
                         age += "es";
                     }
+                }
+                
+                if (years > 30)
+                {
+                    return String.Empty;
                 }
             }
             else
