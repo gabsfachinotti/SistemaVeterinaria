@@ -223,11 +223,14 @@
                 {
                     <tr>
                         <td class="text-center">@item.ShowerId</td>
-                        <td>@item.PetName</td>                            
-                        <td class="text-center">@if (item.ShowerTurn)
-                                                {<p>Mañana</p>}
-                                                else
-                                                {<p>Tarde</p>}</td>
+                        <td>@item.PetName</td>
+                        @if (item.ShowerTurn)
+                        {
+                            <td class="text-center">Mañana</td>}
+                        else
+                        {
+                            <td class="text-center">Tarde</td>
+                        }                        
                         <td class="text-center">
                             @item.ShowerDate.ToString("D")
                         </td>
