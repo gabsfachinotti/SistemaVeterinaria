@@ -192,13 +192,14 @@ namespace SistemaVeterinaria.Controllers
             if (status)
             {
                 vaccine.Pet = db.Pets.Find(vaccine.PetId);
+                vaccine.Done = true;
                 db.Vaccines.Add(vaccine);
                 db.SaveChanges();
             }
 
             var position = 1;
             if (db.Vaccines.ToList().Exists(v => v.PetId == vaccine.PetId & v.VaccineNumber < vaccine.VaccineNumber))
-            {
+            {                
                 position = db.Vaccines.ToList().OrderBy(v => v.VaccineNumber).Last(v => v.PetId == vaccine.PetId & v.VaccineNumber < vaccine.VaccineNumber).VaccineNumber;
             }            
 
